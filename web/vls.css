@@ -1,0 +1,273 @@
+body { 
+  background-color: #2c3c51;
+  font-family: Verdana, Helvetica, Arial, sans-serif;
+  font-size:        small;
+  margin: 10px, 20px, 10px, 20px;
+}
+
+p.identity, p.order{
+	width: 46%;
+	background-color: #a7c7eb;
+	font-size: 100%;
+	font-weight: normal;
+	color: black;
+	padding-right: 2%;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 2%;
+	margin: auto;
+	margin-top: 10px;	
+
+}
+
+p.header {
+	width: 46%;
+	background-color: #a7c7eb;
+	font-size: 140%;
+	font-weight: bolder;
+	color: #2c3c51;
+	padding-right: 2%;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 2%;
+	margin: auto;
+	margin-top: 10px;
+	
+}
+p.footer {
+	vertical-align: bottom;
+	width: 46%;
+	background-color: #a7c7eb;
+	font-size: 140%;
+	font-weight: bolder;
+	color: #2c3c51;
+	padding-right: 2%;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 2%;
+	margin: auto;
+	margin-top: 10px;
+	
+}
+p.error {
+	width: 46%;
+	background-color: #a7c7eb;
+	font-size: 100%;
+	font-weight: bolder;
+	color: gray;
+	padding-right: 2%;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 2%;
+	margin: auto;
+	margin-top: 10px;
+	
+}
+p.about {
+	width: 46%;
+	background-color: white;
+	font-size: 90%;
+	font-weight: normal;
+	color: black;
+	padding-right: 2%;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 2%;
+	margin: auto;
+	margin-top: 10px;
+	
+}
+
+p.logout {
+	width: 50%;
+	font-size: 80%;
+	color: gray;
+	text-align: right;
+	padding-right: 3px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	padding-left: 3px;
+	margin: auto;
+}
+
+a:link.logout {
+	color: black; 
+  
+}
+a:visited.logout {
+  color: gray;
+}
+a:hover.logout {
+  color: black; 
+  
+}
+a:active.logout {
+  color: gray; 
+}
+
+h1 {
+  font-size:        120%;
+  text-align: center;
+  
+  color:            white;
+  margin: auto;
+  margin-top: 5px;
+}
+
+h2 { font-size: 110%; 
+	text-align: center;
+	color:            white;
+	margin: auto;
+	margin-top: 5px;
+}
+
+table {
+   width: 50%;
+   border-collapse: collapse;
+   background-color: #a7c7eb;
+   margin: auto;
+   margin-top: 10px;
+}
+
+th {
+  text-align: right;
+  vertical-align: middle;
+  padding-right: 10px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 10px;
+}
+
+
+td {
+  vertical-align: middle;
+  padding-right: 10px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 10px;
+}
+
+table table{
+  width: auto;
+  text-align: right;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin: auto;
+}
+
+table table td{
+  text-align: right;
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
+
+table.list_header{
+
+font-size: 90%;
+margin: auto;
+width: 30%;
+
+}
+
+table.list_header th{
+	border: 1px solid #3c3c3c;
+	text-align: left;
+	font-size: 90%;
+	width: 200px;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-bottom: 3px;
+	padding-top: 3px;
+}
+table.list_header td{
+	border: 1px solid #3c3c3c;
+	text-align: right;
+	
+	font-size: 90%;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-bottom: 3px;
+	padding-top: 3px;
+}
+table.list_header tr{
+vertical-align:="middle";
+}
+table.list_calc {
+	width: 50%;
+	margin-top: 10px;
+	font-size: 85%;
+}
+
+table.list_calc td, table.list_calc th{
+	border: 1px solid #3c3c3c;
+	font-size: 90%;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-bottom: 1px;
+	padding-top: 1px;
+}
+td.floatnums, td.floatnums {
+	text-align: right;
+	width: 50px;
+}
+
+td.colnames {
+	text-align: center;
+}
+p.auth {
+	width: 46%;
+	font-size: 90%;
+	background-color: #a7c7eb;
+	padding-right: 2%;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 2%;
+	margin: auto;
+	margin-top: 10px;
+}
+a:link.auth_reg {
+	font-size: 80%;
+  color: black; 
+  
+}
+a:visited.auth_reg {
+  color: gray;
+}
+a:hover.auth_reg {
+  color: black; 
+  
+}
+a:active.auth_reg {
+  color: gray; 
+  
+}
+
+p.menu {
+	text-align: center;
+	width: 46%;
+	font-size: 100%;
+	font-weight: bolder;
+	background-color: #a7c7eb;
+	padding-right: 2%;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 2%;
+	margin: auto;
+	margin-top: 10px;
+}
+a:link.menu {
+
+  color: #2c3c51; 
+  
+}
+a:visited.menu {
+  color: #2c3c51;
+}
+a:hover.menu {
+  color: black; 
+  
+}
+a:active.menu {
+  color: gray; 
+  
+}

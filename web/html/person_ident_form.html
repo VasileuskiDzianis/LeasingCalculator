@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Registering form</title>
+	<link rel="stylesheet" type="text/css" href="vls.css" />
+	</head>
+  <body>
+
+<form action="identperson.do" method="POST">
+<h1>Представьтесь, пожалуйста</h1>
+<table>
+<th>Пол:</th>
+	<td>
+	<input type="radio" name="gender" value="man" checked="checked"/>Мужчина 
+	<input type="radio" name="gender" value="woman"/>Женщина
+	</td>
+<tr><th>Фамилия:</th><td><input type="text" name="lastName" required pattern="[A-Za-zА-Яа-яЁё-]{2,}" maxlength="30"/></td></tr>
+<tr><th>Имя:</th><td><input type="text" name="firstName" required pattern="[A-Za-zА-Яа-яЁё-]{2,}" maxlength="30"/></td></tr>
+<tr><th>Отчество:</th><td><input type="text" name="patronymicName" required pattern="[A-Za-zА-Яа-яЁё-]{2,}" maxlength="30"/></td></tr>
+<tr><th>Адрес:</th><td>
+<table>
+<tr><td>Индекс:</td><td><input type="text" name="postalCode" pattern="[0-9]{6}" size="6" maxlength="6" placeholder="123456"/></td></tr>
+<tr><td>Область:</td><td><select name="duration">
+			<option value=""/>-</option>
+			<option value="Брестская"/>Брестская</option>
+			<option value="Витебская"/>Витебская</option>
+			<option value="Гомельская"/>Гомельская</option>
+			<option value="Гродненская"/>Гродненская</option>
+			<option value="Минская"/>Минская</option>
+			<option value="Могилёвская"/>Могилёвская</option>
+</td></tr>
+<tr><td>Район:</td><td><input type="text" name="district" pattern="[0-9A-Za-zА-Яа-яЁё-]{2,}" maxlength="30"/></td></tr>
+<tr><td>Город:</td><td><input type="text" name="city" pattern="[0-9A-Za-zА-Яа-яЁё-]{2,}" required maxlength="30"/></td></tr>
+<tr><td>Улица:</td><td><input type="text" name="street" pattern="[0-9A-Za-zА-Яа-яЁё-]{2,}" maxlength="30"/></td></tr>
+<tr><td>Дом:</td><td><input type="text" name="building" pattern="[0-9A-Za-zА-Яа-яЁё-/]{1,}" maxlength="10" size="6"/></td></tr>
+<tr><td>Квартира:</td><td><input type="text" name="room" pattern="[0-9A-Za-zА-Яа-яЁё-/]{1,}" maxlength="10" size="6"/></td></tr>
+</table>
+</td></tr>
+<tr><th>Дата рождения:</th><td><input type="text" name="birthDate" required pattern="\d{2}.\d{2}.\d{4}" size="20" maxlength="10" placeholder="01.01.1990" title="введите дату в вормате дд.мм.гггг"></td></tr>
+<tr><th>Номер телефона:</th><td><input type="text" name="phoneNumber" required maxlength="20" placeholder="375296123456" title="введине свой контактный номер телефона"></td></tr>
+<tr><th>Среднемесячный доход, бел.руб.:</th><td><input type="text" name="monthlyIncome" required pattern="\d{2,6}" size="20" maxlength="6" /></td></tr>
+<tr><th></th><td><input type="submit" value="Сохранить"/></td></tr>
+</table>
+</form>
+
+</body>
+</html>
