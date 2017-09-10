@@ -4,8 +4,7 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
                       http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          version="3.0"
-         metadata-complete="true">
-
+         metadata-complete="false">
 
     <servlet>
         <servlet-name>VLSValidEmail</servlet-name>
@@ -26,16 +25,6 @@
     <servlet-mapping>
         <servlet-name>VLS Calc Form</servlet-name>
         <url-pattern>/vlscalc.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>VLS Main Page</servlet-name>
-        <servlet-class>by.vasilevsky.leasing.controller.MainPageVls</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>VLS Main Page</servlet-name>
-        <url-pattern>/vlsmain</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -83,5 +72,18 @@
             by.vasilevsky.leasing.listener.ContextListener
         </listener-class>
     </listener>
+    
+    <listener>
+        <listener-class>org.apache.tiles.extras.complete.CompleteAutoloadTilesListener</listener-class>
+    </listener>
+
+    <servlet>
+        <servlet-name>Tiles Dispatch Servlet</servlet-name>
+        <servlet-class>org.apache.tiles.web.util.TilesDispatchServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Tiles Dispatch Servlet</servlet-name>
+        <url-pattern>*.tiles</url-pattern>
+    </servlet-mapping>
 
 </web-app>

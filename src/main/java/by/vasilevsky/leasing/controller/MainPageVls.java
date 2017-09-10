@@ -7,9 +7,11 @@ import by.vasilevsky.leasing.service.UserValidator;
 import by.vasilevsky.leasing.view.FormCollection;
 
 import javax.servlet.*;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 
+@WebServlet(value="/vlsmain")
 public class MainPageVls extends HttpServlet {
 	private static final long serialVersionUID = 246262139156154989L;
 
