@@ -1,11 +1,22 @@
 package by.vasilevsky.leasing.domain.lease_object;
 
+import by.vasilevsky.leasing.domain.currency.Currency;
+
 public class LeaseObject {
 	private int id;
 	private LeaseObjectType leaseObjectType;
 	private int age;
 	private float price;
 	private float vat;
+	private Currency currency;
+
+	public Currency getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(Currency currency) {
+		this.currency = currency;
+	}
 
 	public int getId() {
 		return id;

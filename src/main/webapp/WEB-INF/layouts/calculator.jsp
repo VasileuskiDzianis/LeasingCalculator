@@ -8,6 +8,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title><tiles:getAsString name="title" /></title>
 <link rel="stylesheet" type="text/css" href="vls.css" />
+<link rel="stylesheet" type="text/css" href="payments_schedule.css" />
 </head>
 <body>
 	<tiles:insertAttribute name="header" />

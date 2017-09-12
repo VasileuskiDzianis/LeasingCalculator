@@ -7,21 +7,21 @@
 
 		<div class="form-title">Валюта расчёта:</div>
 		<select name="currency" class="input-field">
-			<option value="byn">BYN</option>
-			<option value="usd">USD</option>
-			<option value="eur">EUR</option>
-			<option value="rub">RUB</option>
+			<option value="BYN">BYN</option>
+			<option value="USD">USD</option>
+			<option value="EUR">EUR</option>
+			<option value="RUB">RUB</option>
 		</select>
 		<br/>
 		<div class="form-title">Тип предмета:</div>
 		<div class = "form-input">
-		<input type="radio" name="objecttype" value="car" checked="checked" />Легковой автомобиль<br/>
-		<input type="radio" name="objecttype" value="lorry" />Грузовой транспорт до 3.5 тонн<br/>
-		<input type="radio" name="objecttype" value="truck" />Грузовой транспорт свыше 3.5 тонн<br/>
-		<input type="radio" name="objecttype" value="buildingmachines" />Строительная техника<br/>
-		<input type="radio" name="objecttype" value="farmingmachinery" />Сельскохозяйственная техника<br/>
-		<input type="radio" name="objecttype" value="equipment" />Оборудование<br/>
-		<input type="radio" name="objecttype" value="realestate" />Недвижимость<br/>
+		<input type="radio" name="objecttype" value="CAR" checked="checked" />Легковой автомобиль<br/>
+		<input type="radio" name="objecttype" value="LORRY" />Грузовой транспорт до 3.5 тонн<br/>
+		<input type="radio" name="objecttype" value="TRUCK" />Грузовой транспорт свыше 3.5 тонн<br/>
+		<input type="radio" name="objecttype" value="BUILDING_MACHINERY" />Строительная техника<br/>
+		<input type="radio" name="objecttype" value="FARMING_MACHINERY" />Сельскохозяйственная техника<br/>
+		<input type="radio" name="objecttype" value="EQUIPMENT" />Оборудование<br/>
+		<input type="radio" name="objecttype" value="REALESTATE" />Недвижимость<br/>
 		</div>
 		<br/>
 		
@@ -42,11 +42,11 @@
 		<br/>
 		
 		<div class="form-title">Стоимость:</div>
-		<input type="text" name="cost" class="input-field"/>
+			<input type="text" name="cost" class="input-field"/>
 		<br/>
 		
 		<div class="form-title">Без НДС:</div>
-		<input type="checkbox" name="novatoncostflag" value="1" class="input-field"/>
+			<input type="checkbox" name="no_vat_on_cost" value="true" class="input-field"/>
 		<br/>
 
 		<div class="form-title">Аванс:</div>
@@ -87,7 +87,7 @@
 		<br/>
 	
 		<div class="form-title">Включить страхование:</div>
-		<input type="checkbox" name="showinsurancecol" value="1" class="input-field"/>
+			<input type="checkbox" name="include_insurance" value="true" class="input-field"/>
 		<br/>
 		
 		<div class="submit-container">

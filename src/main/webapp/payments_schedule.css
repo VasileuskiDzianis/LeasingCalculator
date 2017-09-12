@@ -1,0 +1,42 @@
+#payments-schedule{
+	width: 850px;
+	background-color: #a7c7eb;
+	margin: auto;
+	margin-top:5px;
+	margin-bottom:5px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	padding-left: 10px;
+	padding-right: 10px;
+	
+}
+
+.payments-schedule-parameters-container {
+	
+}
+
+.payments-schedule-parameter-item {
+	
+}
+
+.payments-schedule-parameter-item-title {
+	display: inline-block;
+}
+
+.payments-schedule-parameter-item-value {
+	display: inline-block;
+}
+
+.payments-list-row {
+	vertical-align: top;
+	
+}
+.payments-list-col {
+	word-wrap: break-word;
+	display: inline-block;
+	width: 90px;
+	font-size: 12px;
+	text-align: center;
+	vertical-align: top;
+	
+}

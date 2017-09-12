@@ -11,27 +11,22 @@ import by.vasilevsky.leasing.domain.payments.PaymentType;
 import by.vasilevsky.leasing.domain.payments.PaymentsSchedule;
 
 public class PaymentsScheduleServiceImpl implements PaymentsScheduleService {
-	private static float VAT_RATE = 0.2f;
 	private static int PAYMENT_INTERVAL = 1;
 
 	@Override
 	public void calculatePayments(PaymentsSchedule paymentsSchedule) {
 		float leaseObjectCost = paymentsSchedule.getLeaseObject().getPrice();
 		float leaseObjectCostVat = paymentsSchedule.getLeaseObject().getVat();
-		float remainingDebt = (leaseObjectCost - paymentsSchedule.getPrepaymentPercentage() * leaseObjectCost);
+		float remainingDebt = leaseObjectCost + leaseObjectCostVat;
 		float mounthlyCostRepayment;
 		List<MonthPayment> monthlyPayments = new ArrayList<>();
 		MonthPayment monthlyPayment;
 		MonthPayment prepayment = new MonthPayment();
 		Calendar calendar = new GregorianCalendar();
 
-		if (isLeaseObjectPriceHasVat(paymentsSchedule.getLeaseObject())) {
-			mounthlyCostRepayment = (remainingDebt - paymentsSchedule.getBuyingOutPercentage() * leaseObjectCost)
-					/ paymentsSchedule.getLeaseDuration();
-		} else {
-			mounthlyCostRepayment = (remainingDebt - paymentsSchedule.getBuyingOutPercentage() * leaseObjectCost)
-					/ (1 + VAT_RATE) / paymentsSchedule.getLeaseDuration();
-		}
+			mounthlyCostRepayment = (leaseObjectCost * (1 - paymentsSchedule.getBuyingOutPercentage() - 
+					paymentsSchedule.getPrepaymentPercentage())) / paymentsSchedule.getLeaseDuration();
+		
 
 		prepayment.setLeaseObjectCostRepayment(leaseObjectCost * paymentsSchedule.getPrepaymentPercentage());
 		if (isLeaseObjectPriceHasVat(paymentsSchedule.getLeaseObject())) {
@@ -39,7 +34,7 @@ public class PaymentsScheduleServiceImpl implements PaymentsScheduleService {
 		}
 		prepayment.setPaymentDate(calendar.getTime());
 		prepayment.setPaymentType(PaymentType.PRE_PAYMENT);
-		prepayment.setRemainingDebt(leaseObjectCost + leaseObjectCostVat);
+		prepayment.setRemainingDebt(remainingDebt);
 
 		remainingDebt -= (prepayment.getLeaseObjectCostRepayment() + prepayment.getLeaseObjectCostRepaymentVat());
 
@@ -60,6 +55,9 @@ public class PaymentsScheduleServiceImpl implements PaymentsScheduleService {
 			if (isLeaseObjectPriceHasVat(paymentsSchedule.getLeaseObject())) {
 				monthlyPayment.setLeaseObjectCostRepaymentVat(mounthlyCostRepayment * VAT_RATE);
 			}
+			
+			remainingDebt -= monthlyPayment.getLeaseObjectCostRepayment() + monthlyPayment.getLeaseObjectCostRepaymentVat();
+			
 			monthlyPayments.add(monthlyPayment);
 		}
 		MonthPayment buyingOutPayment = new MonthPayment();
