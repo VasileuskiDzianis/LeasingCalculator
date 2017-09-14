@@ -13,7 +13,7 @@
 			<input type="submit" value="Войти" />
 		</form>
 		<div class="reg-link-container">
-			<a href="register.do" class="auth_reg">Зарегистрироваться</a>
+			<a href="<c:url value="/registration"/>" class="auth_reg" >Зарегистрироваться</a>
 		</div>
 	</div>
 </div>

@@ -1,3 +1,29 @@
+DROP TABLE IF EXISTS user;
+CREATE TABLE user (
+	id INT NOT NULL AUTO_INCREMENT,
+	login VARCHAR(128) NOT NULL,
+	password VARCHAR(128) NOT NULL,
+	detailsId INT NOT NULL,
+	roleId INT NOT NULL,
+	PRIMARY KEY (id)
+)ENGINE=InnoDB CHARSET=utf8;
+
+DROP TABLE IF EXISTS userDetails;
+CREATE TABLE userDetails (
+	detailsId INT NOT NULL AUTO_INCREMENT,
+	firstName VARCHAR(128) NOT NULL,
+	lastName VARCHAR(128) NOT NULL,
+	age INT NOT NULL,
+	PRIMARY KEY (detailsId)
+)ENGINE=InnoDB CHARSET=utf8;
+
+DROP TABLE IF EXISTS userRole;
+CREATE TABLE userRole (
+	id INT NOT NULL AUTO_INCREMENT,
+	role VARCHAR(20) NOT NULL,
+	PRIMARY KEY (id)
+)ENGINE=InnoDB CHARSET=utf8;
+
 DROP TABLE IF EXISTS leaseTypeAgeMargin;
 CREATE TABLE leaseTypeAgeMargin (
 	id INT NOT NULL AUTO_INCREMENT,
@@ -38,9 +64,20 @@ CREATE TABLE leaseTypeInsurance (
 )ENGINE=InnoDB CHARSET=utf8;
 
 
-LOCK TABLES leaseTypeAgeMargin WRITE, leaseObjectType WRITE, leaseCurrencyRate WRITE, currency WRITE, leaseTypeInsurance WRITE;
+LOCK TABLES user WRITE, userDetails WRITE, userRole WRITE, leaseTypeAgeMargin WRITE, leaseObjectType WRITE, leaseCurrencyRate WRITE, currency WRITE, leaseTypeInsurance WRITE;
 
+INSERT INTO user VALUES 
+	('1', '4denver@mail.ru', 'PDhidatxaFssF7PWkm8y+f6kmMC9JnO7xSPyfXVWOUA=$8O0ZuJx3yK6gNLFeekGwRRW33kqSmhvkIvNZQmEUsQI=', '1', '2'),
+	('2', '4sol@tut.by', 'PDhidatxaFssF7PWkm8y+f6kmMC9JnO7xSPyfXVWOUA=$8O0ZuJx3yK6gNLFeekGwRRW33kqSmhvkIvNZQmEUsQI=', '2', '3');
 
+INSERT INTO userDetails VALUES 
+	('1', 'Ivanov', 'Ivan', '30'),
+	('2', 'Степанов', 'Джордж', '33');
+
+INSERT INTO userRole VALUES 
+	('1', 'ANONYMOUS'),
+	('2', 'USER'),
+	('3', 'ADMIN');
 
 INSERT INTO leaseObjectType VALUES 
 	('1', 'CAR'),
