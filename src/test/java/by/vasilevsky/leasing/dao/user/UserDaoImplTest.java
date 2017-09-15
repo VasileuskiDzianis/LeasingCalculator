@@ -5,11 +5,13 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import by.vasilevsky.leasing.dao.DaoFactory;
+import by.vasilevsky.leasing.dao.DaoFactoryImpl;
 import by.vasilevsky.leasing.domain.user.User;
 import by.vasilevsky.leasing.domain.user.UserDetails;
 import by.vasilevsky.leasing.domain.user.UserRole;
 
-public class UserDaoImplTest extends UserDaoImpl {
+public class UserDaoImplTest {
 	private static final int EXPECTED_USER_ID = 2;
 	private static final String EXPECTED_USER_LOGIN = "4sol@tut.by";
 	private static final String EXPECTED_USER_PSW = "PDhidatxaFssF7PWkm8y+f6kmMC9JnO7xSPyfXVWOUA=$8O0ZuJx3yK6gNLFeekGwRRW33kqSmhvkIvNZQmEUsQI=";
@@ -37,7 +39,8 @@ public class UserDaoImplTest extends UserDaoImpl {
 	
 	@Before
 	public void setUp() throws Exception {
-		userDao = new UserDaoImpl();
+		DaoFactory daoFactory = new DaoFactoryImpl();
+		userDao = daoFactory.getUserDao();
 	}
 
 	@Test

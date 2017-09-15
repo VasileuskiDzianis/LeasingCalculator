@@ -15,6 +15,18 @@ public class LeaseCurrencyRateDaoImpl implements LeaseCurrencyRateDao {
 	private final static String REQUEST_FIND_LEASE_RATE = "SELECT lcr.currencyId, lcr.currencyRate FROM leaseCurrencyRate AS lcr JOIN currency AS c ON lcr.currencyId=c.id WHERE c.currencyName=?;";
 
 	private DataSource ds;
+	private static LeaseCurrencyRateDaoImpl instance;
+	
+	private LeaseCurrencyRateDaoImpl() {
+		
+	}
+	
+	public static LeaseCurrencyRateDaoImpl getInstance() {
+		if (instance == null) {
+			instance = new LeaseCurrencyRateDaoImpl();
+		}
+		return instance;
+	}
 
 	@Override
 	public LeaseCurrencyRate findLeaseRateByCurrency(Currency currency) {

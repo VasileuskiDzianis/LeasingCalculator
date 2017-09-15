@@ -13,18 +13,25 @@ import by.vasilevsky.leasing.domain.currency.Currency;
 import by.vasilevsky.leasing.domain.lease_object.LeaseObject;
 import by.vasilevsky.leasing.domain.lease_object.LeaseObjectType;
 import by.vasilevsky.leasing.domain.payments.PaymentsSchedule;
+import by.vasilevsky.leasing.service.ServiceFactory;
+import by.vasilevsky.leasing.service.ServiceFactoryImpl;
 import by.vasilevsky.leasing.service.payments.PaymentsScheduleService;
-import by.vasilevsky.leasing.service.payments.PaymentsScheduleServiceImpl;
+import by.vasilevsky.leasing.service.rate.insurance.LeaseTypeInsuranceService;
+import by.vasilevsky.leasing.service.rate.lease.LeaseCurrencyRateService;
+import by.vasilevsky.leasing.service.rate.lease.LeaseTypeAgeMarginService;
 
 @WebServlet(urlPatterns = { "/calculate" })
 public class CalculatePaymentsScheduleController extends HttpServlet {
 	private static final long serialVersionUID = -267046298350756472L;
-	private static final float LEASE_RATE = 0.152f;
-	private static final float INSURANCE_RATE = 0.03f;
+
+	private static ServiceFactory serviceFactory = new ServiceFactoryImpl();
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		PaymentsScheduleService paymentsScheduleService = new PaymentsScheduleServiceImpl();
-		
+		PaymentsScheduleService paymentsScheduleService = serviceFactory.getPaymentsScheduleService();
+		LeaseCurrencyRateService leaseCurrencyRateService = serviceFactory.getLeaseCurrencyRateService();
+		LeaseTypeAgeMarginService leaseTypeAgeMarginService = serviceFactory.getLeaseTypeAgeMarginService();
+		LeaseTypeInsuranceService leaseTypeInsuranceService = serviceFactory.getLeaseTypeInsuranceService();
+
 		PaymentsSchedule paymentsSchedule = new PaymentsSchedule();
 		LeaseObject leaseObject = new LeaseObject();
 		paymentsSchedule.setCurrency(Currency.valueOf(Currency.class, request.getParameter("currency")));
@@ -32,7 +39,8 @@ public class CalculatePaymentsScheduleController extends HttpServlet {
 		paymentsSchedule.setBuyingOutPercentage(Float.parseFloat(request.getParameter("byuingoutpercent")));
 		paymentsSchedule.setLeaseDuration(Integer.parseInt(request.getParameter("duration")));
 
-		leaseObject.setLeaseObjectType(LeaseObjectType.valueOf(LeaseObjectType.class, request.getParameter("objecttype")));
+		leaseObject
+				.setLeaseObjectType(LeaseObjectType.valueOf(LeaseObjectType.class, request.getParameter("objecttype")));
 		leaseObject.setAge(Integer.parseInt(request.getParameter("age")));
 		leaseObject.setCurrency(paymentsSchedule.getCurrency());
 
@@ -46,7 +54,8 @@ public class CalculatePaymentsScheduleController extends HttpServlet {
 			if (noVatOnCost) {
 				leaseObject.setPrice(Float.parseFloat(request.getParameter("cost")));
 			} else {
-				leaseObject.setPrice(Float.parseFloat(request.getParameter("cost")) / (1 + PaymentsScheduleService.VAT_RATE));
+				leaseObject.setPrice(
+						Float.parseFloat(request.getParameter("cost")) / (1 + PaymentsScheduleService.VAT_RATE));
 			}
 			leaseObject.setVat(leaseObject.getPrice() * PaymentsScheduleService.VAT_RATE);
 		} else {
@@ -57,18 +66,23 @@ public class CalculatePaymentsScheduleController extends HttpServlet {
 		if (request.getParameter("include_insurance") != null) {
 			includeInsurance = Boolean.parseBoolean(request.getParameter("include_insurance"));
 		}
-		
+
 		if (includeInsurance) {
-			paymentsSchedule.setInsuranceRate(INSURANCE_RATE);
+			float insuranceRate = leaseTypeInsuranceService.findInsuranceByObjectType(leaseObject.getLeaseObjectType())
+					.getInsuranceRate();
+			paymentsSchedule.setInsuranceRate(insuranceRate);
 		}
-		
-		paymentsSchedule.setLeaseRate(LEASE_RATE);
-		
+
+		float leaseCurrencyRate = leaseCurrencyRateService.findLeaseRateByCurrency(paymentsSchedule.getCurrency())
+				.getCurrencyRate();
+		float leaseTypeAgeMarginRate = leaseTypeAgeMarginService
+				.findLeaseRateByTypeAndAge(leaseObject.getLeaseObjectType(), leaseObject.getAge()).getMargin();
+
+		paymentsSchedule.setLeaseRate(leaseCurrencyRate + leaseTypeAgeMarginRate);
 		paymentsSchedule.setLeaseObject(leaseObject);
 		paymentsScheduleService.calculatePayments(paymentsSchedule);
-		
-		request.setAttribute("paymentsSchedule", paymentsSchedule);
 
+		request.setAttribute("paymentsSchedule", paymentsSchedule);
 		RequestDispatcher view = request.getRequestDispatcher("payments_schedule.tiles");
 		view.forward(request, response);
 	}

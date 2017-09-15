@@ -1,9 +1,6 @@
 package by.vasilevsky.leasing.dao.rate.insurance;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 import javax.sql.DataSource;
 
@@ -15,6 +12,20 @@ public class LeaseTypeInsuranceDaoImpl implements LeaseTypeInsuranceDao {
 	private final static String REQUEST_FIND_LEASE_RATE = "SELECT lti.id, lti.insurance FROM leaseTypeInsurance AS lti JOIN leaseObjectType AS lot ON lti.objectTypeId=lot.id WHERE lot.objectType=?;";
 
 	private DataSource ds;
+
+	private static LeaseTypeInsuranceDaoImpl instance;
+
+	private LeaseTypeInsuranceDaoImpl() {
+
+	}
+
+	public static LeaseTypeInsuranceDao getInstance() {
+
+		if (instance == null) {
+			instance = new LeaseTypeInsuranceDaoImpl();
+		}
+		return instance;
+	}
 
 	@Override
 	public LeaseTypeInsurance findInsuranceByObjectType(LeaseObjectType objectType) {

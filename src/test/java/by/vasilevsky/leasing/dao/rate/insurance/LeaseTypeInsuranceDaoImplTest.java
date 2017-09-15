@@ -5,10 +5,12 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import by.vasilevsky.leasing.dao.DaoFactory;
+import by.vasilevsky.leasing.dao.DaoFactoryImpl;
 import by.vasilevsky.leasing.domain.lease_object.LeaseObjectType;
 import by.vasilevsky.leasing.domain.rate.insurance.LeaseTypeInsurance;
 
-public class LeaseTypeInsuranceDaoImplTest extends LeaseTypeInsuranceDaoImpl {
+public class LeaseTypeInsuranceDaoImplTest {
 	private static final LeaseObjectType GIVEN_OBJ_TYPE = LeaseObjectType.TRUCK;
 	private static final float EXPECTED_INSURANCE = 0.02f;
 
@@ -16,7 +18,8 @@ public class LeaseTypeInsuranceDaoImplTest extends LeaseTypeInsuranceDaoImpl {
 
 	@Before
 	public void setUp() throws Exception {
-		insuranceDao = new LeaseTypeInsuranceDaoImpl();
+		DaoFactory daoFactory = new DaoFactoryImpl();
+		insuranceDao = daoFactory.getLeaseTypeInsuranceDao();
 	}
 
 	@Test

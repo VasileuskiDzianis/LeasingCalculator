@@ -28,9 +28,22 @@ public class UserDaoImpl implements UserDao {
 
 	private DataSource ds;
 
+	private static UserDao instance;
+
+	private UserDaoImpl() {
+
+	}
+
+	public static UserDao getInstance() {
+		if (instance == null) {
+			instance = new UserDaoImpl();
+		}
+		return instance;
+	}
+
 	@Override
 	public void updateUser(User user) {
-		
+
 		ds = DataSourceProvider.getInstance().getDataSource();
 		Connection con = null;
 		PreparedStatement stmt = null;

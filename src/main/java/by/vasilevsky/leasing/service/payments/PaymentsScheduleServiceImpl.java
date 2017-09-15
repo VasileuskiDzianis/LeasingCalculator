@@ -11,7 +11,20 @@ import by.vasilevsky.leasing.domain.payments.PaymentType;
 import by.vasilevsky.leasing.domain.payments.PaymentsSchedule;
 
 public class PaymentsScheduleServiceImpl implements PaymentsScheduleService {
-	private static int PAYMENT_INTERVAL = 1;
+	private static final int PAYMENT_INTERVAL = 1;
+	
+	private static PaymentsScheduleServiceImpl instance;
+	
+	private PaymentsScheduleServiceImpl() {
+		
+	}
+	
+	public static PaymentsScheduleService getInstance() {
+		if (instance == null) {
+			instance = new PaymentsScheduleServiceImpl();
+		}
+		return instance;
+	}
 
 	@Override
 	public void calculatePayments(PaymentsSchedule paymentsSchedule) {
@@ -24,9 +37,8 @@ public class PaymentsScheduleServiceImpl implements PaymentsScheduleService {
 		MonthPayment prepayment = new MonthPayment();
 		Calendar calendar = new GregorianCalendar();
 
-			mounthlyCostRepayment = (leaseObjectCost * (1 - paymentsSchedule.getBuyingOutPercentage() - 
-					paymentsSchedule.getPrepaymentPercentage())) / paymentsSchedule.getLeaseDuration();
-		
+		mounthlyCostRepayment = (leaseObjectCost * (1 - paymentsSchedule.getBuyingOutPercentage() - paymentsSchedule.getPrepaymentPercentage()))
+				/ paymentsSchedule.getLeaseDuration();
 
 		prepayment.setLeaseObjectCostRepayment(leaseObjectCost * paymentsSchedule.getPrepaymentPercentage());
 		if (isLeaseObjectPriceHasVat(paymentsSchedule.getLeaseObject())) {
@@ -48,28 +60,30 @@ public class PaymentsScheduleServiceImpl implements PaymentsScheduleService {
 			monthlyPayment.setRemainingDebt(remainingDebt);
 			monthlyPayment.setLeaseMargin(paymentsSchedule.getLeaseRate() * remainingDebt / 12);
 			monthlyPayment.setLeaseMarginVat(monthlyPayment.getLeaseMargin() * VAT_RATE);
-			monthlyPayment.setInsurance((leaseObjectCost + leaseObjectCostVat) * paymentsSchedule.getInsuranceRate());
+			monthlyPayment.setInsurance((leaseObjectCost + leaseObjectCostVat) * paymentsSchedule.getInsuranceRate() / 12);
 			monthlyPayment.setInsuranceVat(monthlyPayment.getInsurance() * VAT_RATE);
 			monthlyPayment.setLeaseObjectCostRepayment(mounthlyCostRepayment);
 
 			if (isLeaseObjectPriceHasVat(paymentsSchedule.getLeaseObject())) {
 				monthlyPayment.setLeaseObjectCostRepaymentVat(mounthlyCostRepayment * VAT_RATE);
 			}
-			
-			remainingDebt -= monthlyPayment.getLeaseObjectCostRepayment() + monthlyPayment.getLeaseObjectCostRepaymentVat();
-			
+
+			remainingDebt -= monthlyPayment.getLeaseObjectCostRepayment()
+					+ monthlyPayment.getLeaseObjectCostRepaymentVat();
+
 			monthlyPayments.add(monthlyPayment);
 		}
 		MonthPayment buyingOutPayment = new MonthPayment();
 		buyingOutPayment.setLeaseObjectCostRepayment(leaseObjectCost * paymentsSchedule.getBuyingOutPercentage());
 		if (isLeaseObjectPriceHasVat(paymentsSchedule.getLeaseObject())) {
-			buyingOutPayment.setLeaseObjectCostRepaymentVat(leaseObjectCostVat * paymentsSchedule.getBuyingOutPercentage());
+			buyingOutPayment
+					.setLeaseObjectCostRepaymentVat(leaseObjectCostVat * paymentsSchedule.getBuyingOutPercentage());
 		}
 		buyingOutPayment.setPaymentDate(calendar.getTime());
 		buyingOutPayment.setPaymentType(PaymentType.BUYING_OUT_PAYMENT);
-		
+
 		monthlyPayments.add(buyingOutPayment);
-		
+
 		paymentsSchedule.setMonthlyPayments(monthlyPayments);
 	}
 

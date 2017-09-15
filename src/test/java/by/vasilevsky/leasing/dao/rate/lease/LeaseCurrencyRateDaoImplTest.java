@@ -5,10 +5,12 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
+import by.vasilevsky.leasing.dao.DaoFactory;
+import by.vasilevsky.leasing.dao.DaoFactoryImpl;
 import by.vasilevsky.leasing.domain.currency.Currency;
 import by.vasilevsky.leasing.domain.rate.lease.LeaseCurrencyRate;
 
-public class LeaseCurrencyRateDaoImplTest extends LeaseCurrencyRateDaoImpl {
+public class LeaseCurrencyRateDaoImplTest {
 	private static final Currency GIVEN_CURRENCY = Currency.USD;
 	private static final float EXPECTED_RATE = 0.09f;
 	
@@ -16,7 +18,8 @@ public class LeaseCurrencyRateDaoImplTest extends LeaseCurrencyRateDaoImpl {
 	
 	@Before
 	public void setUp() throws Exception {
-		rateDao = new LeaseCurrencyRateDaoImpl();
+		DaoFactory daoFactory = new DaoFactoryImpl();
+		rateDao = daoFactory.getLeaseCurrencyRateDao();
 	}
 
 	@Test

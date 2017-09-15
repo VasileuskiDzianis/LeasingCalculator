@@ -1,9 +1,6 @@
 package by.vasilevsky.leasing.dao.rate.lease;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 import javax.sql.DataSource;
 
@@ -15,6 +12,18 @@ public class LeaseTypeAgeMarginDaoImpl implements LeaseTypeAgeMarginDao {
 	private final static String REQUEST_FIND_LEASE_RATE = "SELECT ltam.id, ltam.margin FROM leaseTypeAgeMargin AS ltam JOIN leaseObjectType AS lot ON ltam.objectTypeId=lot.id WHERE ltam.objectAge=? AND lot.objectType=?;";
 
 	private DataSource ds;
+	private static LeaseTypeAgeMarginDaoImpl instance;
+
+	private LeaseTypeAgeMarginDaoImpl() {
+
+	}
+
+	public static LeaseTypeAgeMarginDao getInstance() {
+		if (instance == null) {
+			instance = new LeaseTypeAgeMarginDaoImpl();
+		}
+		return instance;
+	}
 
 	@Override
 	public LeaseTypeAgeMargin findLeaseRateByTypeAndAge(LeaseObjectType objectType, int age) {
