@@ -65,7 +65,7 @@
 	<div class="payments-list-row">
 		<div class="payments-list-col">Дата</div>
 		<div class="payments-list-col">Назначение</div>
-		<div class="payments-list-col">Задолженность</div>
+		<div class="payments-list-col">Долг</div>
 		<div class="payments-list-col">Лизинговая ставка</div>
 		<div class="payments-list-col">НДС на лизинговую ставку</div>
 		<div class="payments-list-col">Погашение стоимости</div>

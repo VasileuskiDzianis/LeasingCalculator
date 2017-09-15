@@ -1,52 +1,18 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" metadata-complete="false" version="3.0">
-  
-  <servlet>
-    <servlet-name>Person ident</servlet-name>
-    <jsp-file>/personident.jsp</jsp-file>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>Person ident</servlet-name>
-    <url-pattern>/identperson.do</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <servlet-name>Company ident</servlet-name>
-    <jsp-file>/companyident.jsp</jsp-file>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>Company ident</servlet-name>
-    <url-pattern>/identcompany.do</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <servlet-name>VLS User Register</servlet-name>
-    <servlet-class>by.vasilevsky.leasing.controller.UserRegister</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>VLS User Register</servlet-name>
-    <url-pattern>/register.do</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <servlet-name>VLS Authorization</servlet-name>
-    <servlet-class>by.vasilevsky.leasing.controller.UserAuth</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>VLS Authorization</servlet-name>
-    <url-pattern>/vlsauth.do</url-pattern>
-  </servlet-mapping>
-  <listener>
-    <listener-class>
-            by.vasilevsky.leasing.listener.ContextListener
-        </listener-class>
-  </listener>
-  <listener>
-    <listener-class>org.apache.tiles.extras.complete.CompleteAutoloadTilesListener</listener-class>
-  </listener>
-  <servlet>
-    <servlet-name>Tiles Dispatch Servlet</servlet-name>
-    <servlet-class>org.apache.tiles.web.util.TilesDispatchServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>Tiles Dispatch Servlet</servlet-name>
-    <url-pattern>*.tiles</url-pattern>
-  </servlet-mapping>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	metadata-complete="false" version="3.0">
+
+	<listener>
+		<listener-class>org.apache.tiles.extras.complete.CompleteAutoloadTilesListener</listener-class>
+	</listener>
+	<servlet>
+		<servlet-name>Tiles Dispatch Servlet</servlet-name>
+		<servlet-class>org.apache.tiles.web.util.TilesDispatchServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Tiles Dispatch Servlet</servlet-name>
+		<url-pattern>*.tiles</url-pattern>
+	</servlet-mapping>
 </web-app>
