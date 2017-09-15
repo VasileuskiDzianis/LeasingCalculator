@@ -33,7 +33,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 		UserService userService = serviceFactory.getUserService();
 		String encodedPassword;
 		try {
-			encodedPassword = PasswordEncoderService.getSaltedHash(user.getPassword());
+			encodedPassword = PasswordService.getSaltedHash(user.getPassword());
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException("Password encoding error", e);

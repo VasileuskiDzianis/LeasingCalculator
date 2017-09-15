@@ -1,5 +1,7 @@
 package by.vasilevsky.leasing.service;
 
+import by.vasilevsky.leasing.service.logination.LoginationService;
+import by.vasilevsky.leasing.service.logination.LoginationServiceImpl;
 import by.vasilevsky.leasing.service.payments.PaymentsScheduleService;
 import by.vasilevsky.leasing.service.payments.PaymentsScheduleServiceImpl;
 import by.vasilevsky.leasing.service.rate.insurance.LeaseTypeInsuranceService;
@@ -49,5 +51,11 @@ public class ServiceFactoryImpl implements ServiceFactory {
 	public RegistrationService getRegistrationService() {
 		
 		return RegistrationServiceImpl.getInstance();
+	}
+
+	@Override
+	public LoginationService getLoginationService() {
+		
+		return LoginationServiceImpl.getInstance();
 	}
 }

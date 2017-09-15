@@ -15,7 +15,6 @@ import by.vasilevsky.leasing.domain.user.UserRole;
 import by.vasilevsky.leasing.service.ServiceFactory;
 import by.vasilevsky.leasing.service.ServiceFactoryImpl;
 import by.vasilevsky.leasing.service.registration.RegistrationService;
-import by.vasilevsky.leasing.service.user.UserService;
 import by.vasilevsky.leasing.service.validator.Validator;
 import by.vasilevsky.leasing.view.RegistrationFormModel;
 
@@ -24,7 +23,6 @@ public class RegistrationController extends HttpServlet {
 	private static final long serialVersionUID = 8780315513488014013L;
 	
 	private ServiceFactory serviceFactory = new ServiceFactoryImpl();
-	private UserService userService = serviceFactory.getUserService();
 	private RegistrationService registrationService = serviceFactory.getRegistrationService();
 
 	@Override

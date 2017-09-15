@@ -7,7 +7,7 @@ import org.apache.commons.codec.binary.Base64;
 
 import by.vasilevsky.leasing.dao.DataBaseConnector;
 import by.vasilevsky.leasing.domain.User;
-import by.vasilevsky.leasing.service.registration.PasswordEncoderService;
+import by.vasilevsky.leasing.service.registration.PasswordService;
 
 public class UserValidator {
     public static final int NEW_USER = 0; // unknown user
@@ -29,7 +29,7 @@ public class UserValidator {
                 boolean checking = false;
                 try {
                     if (flg == 0) {
-                        checking = PasswordEncoderService.check(user.getUserPassword(), user.getUserPswFromDB());
+                        checking = PasswordService.check(user.getUserPassword(), user.getUserPswFromDB());
                         System.out.println("Matching pswds");
                         System.out.println("Input: " + user.getUserPassword());
                         System.out.println("From db: " + user.getUserPswFromDB());
@@ -53,7 +53,7 @@ public class UserValidator {
                     if (flg == 1) {
                         String[] dbpsw = user.getUserPswFromDB().split("\\$");
                         if (user.getUserPassword().equals(dbpsw[1])) checking = true;
-                    } else checking = PasswordEncoderService.check(user.getUserPassword(), user.getUserPswFromDB());
+                    } else checking = PasswordService.check(user.getUserPassword(), user.getUserPswFromDB());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -99,7 +99,7 @@ public class UserValidator {
         DataBaseConnector db = new DataBaseConnector();
         //user.setPswKey("1");
         try {
-            user.setUserPassword(PasswordEncoderService.getSaltedHash(user.getUserPassword()));
+            user.setUserPassword(PasswordService.getSaltedHash(user.getUserPassword()));
         } catch (Exception e) {
             e.printStackTrace();
         }

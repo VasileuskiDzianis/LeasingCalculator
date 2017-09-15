@@ -22,4 +22,22 @@
 		<put-attribute name="body" value="/WEB-INF/tiles/registration_form.jsp" />
 	</definition>
 	
+	<definition name="users" extends="calculator">
+		<put-attribute name="title" value="Users" />
+		<put-attribute name="body" value="/WEB-INF/tiles/users.jsp" />
+	</definition>
+	
+	<definition name="profile" extends="calculator">
+		<put-attribute name="title" value="Profile" />
+		<put-attribute name="body" value="/WEB-INF/tiles/profile.jsp" />
+	</definition>
+	
+	<definition name="logination" template="/WEB-INF/layouts/logination.jsp">
+		<put-attribute name="title" value="Logination" />
+		<put-attribute name="header" value="/WEB-INF/tiles/header.jsp" />
+		<put-attribute name="logination" value="/WEB-INF/tiles/logination_form.jsp" />
+		<put-attribute name="menu" value="/WEB-INF/tiles/menu.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/tiles/footer.jsp" />
+	</definition>
+	
 </tiles-definitions>

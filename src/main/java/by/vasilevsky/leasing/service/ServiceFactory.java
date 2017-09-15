@@ -1,5 +1,6 @@
 package by.vasilevsky.leasing.service;
 
+import by.vasilevsky.leasing.service.logination.LoginationService;
 import by.vasilevsky.leasing.service.payments.PaymentsScheduleService;
 import by.vasilevsky.leasing.service.rate.insurance.LeaseTypeInsuranceService;
 import by.vasilevsky.leasing.service.rate.lease.LeaseCurrencyRateService;
@@ -20,4 +21,6 @@ public interface ServiceFactory {
 	LeaseTypeAgeMarginService getLeaseTypeAgeMarginService();
 
 	RegistrationService getRegistrationService();
+	
+	LoginationService getLoginationService();
 }
