@@ -1,21 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" metadata-complete="false" version="3.0">
-  <servlet>
-    <servlet-name>VLSValidEmail</servlet-name>
-    <servlet-class>by.vasilevsky.leasing.controller.EmailChecker</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>VLSValidEmail</servlet-name>
-    <url-pattern>/emailvalid.do</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <servlet-name>VLS Calc Form</servlet-name>
-    <servlet-class>by.vasilevsky.leasing.controller.GetCalcForm</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>VLS Calc Form</servlet-name>
-    <url-pattern>/vlscalc.do</url-pattern>
-  </servlet-mapping>
+  
   <servlet>
     <servlet-name>Person ident</servlet-name>
     <jsp-file>/personident.jsp</jsp-file>

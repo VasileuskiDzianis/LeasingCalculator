@@ -6,7 +6,7 @@ import javax.servlet.http.*;
 import java.io.IOException;
 
 @WebServlet(urlPatterns = {"/users"})
-public class UsersController extends HttpServlet {
+public class UserListController extends HttpServlet {
 	private static final long serialVersionUID = -6602582281415954285L;
 
 	@Override

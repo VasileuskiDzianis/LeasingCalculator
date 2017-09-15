@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import by.vasilevsky.leasing.domain.user.UserRole;
 
-@WebFilter("/profile")
-public class ProfileFilter implements Filter {
+@WebFilter("/users")
+public class UsersAccessFilter implements Filter {
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
@@ -24,8 +24,8 @@ public class ProfileFilter implements Filter {
 
 		String userRole = (String) httpRequest.getSession().getAttribute("userRole");
 
-		if (!UserRole.USER.toString().equals(userRole)) {
-			
+		if (!UserRole.ADMIN.toString().equals(userRole)) {
+
 			httpRequest.getSession().setAttribute("userRole", UserRole.ANONYMOUS.toString());
 			httpResponse.sendRedirect("logination");
 		} else {
@@ -41,8 +41,6 @@ public class ProfileFilter implements Filter {
 
 	@Override
 	public void init(FilterConfig arg0) throws ServletException {
-		// TODO Auto-generated method stub
 
 	}
-
 }

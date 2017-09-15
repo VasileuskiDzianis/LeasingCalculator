@@ -21,7 +21,7 @@ import by.vasilevsky.leasing.service.rate.lease.LeaseCurrencyRateService;
 import by.vasilevsky.leasing.service.rate.lease.LeaseTypeAgeMarginService;
 
 @WebServlet(urlPatterns = { "/calculate" })
-public class CalculatePaymentsScheduleController extends HttpServlet {
+public class PaymentsScheduleController extends HttpServlet {
 	private static final long serialVersionUID = -267046298350756472L;
 
 	private ServiceFactory serviceFactory = new ServiceFactoryImpl();
