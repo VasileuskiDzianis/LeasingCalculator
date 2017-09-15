@@ -9,6 +9,7 @@ import java.io.IOException;
 public class HomeController extends HttpServlet {
 	private static final long serialVersionUID = -6602582281415954285L;
 
+	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		RequestDispatcher view = request.getRequestDispatcher("calculator.tiles");

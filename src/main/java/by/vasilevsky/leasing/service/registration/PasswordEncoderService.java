@@ -1,4 +1,4 @@
-package by.vasilevsky.leasing.service;
+package by.vasilevsky.leasing.service.registration;
 
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
@@ -6,7 +6,7 @@ import javax.crypto.spec.PBEKeySpec;
 import java.security.SecureRandom;
 import org.apache.commons.codec.binary.Base64;
 
-public class PasswordEncoder {
+public class PasswordEncoderService {
     // The higher the number of iterations the more
     // expensive computing the hash is for us and
     // also for an attacker.
@@ -18,13 +18,6 @@ public class PasswordEncoder {
      suitable for storing in a database.
      Empty passwords are not supported. */
     public static String getSaltedHash(String password) throws Exception {
-
-       /* try {
-            Class.forName("org.apache.commons.codec.binary.Base64");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }*/
-
         byte[] salt = SecureRandom.getInstance("SHA1PRNG").generateSeed(saltLen);
         // store the salt with the password
         return Base64.encodeBase64String(salt) + "$" + hash(password, salt);

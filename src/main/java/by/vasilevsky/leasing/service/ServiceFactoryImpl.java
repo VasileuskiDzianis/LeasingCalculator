@@ -8,6 +8,8 @@ import by.vasilevsky.leasing.service.rate.lease.LeaseCurrencyRateService;
 import by.vasilevsky.leasing.service.rate.lease.LeaseCurrencyRateServiceImpl;
 import by.vasilevsky.leasing.service.rate.lease.LeaseTypeAgeMarginService;
 import by.vasilevsky.leasing.service.rate.lease.LeaseTypeAgeMarginServiceImpl;
+import by.vasilevsky.leasing.service.registration.RegistrationService;
+import by.vasilevsky.leasing.service.registration.RegistrationServiceImpl;
 import by.vasilevsky.leasing.service.user.UserService;
 import by.vasilevsky.leasing.service.user.UserServiceImpl;
 
@@ -41,5 +43,11 @@ public class ServiceFactoryImpl implements ServiceFactory {
 	public LeaseTypeAgeMarginService getLeaseTypeAgeMarginService() {
 		
 		return LeaseTypeAgeMarginServiceImpl.getInstance();
+	}
+	
+	@Override
+	public RegistrationService getRegistrationService() {
+		
+		return RegistrationServiceImpl.getInstance();
 	}
 }

@@ -60,6 +60,24 @@ body {
 	width: 200px;
 }
 
+.form-err-message {
+	color: red;
+	margin-right: 5px;
+	margin-left: 5px;
+	text-align: left;
+	display: inline-block;
+	vertical-align: top;
+}
+.form-message {
+	color: green;
+	font-weight: bold;
+	margin-right: 5px;
+	margin-left: 5px;
+	text-align: left;
+	display: inline-block;
+	vertical-align: top;
+}
+
 .logination-title {
 	margin-right: 20px;
 	margin-left: 10px;

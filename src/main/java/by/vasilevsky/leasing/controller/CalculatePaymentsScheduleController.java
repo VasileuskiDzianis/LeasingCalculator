@@ -24,8 +24,9 @@ import by.vasilevsky.leasing.service.rate.lease.LeaseTypeAgeMarginService;
 public class CalculatePaymentsScheduleController extends HttpServlet {
 	private static final long serialVersionUID = -267046298350756472L;
 
-	private static ServiceFactory serviceFactory = new ServiceFactoryImpl();
+	private ServiceFactory serviceFactory = new ServiceFactoryImpl();
 
+	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		PaymentsScheduleService paymentsScheduleService = serviceFactory.getPaymentsScheduleService();
 		LeaseCurrencyRateService leaseCurrencyRateService = serviceFactory.getLeaseCurrencyRateService();
