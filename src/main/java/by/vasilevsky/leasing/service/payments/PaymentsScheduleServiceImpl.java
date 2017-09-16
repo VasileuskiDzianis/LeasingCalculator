@@ -12,18 +12,24 @@ import by.vasilevsky.leasing.domain.payments.PaymentsSchedule;
 
 public class PaymentsScheduleServiceImpl implements PaymentsScheduleService {
 	private static final int PAYMENT_INTERVAL = 1;
-	
-	private static PaymentsScheduleServiceImpl instance;
-	
+
+	private static volatile PaymentsScheduleServiceImpl instance;
+
 	private PaymentsScheduleServiceImpl() {
-		
+
 	}
-	
+
 	public static PaymentsScheduleService getInstance() {
-		if (instance == null) {
-			instance = new PaymentsScheduleServiceImpl();
+		PaymentsScheduleServiceImpl localInstance = instance;
+		if (localInstance == null) {
+			synchronized (PaymentsScheduleServiceImpl.class) {
+				localInstance = instance;
+				if (localInstance == null) {
+					instance = localInstance = new PaymentsScheduleServiceImpl();
+				}
+			}
 		}
-		return instance;
+		return localInstance;
 	}
 
 	@Override
@@ -37,7 +43,8 @@ public class PaymentsScheduleServiceImpl implements PaymentsScheduleService {
 		MonthPayment prepayment = new MonthPayment();
 		Calendar calendar = new GregorianCalendar();
 
-		mounthlyCostRepayment = (leaseObjectCost * (1 - paymentsSchedule.getBuyingOutPercentage() - paymentsSchedule.getPrepaymentPercentage()))
+		mounthlyCostRepayment = (leaseObjectCost
+				* (1 - paymentsSchedule.getBuyingOutPercentage() - paymentsSchedule.getPrepaymentPercentage()))
 				/ paymentsSchedule.getLeaseDuration();
 
 		prepayment.setLeaseObjectCostRepayment(leaseObjectCost * paymentsSchedule.getPrepaymentPercentage());
@@ -60,7 +67,8 @@ public class PaymentsScheduleServiceImpl implements PaymentsScheduleService {
 			monthlyPayment.setRemainingDebt(remainingDebt);
 			monthlyPayment.setLeaseMargin(paymentsSchedule.getLeaseRate() * remainingDebt / 12);
 			monthlyPayment.setLeaseMarginVat(monthlyPayment.getLeaseMargin() * VAT_RATE);
-			monthlyPayment.setInsurance((leaseObjectCost + leaseObjectCostVat) * paymentsSchedule.getInsuranceRate() / 12);
+			monthlyPayment
+					.setInsurance((leaseObjectCost + leaseObjectCostVat) * paymentsSchedule.getInsuranceRate() / 12);
 			monthlyPayment.setInsuranceVat(monthlyPayment.getInsurance() * VAT_RATE);
 			monthlyPayment.setLeaseObjectCostRepayment(mounthlyCostRepayment);
 

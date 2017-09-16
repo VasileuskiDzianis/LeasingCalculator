@@ -6,16 +6,22 @@ import by.vasilevsky.leasing.domain.currency.Currency;
 import by.vasilevsky.leasing.domain.rate.lease.LeaseCurrencyRate;
 
 public class LeaseCurrencyRateServiceImpl implements LeaseCurrencyRateService {
-	private static LeaseCurrencyRateServiceImpl instance;
+	private static volatile LeaseCurrencyRateServiceImpl instance;
 	private static DaoFactory daoFactory = new DaoFactoryImpl();
 
 	private LeaseCurrencyRateServiceImpl() {
 
 	}
-	
+
 	public static LeaseCurrencyRateService getInstance() {
-		if (instance == null) {
-			instance = new LeaseCurrencyRateServiceImpl();
+		LeaseCurrencyRateServiceImpl localInstance = instance;
+		if (localInstance == null) {
+			synchronized (LeaseCurrencyRateServiceImpl.class) {
+				localInstance = instance;
+				if (localInstance == null) {
+					instance = localInstance = new LeaseCurrencyRateServiceImpl();
+				}
+			}
 		}
 		return instance;
 	}

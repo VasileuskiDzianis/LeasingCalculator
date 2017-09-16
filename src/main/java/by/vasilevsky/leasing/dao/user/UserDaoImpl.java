@@ -27,18 +27,23 @@ public class UserDaoImpl implements UserDao {
 	private static final String REQ_UPDATE_USER = "UPDATE user SET login=?, password=?, roleId=? WHERE id=?;";
 
 	private DataSource ds;
-
-	private static UserDao instance;
+	private static volatile UserDaoImpl instance;
 
 	private UserDaoImpl() {
 
 	}
 
 	public static UserDao getInstance() {
-		if (instance == null) {
-			instance = new UserDaoImpl();
+		UserDaoImpl localInstance = instance;
+		if (localInstance == null) {
+			synchronized (UserDaoImpl.class) {
+				localInstance = instance;
+				if (localInstance == null) {
+					instance = localInstance = new UserDaoImpl();
+				}
+			}
 		}
-		return instance;
+		return localInstance;
 	}
 
 	@Override
@@ -65,20 +70,7 @@ public class UserDaoImpl implements UserDao {
 			e.printStackTrace();
 			throw new RuntimeException("saveUser() exception", e);
 		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (stmt != null) {
-					stmt.close();
-				}
-				if (con != null) {
-					con.close();
-				}
-
-			} catch (SQLException e) {
-				throw new RuntimeException("Resources closing exception: ", e);
-			}
+			closeResources(rs, stmt, con);
 		}
 	}
 
@@ -101,22 +93,8 @@ public class UserDaoImpl implements UserDao {
 			e.printStackTrace();
 			throw new RuntimeException("deleteUser exception", e);
 		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (stmt != null) {
-					stmt.close();
-				}
-				if (con != null) {
-					con.close();
-				}
-
-			} catch (SQLException e) {
-				throw new RuntimeException("Resources closing exception: ", e);
-			}
+			closeResources(rs, stmt, con);
 		}
-
 	}
 
 	@Override
@@ -130,7 +108,6 @@ public class UserDaoImpl implements UserDao {
 			con = ds.getConnection();
 			stmt = con.prepareStatement(REQ_FIND_USER_BY_ID);
 			stmt.setInt(1, id);
-
 			rs = stmt.executeQuery();
 
 			if (rs.next()) {
@@ -148,25 +125,11 @@ public class UserDaoImpl implements UserDao {
 
 				return user;
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new RuntimeException("findUserById exception", e);
 		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (stmt != null) {
-					stmt.close();
-				}
-				if (con != null) {
-					con.close();
-				}
-
-			} catch (SQLException e) {
-				throw new RuntimeException("Resources closing exception: ", e);
-			}
+			closeResources(rs, stmt, con);
 		}
 		return null;
 	}
@@ -182,7 +145,6 @@ public class UserDaoImpl implements UserDao {
 			con = ds.getConnection();
 			stmt = con.prepareStatement(REQ_FIND_USER_BY_LOGIN);
 			stmt.setString(1, login);
-
 			rs = stmt.executeQuery();
 
 			if (rs.next()) {
@@ -200,25 +162,11 @@ public class UserDaoImpl implements UserDao {
 
 				return user;
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new RuntimeException("findUserByLogin exception", e);
 		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (stmt != null) {
-					stmt.close();
-				}
-				if (con != null) {
-					con.close();
-				}
-
-			} catch (SQLException e) {
-				throw new RuntimeException("Resources closing exception: ", e);
-			}
+			closeResources(rs, stmt, con);
 		}
 		return null;
 	}
@@ -241,7 +189,6 @@ public class UserDaoImpl implements UserDao {
 			stmt.setInt(3, user.getUserDetails().getId());
 			stmt.setInt(4, userRoleId);
 			stmt.executeUpdate();
-
 			rs = stmt.getGeneratedKeys();
 
 			if (rs.next()) {
@@ -252,20 +199,7 @@ public class UserDaoImpl implements UserDao {
 			e.printStackTrace();
 			throw new RuntimeException("saveUser() exception", e);
 		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (stmt != null) {
-					stmt.close();
-				}
-				if (con != null) {
-					con.close();
-				}
-
-			} catch (SQLException e) {
-				throw new RuntimeException("Resources closing exception: ", e);
-			}
+			closeResources(rs, stmt, con);
 		}
 	}
 
@@ -279,7 +213,6 @@ public class UserDaoImpl implements UserDao {
 			con = ds.getConnection();
 			stmt = con.prepareStatement(REQ_GET_ROLE_ID);
 			stmt.setString(1, userRole.toString());
-
 			rs = stmt.executeQuery();
 
 			if (rs.next()) {
@@ -291,20 +224,7 @@ public class UserDaoImpl implements UserDao {
 			e.printStackTrace();
 			throw new RuntimeException("findUserRoleId exception", e);
 		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (stmt != null) {
-					stmt.close();
-				}
-				if (con != null) {
-					con.close();
-				}
-
-			} catch (SQLException e) {
-				throw new RuntimeException("Resources closing exception: ", e);
-			}
+			closeResources(rs, stmt, con);
 		}
 		return 0;
 	}
@@ -325,20 +245,7 @@ public class UserDaoImpl implements UserDao {
 			e.printStackTrace();
 			throw new RuntimeException("deleteUserDetails exception", e);
 		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (stmt != null) {
-					stmt.close();
-				}
-				if (con != null) {
-					con.close();
-				}
-
-			} catch (SQLException e) {
-				throw new RuntimeException("Resources closing exception: ", e);
-			}
+			closeResources(rs, stmt, con);
 		}
 	}
 
@@ -361,20 +268,7 @@ public class UserDaoImpl implements UserDao {
 			e.printStackTrace();
 			throw new RuntimeException("saveUserDetails exception", e);
 		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (stmt != null) {
-					stmt.close();
-				}
-				if (con != null) {
-					con.close();
-				}
-
-			} catch (SQLException e) {
-				throw new RuntimeException("Resources closing exception: ", e);
-			}
+			closeResources(rs, stmt, con);
 		}
 	}
 
@@ -402,20 +296,24 @@ public class UserDaoImpl implements UserDao {
 			e.printStackTrace();
 			throw new RuntimeException("saveUserDetails exception", e);
 		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (stmt != null) {
-					stmt.close();
-				}
-				if (con != null) {
-					con.close();
-				}
+			closeResources(rs, stmt, con);
+		}
+	}
 
-			} catch (SQLException e) {
-				throw new RuntimeException("Resources closing exception: ", e);
+	private void closeResources(ResultSet rs, Statement stmt, Connection con) {
+		try {
+			if (rs != null) {
+				rs.close();
 			}
+			if (stmt != null) {
+				stmt.close();
+			}
+			if (con != null) {
+				con.close();
+			}
+
+		} catch (SQLException e) {
+			throw new RuntimeException("Resources closing exception: ", e);
 		}
 	}
 }

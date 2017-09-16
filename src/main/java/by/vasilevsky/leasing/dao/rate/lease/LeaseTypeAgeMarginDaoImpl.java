@@ -12,17 +12,23 @@ public class LeaseTypeAgeMarginDaoImpl implements LeaseTypeAgeMarginDao {
 	private final static String REQUEST_FIND_LEASE_RATE = "SELECT ltam.id, ltam.margin FROM leaseTypeAgeMargin AS ltam JOIN leaseObjectType AS lot ON ltam.objectTypeId=lot.id WHERE ltam.objectAge=? AND lot.objectType=?;";
 
 	private DataSource ds;
-	private static LeaseTypeAgeMarginDaoImpl instance;
+	private static volatile LeaseTypeAgeMarginDaoImpl instance;
 
 	private LeaseTypeAgeMarginDaoImpl() {
 
 	}
 
 	public static LeaseTypeAgeMarginDao getInstance() {
-		if (instance == null) {
-			instance = new LeaseTypeAgeMarginDaoImpl();
+		LeaseTypeAgeMarginDaoImpl localInstance = instance;
+		if (localInstance == null) {
+			synchronized (LeaseTypeAgeMarginDaoImpl.class) {
+				localInstance = instance;
+				if (localInstance == null) {
+					instance = localInstance = new LeaseTypeAgeMarginDaoImpl();
+				}
+			}
 		}
-		return instance;
+		return localInstance;
 	}
 
 	@Override

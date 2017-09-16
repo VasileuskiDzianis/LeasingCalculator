@@ -12,19 +12,23 @@ public class LeaseTypeInsuranceDaoImpl implements LeaseTypeInsuranceDao {
 	private final static String REQUEST_FIND_LEASE_RATE = "SELECT lti.id, lti.insurance FROM leaseTypeInsurance AS lti JOIN leaseObjectType AS lot ON lti.objectTypeId=lot.id WHERE lot.objectType=?;";
 
 	private DataSource ds;
-
-	private static LeaseTypeInsuranceDaoImpl instance;
+	private static volatile LeaseTypeInsuranceDaoImpl instance;
 
 	private LeaseTypeInsuranceDaoImpl() {
 
 	}
 
 	public static LeaseTypeInsuranceDao getInstance() {
-
-		if (instance == null) {
-			instance = new LeaseTypeInsuranceDaoImpl();
+		LeaseTypeInsuranceDaoImpl localInstance = instance;
+		if (localInstance == null) {
+			synchronized (LeaseTypeInsuranceDaoImpl.class) {
+				localInstance = instance;
+				if (localInstance == null) {
+					instance = localInstance = new LeaseTypeInsuranceDaoImpl();
+				}
+			}
 		}
-		return instance;
+		return localInstance;
 	}
 
 	@Override

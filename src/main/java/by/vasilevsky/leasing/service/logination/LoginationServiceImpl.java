@@ -11,17 +11,23 @@ public class LoginationServiceImpl implements LoginationService {
 	private ServiceFactory serviceFactory = new ServiceFactoryImpl();
 	private UserService userService = serviceFactory.getUserService();
 	
-	private static LoginationServiceImpl instance;
+	private static volatile LoginationServiceImpl instance;
 	
 	private LoginationServiceImpl() {
 		
 	}
 	
 	public static LoginationService getInstance() {
-		if (instance == null) {
-			instance = new LoginationServiceImpl();
+		LoginationServiceImpl localInstance = instance;
+		if (localInstance == null) {
+			synchronized (LoginationServiceImpl.class) {
+				localInstance = instance;
+				if (localInstance == null) {
+					instance = localInstance = new LoginationServiceImpl();
+				}
+			}
 		}
-		return instance;
+		return localInstance;
 	}
 
 	@Override

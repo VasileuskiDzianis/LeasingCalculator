@@ -13,10 +13,16 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	public static UserService getInstance() {
-		if (instance == null) {
-			instance = new UserServiceImpl();
+		UserServiceImpl localInstance = instance;
+		if (localInstance == null) {
+			synchronized (UserServiceImpl.class) {
+				localInstance = instance;
+				if (localInstance == null) {
+					instance = localInstance = new UserServiceImpl();
+				}
+			}
 		}
-		return instance;
+		return localInstance;
 	}
 	
 	@Override

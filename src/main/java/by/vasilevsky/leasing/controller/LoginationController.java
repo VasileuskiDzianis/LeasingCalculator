@@ -32,43 +32,28 @@ public class LoginationController extends HttpServlet {
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		LoginationFormModel formModel = new LoginationFormModel();
-		UserRole userRole;
 
 		formModel.setLogin(request.getParameter("login"));
 		formModel.setPassword(request.getParameter("password"));
-
 		checkLoginationFormModel(formModel);
 
-		if (formModel.isErrorsExist()) {
-
-			request.setAttribute("loginationFormModel", formModel);
-			RequestDispatcher view = request.getRequestDispatcher("calculator.tiles");
-			view.forward(request, response);
-		} else {
-
-			userRole = loginationService.authenticateUser(formModel.getLogin(), formModel.getPassword());
-			if (userRole.equals(UserRole.ANONYMOUS)) {
-				formModel.setMainMessage("Не верные логин или пароль");
-
+		if (!formModel.isErrorsExist()) {
+			UserRole userRole = loginationService.authenticateUser(formModel.getLogin(), formModel.getPassword());
+			if (!userRole.equals(UserRole.ANONYMOUS)) {
 				request.getSession().setAttribute("userRole", userRole.toString());
-				request.setAttribute("loginationFormModel", formModel);
-				RequestDispatcher view = request.getRequestDispatcher("calculator.tiles");
-				view.forward(request, response);
-			} else {
-
-				request.getSession().setAttribute("userRole", userRole.toString());
-				
 				response.sendRedirect("home");
+				return;
 			}
 		}
+		formModel.setMainMessage("Не верные логин или пароль");
+		request.setAttribute("loginationFormModel", formModel);
+		RequestDispatcher view = request.getRequestDispatcher("logination.tiles");
+		view.forward(request, response);
 	}
 
 	private void checkLoginationFormModel(LoginationFormModel formModel) {
-		if (formModel.getLogin() == null || formModel.getLogin().length() == 0) {
-			formModel.setMainMessage("Не верные логин или пароль");
-			formModel.setErrorsExist(true);
-		}
-		if (formModel.getPassword() == null || formModel.getPassword().length() == 0) {
+		if (formModel.getLogin() == null || formModel.getPassword() == null || formModel.getLogin().length() == 0
+				|| formModel.getPassword().length() == 0) {
 			formModel.setMainMessage("Не верные логин или пароль");
 			formModel.setErrorsExist(true);
 		}

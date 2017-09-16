@@ -6,25 +6,31 @@ import by.vasilevsky.leasing.service.ServiceFactoryImpl;
 import by.vasilevsky.leasing.service.user.UserService;
 
 public class RegistrationServiceImpl implements RegistrationService {
-	private static RegistrationServiceImpl instance;
+	private static volatile RegistrationServiceImpl instance;
 	private static ServiceFactory serviceFactory = new ServiceFactoryImpl();
-	
+
 	private RegistrationServiceImpl() {
-		
+
 	}
-	
+
 	public static RegistrationService getInstance() {
-		if (instance == null) {
-			instance = new RegistrationServiceImpl();
+		RegistrationServiceImpl localInstance = instance;
+		if (localInstance == null) {
+			synchronized (RegistrationServiceImpl.class) {
+				localInstance = instance;
+				if (localInstance == null) {
+					instance = localInstance = new RegistrationServiceImpl();
+				}
+			}
 		}
-		return instance;
+		return localInstance;
 	}
-	
+
 	@Override
 	public boolean isLoginExisting(String login) {
 		UserService userService = serviceFactory.getUserService();
 		User user = userService.findUserByLogin(login);
-				
+
 		return (user == null) ? false : true;
 	}
 
@@ -39,7 +45,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 			throw new RuntimeException("Password encoding error", e);
 		}
 		user.setPassword(encodedPassword);
-		
+
 		userService.saveUser(user);
 	}
 }
