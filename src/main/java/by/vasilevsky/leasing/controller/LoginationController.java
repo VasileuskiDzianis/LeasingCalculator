@@ -9,10 +9,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import by.vasilevsky.leasing.domain.user.User;
 import by.vasilevsky.leasing.domain.user.UserRole;
 import by.vasilevsky.leasing.service.ServiceFactory;
 import by.vasilevsky.leasing.service.ServiceFactoryImpl;
 import by.vasilevsky.leasing.service.logination.LoginationService;
+import by.vasilevsky.leasing.service.user.UserService;
 import by.vasilevsky.leasing.view.LoginationFormModel;
 
 @WebServlet(urlPatterns = { "/logination" })
@@ -21,6 +23,7 @@ public class LoginationController extends HttpServlet {
 
 	private ServiceFactory serviceFactory = new ServiceFactoryImpl();
 	private LoginationService loginationService = serviceFactory.getLoginationService();
+	private UserService userService = serviceFactory.getUserService();
 
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -40,7 +43,10 @@ public class LoginationController extends HttpServlet {
 		if (!formModel.isErrorsExist()) {
 			UserRole userRole = loginationService.authenticateUser(formModel.getLogin(), formModel.getPassword());
 			if (!userRole.equals(UserRole.ANONYMOUS)) {
+				User user = userService.findUserByLogin(formModel.getLogin());
+				
 				request.getSession().setAttribute("userRole", userRole.toString());
+				request.getSession().setAttribute("userId", Integer.toString(user.getId()));
 				response.sendRedirect("home");
 				return;
 			}

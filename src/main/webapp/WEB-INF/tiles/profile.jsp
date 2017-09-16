@@ -3,5 +3,24 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <div id="registration-container">
- Profile
+ <form action="<c:url value="/profile"/>" method="POST">
+	<div class="form-title">Имя:</div>
+	<input type="text" name="firstName" class="input-field" value="${profileFormModel.firstName}"/>
+	<div class="form-err-message">${profileFormModel.firstNameMessage}</div>
+	<br/>
+	<div class="form-title">Фамилия:</div>
+	<input type="text" name="lastName" class="input-field" value="${profileFormModel.lastName}"/>
+	<div class="form-err-message">${profileFormModel.lastNameMessage}</div>
+	<br/>
+	<div class="form-title">Возраст:</div>
+	<input type="text" name="age" class="input-field" value="${profileFormModel.age}"/>
+	<div class="form-err-message">${profileFormModel.ageMessage}</div>
+	<br/>
+	<input type="hidden" name="userId" value="${profileFormModel.userId}"/>
+	<input type="hidden" name="detailsId" value="${profileFormModel.detailsId}"/>
+	<div class="submit-container">
+	<input type="submit" value="Сохранить"/>
+	</div>
+	<div class="form-message">${registrationFormModel.mainMessage}</div>
+ </form>
 </div>
