@@ -55,6 +55,27 @@ body {
 	padding-left: 10px;
 	padding-right: 10px;
 }
+#registration-container, #users-container{
+	width: 850px;
+	background-color: #a7c7eb;
+	margin: auto;
+	margin-top:5px;
+	margin-bottom:5px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.item-content-column {
+	display: inline-block;
+	width: 600px;
+	text-align: right;
+}
+
+.item-action-column {
+	display: inline-block;
+}
 
 .form-title {
 	margin-right: 20px;

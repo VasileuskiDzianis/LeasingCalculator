@@ -1,5 +1,7 @@
 package by.vasilevsky.leasing.dao.user;
 
+import java.util.List;
+
 import by.vasilevsky.leasing.domain.user.User;
 
 public interface UserDao {
@@ -13,5 +15,7 @@ public interface UserDao {
 	User findUserByLogin(String login);
 
 	User findUserById(int id);
+	
+	List<User> findAll();
 
 }

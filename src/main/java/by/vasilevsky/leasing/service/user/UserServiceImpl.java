@@ -1,11 +1,13 @@
 package by.vasilevsky.leasing.service.user;
 
+import java.util.List;
+
 import by.vasilevsky.leasing.dao.DaoFactory;
 import by.vasilevsky.leasing.dao.DaoFactoryImpl;
 import by.vasilevsky.leasing.domain.user.User;
 
 public class UserServiceImpl implements UserService {
-	private static UserServiceImpl instance;
+	private static volatile UserServiceImpl instance;
 	private static DaoFactory daoFactory = new DaoFactoryImpl();
 	
 	private UserServiceImpl() {
@@ -50,5 +52,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void deleteUser(User user) {
 		daoFactory.getUserDao().deleteUser(user);
+	}
+
+	@Override
+	public List<User> findAll() {
+		
+		return daoFactory.getUserDao().findAll();
 	}
 }

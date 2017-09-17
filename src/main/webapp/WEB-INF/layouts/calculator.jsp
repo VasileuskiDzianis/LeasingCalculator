@@ -7,9 +7,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title><tiles:getAsString name="title" /></title>
-<link rel="stylesheet" type="text/css" href="<c:url value="/css/vls.css"/>" />
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/calculator.css"/>" />
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/payments_schedule.css"/>" />
-<link rel="stylesheet" type="text/css" href="<c:url value="/css/registration.css"/>" />
 </head>
 <body>
 	<tiles:insertAttribute name="header" />

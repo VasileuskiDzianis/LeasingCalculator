@@ -2,6 +2,9 @@ package by.vasilevsky.leasing.dao.user;
 
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,14 +15,23 @@ import by.vasilevsky.leasing.domain.user.UserDetails;
 import by.vasilevsky.leasing.domain.user.UserRole;
 
 public class UserDaoImplTest {
-	private static final int EXPECTED_USER_ID = 2;
-	private static final String EXPECTED_USER_LOGIN = "4sol@tut.by";
-	private static final String EXPECTED_USER_PSW = "PDhidatxaFssF7PWkm8y+f6kmMC9JnO7xSPyfXVWOUA=$8O0ZuJx3yK6gNLFeekGwRRW33kqSmhvkIvNZQmEUsQI=";
-	private static final UserRole EXPECTED_USER_ROLE = UserRole.ADMIN;
-	private static final String EXPECTED_USER_FIRST_NAME = "Степанов";
-	private static final String EXPECTED_USER_LAST_NAME = "Джордж";
-	private static final int EXPECTED_USER_AGE = 33;
-	private static final int EXPECTED_USER_DETAILS_ID = 2;
+	private static final int EXPECTED_USER_ID2 = 2;
+	private static final String EXPECTED_USER_LOGIN2 = "4sol@tut.by";
+	private static final String EXPECTED_USER_PSW2 = "PDhidatxaFssF7PWkm8y+f6kmMC9JnO7xSPyfXVWOUA=$8O0ZuJx3yK6gNLFeekGwRRW33kqSmhvkIvNZQmEUsQI=";
+	private static final UserRole EXPECTED_USER_ROLE2 = UserRole.ADMIN;
+	private static final String EXPECTED_USER_FIRST_NAME2 = "Степанов";
+	private static final String EXPECTED_USER_LAST_NAME2 = "Джордж";
+	private static final int EXPECTED_USER_AGE2 = 33;
+	private static final int EXPECTED_USER_DETAILS_ID2 = 2;
+	
+	private static final int EXPECTED_USER_ID1 = 1;
+	private static final String EXPECTED_USER_LOGIN1 = "4denver@mail.ru";
+	private static final String EXPECTED_USER_PSW1 = "PDhidatxaFssF7PWkm8y+f6kmMC9JnO7xSPyfXVWOUA=$8O0ZuJx3yK6gNLFeekGwRRW33kqSmhvkIvNZQmEUsQI=";
+	private static final UserRole EXPECTED_USER_ROLE1 = UserRole.USER;
+	private static final String EXPECTED_USER_FIRST_NAME1 = "Ivanov";
+	private static final String EXPECTED_USER_LAST_NAME1 = "Ivan";
+	private static final int EXPECTED_USER_AGE1 = 30;
+	private static final int EXPECTED_USER_DETAILS_ID1 = 1;
 	
 	private static final String GIVEN_USER_LOGIN = "google@gmail.com";
 	private static final String GIVEN_USER_PSW = "qwerty";
@@ -35,40 +47,63 @@ public class UserDaoImplTest {
 	private static final String UPDATED_USER_LAST_NAME = "NameNew";
 	private static final int UPDATED_USER_AGE = 99;
 	
+	User expectedUser1;
+	User expectedUser2;
+	
 	UserDao userDao;
 	
 	@Before
 	public void setUp() throws Exception {
 		DaoFactory daoFactory = new DaoFactoryImpl();
 		userDao = daoFactory.getUserDao();
+		
+		expectedUser1 = new User();
+		expectedUser1.setId(EXPECTED_USER_ID1);
+		expectedUser1.setLogin(EXPECTED_USER_LOGIN1);
+		expectedUser1.setPassword(EXPECTED_USER_PSW1);
+		expectedUser1.setUserRole(EXPECTED_USER_ROLE1);
+		UserDetails expectedDetails1 = new UserDetails();
+		expectedDetails1.setId(EXPECTED_USER_DETAILS_ID1);
+		expectedDetails1.setFirstName(EXPECTED_USER_FIRST_NAME1);
+		expectedDetails1.setLastName(EXPECTED_USER_LAST_NAME1);
+		expectedDetails1.setAge(EXPECTED_USER_AGE1);
+		expectedUser1.setUserDetails(expectedDetails1);
+		
+		expectedUser2 = new User();
+		expectedUser2.setId(EXPECTED_USER_ID2);
+		expectedUser2.setLogin(EXPECTED_USER_LOGIN2);
+		expectedUser2.setPassword(EXPECTED_USER_PSW2);
+		expectedUser2.setUserRole(EXPECTED_USER_ROLE2);
+		UserDetails expectedDetails2 = new UserDetails();
+		expectedDetails2.setId(EXPECTED_USER_DETAILS_ID2);
+		expectedDetails2.setFirstName(EXPECTED_USER_FIRST_NAME2);
+		expectedDetails2.setLastName(EXPECTED_USER_LAST_NAME2);
+		expectedDetails2.setAge(EXPECTED_USER_AGE2);
+		expectedUser2.setUserDetails(expectedDetails2);
 	}
 
 	@Test
 	public void findUserByLoginTest() {
-		User gotUser = userDao.findUserByLogin(EXPECTED_USER_LOGIN);
+		User gotUser = userDao.findUserByLogin(EXPECTED_USER_LOGIN2);
 		
-		assertEquals(EXPECTED_USER_ID, gotUser.getId());
-		assertEquals(EXPECTED_USER_LOGIN, gotUser.getLogin());
-		assertEquals(EXPECTED_USER_PSW, gotUser.getPassword());
-		assertEquals(EXPECTED_USER_ROLE, gotUser.getUserRole());
-		assertEquals(EXPECTED_USER_FIRST_NAME, gotUser.getUserDetails().getFirstName());
-		assertEquals(EXPECTED_USER_LAST_NAME, gotUser.getUserDetails().getLastName());
-		assertEquals(EXPECTED_USER_AGE, gotUser.getUserDetails().getAge());
-		assertEquals(EXPECTED_USER_DETAILS_ID, gotUser.getUserDetails().getId());
+		assertTrue(expectedUser2.equals(gotUser));
+		assertFalse(expectedUser1.equals(gotUser));
 	}
 	
 	@Test
 	public void findUserByIdTest() {
-		User gotUser = userDao.findUserById(EXPECTED_USER_ID);
+		User gotUser = userDao.findUserById(EXPECTED_USER_ID1);
 		
-		assertEquals(EXPECTED_USER_ID, gotUser.getId());
-		assertEquals(EXPECTED_USER_LOGIN, gotUser.getLogin());
-		assertEquals(EXPECTED_USER_PSW, gotUser.getPassword());
-		assertEquals(EXPECTED_USER_ROLE, gotUser.getUserRole());
-		assertEquals(EXPECTED_USER_FIRST_NAME, gotUser.getUserDetails().getFirstName());
-		assertEquals(EXPECTED_USER_LAST_NAME, gotUser.getUserDetails().getLastName());
-		assertEquals(EXPECTED_USER_AGE, gotUser.getUserDetails().getAge());
-		assertEquals(EXPECTED_USER_DETAILS_ID, gotUser.getUserDetails().getId());
+		assertTrue(expectedUser1.equals(gotUser));
+		assertFalse(expectedUser2.equals(gotUser));
+	}
+	
+	@Test
+	public void findAllUsers() {
+		List<User> givenUsers = Arrays.asList(expectedUser1, expectedUser2);
+		List<User> gotUsers = userDao.findAll();
+		
+		assertTrue(gotUsers.containsAll(givenUsers));
 	}
 	
 	@Test

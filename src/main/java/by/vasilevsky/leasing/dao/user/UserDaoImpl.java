@@ -5,6 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.sql.DataSource;
 
@@ -15,14 +18,16 @@ import by.vasilevsky.leasing.domain.user.UserRole;
 
 public class UserDaoImpl implements UserDao {
 	private static final String REQ_FIND_USER_BY_LOGIN = "SELECT u.*, r.role, d.firstName, d.lastName, d.age, d.detailsId "
-			+ "FROM user AS u JOIN userDetails AS d ON u.detailsId=d.detailsId JOIN userRole AS r ON u.roleId=r.id WHERE u.login=?";
+			+ "FROM user AS u JOIN userDetails AS d ON u.detailsId=d.detailsId JOIN userRole AS r ON u.roleId=r.id WHERE u.login=?;";
 	private static final String REQ_FIND_USER_BY_ID = "SELECT u.*, r.role, d.firstName, d.lastName, d.age, d.detailsId "
-			+ "FROM user AS u JOIN userDetails AS d ON u.detailsId=d.detailsId JOIN userRole AS r ON u.roleId=r.id WHERE u.id=?";
+			+ "FROM user AS u JOIN userDetails AS d ON u.detailsId=d.detailsId JOIN userRole AS r ON u.roleId=r.id WHERE u.id=?;";
+	private static final String REQ_FIND_ALL_USERS = "SELECT u.*, r.role, d.firstName, d.lastName, d.age, d.detailsId "
+			+ "FROM user AS u JOIN userDetails AS d ON u.detailsId=d.detailsId JOIN userRole AS r ON u.roleId=r.id;";
 	private static final String REQ_SAVE_USER = "INSERT INTO user(login,password,detailsId,roleId) VALUES(?,?,?,?);";
 	private static final String REQ_SAVE_USER_DETAILS = "INSERT INTO userDetails(firstName,lastName,age) VALUES(?,?,?);";
 	private static final String REQ_GET_ROLE_ID = "SELECT id FROM userRole WHERE role=?;";
-	private static final String REQ_DELETE_DETAILS = "DELETE FROM userDetails WHERE detailsId=?";
-	private static final String REQ_DELETE_USER = "DELETE FROM user WHERE id=?";
+	private static final String REQ_DELETE_DETAILS = "DELETE FROM userDetails WHERE detailsId=?;";
+	private static final String REQ_DELETE_USER = "DELETE FROM user WHERE id=?;";
 	private static final String REQ_UPDATE_DETAILS = "UPDATE userDetails SET firstName=?, lastName=?, age=? WHERE detailsId=?;";
 	private static final String REQ_UPDATE_USER = "UPDATE user SET login=?, password=?, roleId=? WHERE id=?;";
 
@@ -169,6 +174,43 @@ public class UserDaoImpl implements UserDao {
 			closeResources(rs, stmt, con);
 		}
 		return null;
+	}
+
+	@Override
+	public List<User> findAll() {
+		ds = DataSourceProvider.getInstance().getDataSource();
+		Connection con = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		List<User> users;
+		try {
+			con = ds.getConnection();
+			stmt = con.prepareStatement(REQ_FIND_ALL_USERS);
+			rs = stmt.executeQuery();
+			users = new ArrayList<User>();
+			while (rs.next()) {
+				User user = new User();
+				user.setId(rs.getInt("id"));
+				user.setLogin(rs.getString("login"));
+				user.setPassword(rs.getString("password"));
+				user.setUserRole(UserRole.valueOf(rs.getString("role")));
+				UserDetails userDetails = new UserDetails();
+				userDetails.setId(rs.getInt("detailsId"));
+				userDetails.setFirstName(rs.getString("firstName"));
+				userDetails.setLastName(rs.getString("lastName"));
+				userDetails.setAge(rs.getInt("age"));
+				user.setUserDetails(userDetails);
+				
+				users.add(user);
+			}
+			return users;
+		} catch (SQLException e) {
+			users = Collections.emptyList();
+			
+			return users;
+		} finally {
+			closeResources(rs, stmt, con);
+		}
 	}
 
 	@Override

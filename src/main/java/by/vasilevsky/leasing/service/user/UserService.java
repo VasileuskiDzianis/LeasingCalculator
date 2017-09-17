@@ -1,5 +1,7 @@
 package by.vasilevsky.leasing.service.user;
 
+import java.util.List;
+
 import by.vasilevsky.leasing.domain.user.User;
 
 public interface UserService {
@@ -7,6 +9,8 @@ public interface UserService {
 	User findUserById(int id);
 	
 	User findUserByLogin(String login);
+	
+	List<User> findAll();
 	
 	void saveUser(User user);
 	
