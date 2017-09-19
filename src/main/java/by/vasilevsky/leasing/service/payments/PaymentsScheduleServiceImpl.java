@@ -2,11 +2,12 @@ package by.vasilevsky.leasing.service.payments;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import by.vasilevsky.leasing.domain.lease_object.LeaseObject;
-import by.vasilevsky.leasing.domain.payments.MonthPayment;
+import by.vasilevsky.leasing.domain.lease_object.Property;
+import by.vasilevsky.leasing.domain.payments.MonthlyPayment;
 import by.vasilevsky.leasing.domain.payments.PaymentType;
 import by.vasilevsky.leasing.domain.payments.PaymentsSchedule;
 
@@ -33,70 +34,67 @@ public class PaymentsScheduleServiceImpl implements PaymentsScheduleService {
 	}
 
 	@Override
-	public void calculatePayments(PaymentsSchedule paymentsSchedule) {
-		float leaseObjectCost = paymentsSchedule.getLeaseObject().getPrice();
-		float leaseObjectCostVat = paymentsSchedule.getLeaseObject().getVat();
-		float remainingDebt = leaseObjectCost + leaseObjectCostVat;
-		float mounthlyCostRepayment;
-		List<MonthPayment> monthlyPayments = new ArrayList<>();
-		MonthPayment monthlyPayment;
-		MonthPayment prepayment = new MonthPayment();
+	public void countPayments(PaymentsSchedule schedule) {
+		List<MonthlyPayment> payments = new ArrayList<>();
 		Calendar calendar = new GregorianCalendar();
+		Property property = schedule.getProperty();
+		float debt = property.getPrice() + property.getVat();
+		float costRepayment = countCostRepayment(schedule);
+		MonthlyPayment prepayment = countSpecialPayment(PaymentType.PRE_PAYMENT, property,
+				schedule.getPrepaymentPercentage(), calendar.getTime(), debt);
+		payments.add(prepayment);
+		debt -= (prepayment.getPropertyCostRepayment() + prepayment.getPropertyCostRepaymentVat());
 
-		mounthlyCostRepayment = (leaseObjectCost
-				* (1 - paymentsSchedule.getBuyingOutPercentage() - paymentsSchedule.getPrepaymentPercentage()))
-				/ paymentsSchedule.getLeaseDuration();
-
-		prepayment.setLeaseObjectCostRepayment(leaseObjectCost * paymentsSchedule.getPrepaymentPercentage());
-		if (isLeaseObjectPriceHasVat(paymentsSchedule.getLeaseObject())) {
-			prepayment.setLeaseObjectCostRepaymentVat(leaseObjectCostVat * paymentsSchedule.getPrepaymentPercentage());
-		}
-		prepayment.setPaymentDate(calendar.getTime());
-		prepayment.setPaymentType(PaymentType.PRE_PAYMENT);
-		prepayment.setRemainingDebt(remainingDebt);
-
-		remainingDebt -= (prepayment.getLeaseObjectCostRepayment() + prepayment.getLeaseObjectCostRepaymentVat());
-
-		monthlyPayments.add(prepayment);
-
-		for (int i = 0; i < paymentsSchedule.getLeaseDuration(); i++) {
-			monthlyPayment = new MonthPayment();
+		for (int i = 0; i < schedule.getLeaseDuration(); i++) {
 			calendar.add(Calendar.MONTH, PAYMENT_INTERVAL);
-			monthlyPayment.setPaymentDate(calendar.getTime());
-			monthlyPayment.setPaymentType(PaymentType.LEASE_PAYMENT);
-			monthlyPayment.setRemainingDebt(remainingDebt);
-			monthlyPayment.setLeaseMargin(paymentsSchedule.getLeaseRate() * remainingDebt / 12);
-			monthlyPayment.setLeaseMarginVat(monthlyPayment.getLeaseMargin() * VAT_RATE);
-			monthlyPayment
-					.setInsurance((leaseObjectCost + leaseObjectCostVat) * paymentsSchedule.getInsuranceRate() / 12);
-			monthlyPayment.setInsuranceVat(monthlyPayment.getInsurance() * VAT_RATE);
-			monthlyPayment.setLeaseObjectCostRepayment(mounthlyCostRepayment);
-
-			if (isLeaseObjectPriceHasVat(paymentsSchedule.getLeaseObject())) {
-				monthlyPayment.setLeaseObjectCostRepaymentVat(mounthlyCostRepayment * VAT_RATE);
-			}
-
-			remainingDebt -= monthlyPayment.getLeaseObjectCostRepayment()
-					+ monthlyPayment.getLeaseObjectCostRepaymentVat();
-
-			monthlyPayments.add(monthlyPayment);
+			MonthlyPayment payment = countLeasePayment(schedule, calendar.getTime(), debt, costRepayment);
+			debt -= payment.getPropertyCostRepayment() + payment.getPropertyCostRepaymentVat();
+			payments.add(payment);
 		}
-		MonthPayment buyingOutPayment = new MonthPayment();
-		buyingOutPayment.setLeaseObjectCostRepayment(leaseObjectCost * paymentsSchedule.getBuyingOutPercentage());
-		if (isLeaseObjectPriceHasVat(paymentsSchedule.getLeaseObject())) {
-			buyingOutPayment
-					.setLeaseObjectCostRepaymentVat(leaseObjectCostVat * paymentsSchedule.getBuyingOutPercentage());
-		}
-		buyingOutPayment.setPaymentDate(calendar.getTime());
-		buyingOutPayment.setPaymentType(PaymentType.BUYING_OUT_PAYMENT);
-
-		monthlyPayments.add(buyingOutPayment);
-
-		paymentsSchedule.setMonthlyPayments(monthlyPayments);
+		payments.add(countSpecialPayment(PaymentType.BUYING_OUT_PAYMENT, property,
+				schedule.getBuyingOutPercentage(), calendar.getTime(), debt));
+		schedule.setMonthlyPayments(payments);
 	}
 
-	private boolean isLeaseObjectPriceHasVat(LeaseObject leaseObject) {
+	private boolean isPropertyPriceHasVat(Property property) {
 
-		return (leaseObject.getVat() == 0f) ? false : true;
+		return (property.getVat() == 0f) ? false : true;
+	}
+
+	private MonthlyPayment countLeasePayment(PaymentsSchedule schedule, Date date, float debt, float costRepayment) {
+		MonthlyPayment payment = new MonthlyPayment();
+		Property property = schedule.getProperty();
+		payment.setPaymentDate(date);
+		payment.setRemainingDebt(debt);
+		payment.setPaymentType(PaymentType.LEASE_PAYMENT);
+		payment.setLeaseMargin(schedule.getLeaseRate() * debt / 12);
+		payment.setLeaseMarginVat(payment.getLeaseMargin() * VAT_RATE);
+		payment.setInsurance((property.getPrice() + property.getVat()) * schedule.getInsuranceRate() / 12);
+		payment.setInsuranceVat(payment.getInsurance() * VAT_RATE);
+		payment.setPropertyCostRepayment(costRepayment);
+		if (isPropertyPriceHasVat(property)) {
+			payment.setPropertyCostRepaymentVat(costRepayment * VAT_RATE);
+		}
+		return payment;
+	}
+
+	private MonthlyPayment countSpecialPayment(PaymentType type, Property property, float percent, Date date,
+			float debt) {
+		MonthlyPayment payment = new MonthlyPayment();
+		payment.setPaymentDate(date);
+		payment.setRemainingDebt(debt);
+		payment.setPaymentType(type);
+		payment.setPropertyCostRepayment(property.getPrice() * percent);
+		if (isPropertyPriceHasVat(property)) {
+			payment.setPropertyCostRepaymentVat(property.getVat() * percent);
+		}
+		return payment;
+	}
+
+	private float countCostRepayment(PaymentsSchedule schedule) {
+		Property property = schedule.getProperty();
+
+		return property.getPrice() * (1 - schedule.getBuyingOutPercentage() - schedule.getPrepaymentPercentage())
+				/ schedule.getLeaseDuration();
 	}
 }

@@ -2,7 +2,7 @@ package by.vasilevsky.leasing.service.rate.lease;
 
 import by.vasilevsky.leasing.dao.DaoFactory;
 import by.vasilevsky.leasing.dao.DaoFactoryImpl;
-import by.vasilevsky.leasing.domain.lease_object.LeaseObjectType;
+import by.vasilevsky.leasing.domain.lease_object.PropertyType;
 import by.vasilevsky.leasing.domain.rate.lease.LeaseTypeAgeMargin;
 
 public class LeaseTypeAgeMarginServiceImpl implements LeaseTypeAgeMarginService {
@@ -27,7 +27,7 @@ public class LeaseTypeAgeMarginServiceImpl implements LeaseTypeAgeMarginService 
 	}
 
 	@Override
-	public LeaseTypeAgeMargin findLeaseRateByTypeAndAge(LeaseObjectType objectType, int age) {
+	public LeaseTypeAgeMargin findLeaseRateByTypeAndAge(PropertyType objectType, int age) {
 
 		return daoFactory.getLeaseTypeAgeMarginDao().findLeaseRateByTypeAndAge(objectType, age);
 	}

@@ -2,15 +2,15 @@ package by.vasilevsky.leasing.domain.payments;
 
 import java.util.Date;
 
-public class MonthPayment {
+public class MonthlyPayment {
 	private int id;
 	private Date paymentDate;
 	private PaymentType paymentType;
-	private float remainingDebt;
+	private float debt;
 	private float leaseMargin;
 	private float leaseMarginVat;
-	private float leaseObjectCostRepayment;
-	private float leaseObjectCostRepaymentVat;
+	private float propertyCostRepayment;
+	private float propertyCostRepaymentVat;
 	private float insurance;
 	private float insuranceVat;
 
@@ -39,11 +39,11 @@ public class MonthPayment {
 	}
 
 	public float getRemainingDebt() {
-		return remainingDebt;
+		return debt;
 	}
 
 	public void setRemainingDebt(float remainingDebt) {
-		this.remainingDebt = remainingDebt;
+		this.debt = remainingDebt;
 	}
 
 	public float getLeaseMargin() {
@@ -62,20 +62,20 @@ public class MonthPayment {
 		this.leaseMarginVat = leaseMarginVat;
 	}
 
-	public float getLeaseObjectCostRepayment() {
-		return leaseObjectCostRepayment;
+	public float getPropertyCostRepayment() {
+		return propertyCostRepayment;
 	}
 
-	public void setLeaseObjectCostRepayment(float leaseObjectCostRepayment) {
-		this.leaseObjectCostRepayment = leaseObjectCostRepayment;
+	public void setPropertyCostRepayment(float propertyCostRepayment) {
+		this.propertyCostRepayment = propertyCostRepayment;
 	}
 
-	public float getLeaseObjectCostRepaymentVat() {
-		return leaseObjectCostRepaymentVat;
+	public float getPropertyCostRepaymentVat() {
+		return propertyCostRepaymentVat;
 	}
 
-	public void setLeaseObjectCostRepaymentVat(float leaseObjectCostVatRepayment) {
-		this.leaseObjectCostRepaymentVat = leaseObjectCostVatRepayment;
+	public void setPropertyCostRepaymentVat(float propertyCostVatRepayment) {
+		this.propertyCostRepaymentVat = propertyCostVatRepayment;
 	}
 
 	public float getInsurance() {

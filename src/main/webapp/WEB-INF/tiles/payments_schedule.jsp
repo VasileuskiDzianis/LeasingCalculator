@@ -10,13 +10,13 @@
 			<div class="payments-schedule-parameter-item-title">Предмет
 				лизинга:</div>
 			<div class="payments-schedule-parameter-item-value">
-				${paymentsSchedule.leaseObject.leaseObjectType}</div>
+				${paymentsSchedule.property.propertyType}</div>
 		</div>
 		<div class="payments-schedule-parameter-item">
 			<div class="payments-schedule-parameter-item-title">Контрактная
 				стоимость:</div>
 			<div class="payments-schedule-parameter-item-value">
-				<fmt:formatNumber value="${paymentsSchedule.leaseObject.price}"
+				<fmt:formatNumber value="${paymentsSchedule.property.price}"
 					minFractionDigits="2" maxFractionDigits="2" />
 			</div>
 		</div>
@@ -24,7 +24,7 @@
 			<div class="payments-schedule-parameter-item-title">НДС на
 				стоимость:</div>
 			<div class="payments-schedule-parameter-item-value">
-				<fmt:formatNumber value="${paymentsSchedule.leaseObject.vat}"
+				<fmt:formatNumber value="${paymentsSchedule.property.vat}"
 					minFractionDigits="2" maxFractionDigits="2" />
 			</div>
 		</div>
@@ -33,7 +33,7 @@
 				НДС:</div>
 			<div class="payments-schedule-parameter-item-value">
 				<fmt:formatNumber
-					value="${paymentsSchedule.leaseObject.price + paymentsSchedule.leaseObject.vat}"
+					value="${paymentsSchedule.property.price + paymentsSchedule.property.vat}"
 					minFractionDigits="2" maxFractionDigits="2" />
 			</div>
 		</div>
@@ -80,8 +80,8 @@
 			<div class="payments-list-col"><fmt:formatNumber value="${payment.remainingDebt}" minFractionDigits="2" maxFractionDigits="2" /></div>
 			<div class="payments-list-col"><fmt:formatNumber value="${payment.leaseMargin}" minFractionDigits="2" maxFractionDigits="2" /></div>
 			<div class="payments-list-col"><fmt:formatNumber value="${payment.leaseMarginVat}" minFractionDigits="2" maxFractionDigits="2" /></div>
-			<div class="payments-list-col"><fmt:formatNumber value="${payment.leaseObjectCostRepayment}" minFractionDigits="2" maxFractionDigits="2" /></div>
-			<div class="payments-list-col"><fmt:formatNumber value="${payment.leaseObjectCostRepaymentVat}" minFractionDigits="2" maxFractionDigits="2" /></div>
+			<div class="payments-list-col"><fmt:formatNumber value="${payment.propertyCostRepayment}" minFractionDigits="2" maxFractionDigits="2" /></div>
+			<div class="payments-list-col"><fmt:formatNumber value="${payment.propertyCostRepaymentVat}" minFractionDigits="2" maxFractionDigits="2" /></div>
 			<div class="payments-list-col"><fmt:formatNumber value="${payment.insurance}" minFractionDigits="2" maxFractionDigits="2" /></div>
 			<div class="payments-list-col"><fmt:formatNumber value="${payment.insuranceVat}" minFractionDigits="2" maxFractionDigits="2" /></div>
 		</div>

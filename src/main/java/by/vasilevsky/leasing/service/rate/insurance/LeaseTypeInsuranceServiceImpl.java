@@ -2,7 +2,7 @@ package by.vasilevsky.leasing.service.rate.insurance;
 
 import by.vasilevsky.leasing.dao.DaoFactory;
 import by.vasilevsky.leasing.dao.DaoFactoryImpl;
-import by.vasilevsky.leasing.domain.lease_object.LeaseObjectType;
+import by.vasilevsky.leasing.domain.lease_object.PropertyType;
 import by.vasilevsky.leasing.domain.rate.insurance.LeaseTypeInsurance;
 
 public class LeaseTypeInsuranceServiceImpl implements LeaseTypeInsuranceService {
@@ -27,7 +27,7 @@ public class LeaseTypeInsuranceServiceImpl implements LeaseTypeInsuranceService 
 	}
 
 	@Override
-	public LeaseTypeInsurance findInsuranceByObjectType(LeaseObjectType objectType) {
+	public LeaseTypeInsurance findInsuranceByObjectType(PropertyType objectType) {
 
 		return daoFactory.getLeaseTypeInsuranceDao().findInsuranceByObjectType(objectType);
 	}

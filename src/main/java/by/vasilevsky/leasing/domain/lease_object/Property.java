@@ -2,9 +2,9 @@ package by.vasilevsky.leasing.domain.lease_object;
 
 import by.vasilevsky.leasing.domain.currency.Currency;
 
-public class LeaseObject {
+public class Property {
 	private int id;
-	private LeaseObjectType leaseObjectType;
+	private PropertyType propertyType;
 	private int age;
 	private float price;
 	private float vat;
@@ -26,12 +26,12 @@ public class LeaseObject {
 		this.id = id;
 	}
 
-	public LeaseObjectType getLeaseObjectType() {
-		return leaseObjectType;
+	public PropertyType getPropertyType() {
+		return propertyType;
 	}
 
-	public void setLeaseObjectType(LeaseObjectType leaseObjectType) {
-		this.leaseObjectType = leaseObjectType;
+	public void setPropertyType(PropertyType propertyType) {
+		this.propertyType = propertyType;
 	}
 
 	public int getAge() {

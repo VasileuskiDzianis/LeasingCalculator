@@ -5,7 +5,7 @@ import java.sql.*;
 import javax.sql.DataSource;
 
 import by.vasilevsky.leasing.dao.DataSourceProvider;
-import by.vasilevsky.leasing.domain.lease_object.LeaseObjectType;
+import by.vasilevsky.leasing.domain.lease_object.PropertyType;
 import by.vasilevsky.leasing.domain.rate.insurance.LeaseTypeInsurance;
 
 public class LeaseTypeInsuranceDaoImpl implements LeaseTypeInsuranceDao {
@@ -32,7 +32,7 @@ public class LeaseTypeInsuranceDaoImpl implements LeaseTypeInsuranceDao {
 	}
 
 	@Override
-	public LeaseTypeInsurance findInsuranceByObjectType(LeaseObjectType objectType) {
+	public LeaseTypeInsurance findInsuranceByObjectType(PropertyType objectType) {
 		LeaseTypeInsurance insurance = new LeaseTypeInsurance();
 
 		ds = DataSourceProvider.getInstance().getDataSource();

@@ -7,11 +7,11 @@ import org.junit.Test;
 
 import by.vasilevsky.leasing.dao.DaoFactory;
 import by.vasilevsky.leasing.dao.DaoFactoryImpl;
-import by.vasilevsky.leasing.domain.lease_object.LeaseObjectType;
+import by.vasilevsky.leasing.domain.lease_object.PropertyType;
 import by.vasilevsky.leasing.domain.rate.insurance.LeaseTypeInsurance;
 
 public class LeaseTypeInsuranceDaoImplTest {
-	private static final LeaseObjectType GIVEN_OBJ_TYPE = LeaseObjectType.TRUCK;
+	private static final PropertyType GIVEN_OBJ_TYPE = PropertyType.TRUCK;
 	private static final float EXPECTED_INSURANCE = 0.02f;
 
 	private LeaseTypeInsuranceDao insuranceDao;

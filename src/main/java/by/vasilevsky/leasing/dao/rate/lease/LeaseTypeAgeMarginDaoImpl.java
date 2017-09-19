@@ -5,7 +5,7 @@ import java.sql.*;
 import javax.sql.DataSource;
 
 import by.vasilevsky.leasing.dao.DataSourceProvider;
-import by.vasilevsky.leasing.domain.lease_object.LeaseObjectType;
+import by.vasilevsky.leasing.domain.lease_object.PropertyType;
 import by.vasilevsky.leasing.domain.rate.lease.LeaseTypeAgeMargin;
 
 public class LeaseTypeAgeMarginDaoImpl implements LeaseTypeAgeMarginDao {
@@ -32,7 +32,7 @@ public class LeaseTypeAgeMarginDaoImpl implements LeaseTypeAgeMarginDao {
 	}
 
 	@Override
-	public LeaseTypeAgeMargin findLeaseRateByTypeAndAge(LeaseObjectType objectType, int age) {
+	public LeaseTypeAgeMargin findLeaseRateByTypeAndAge(PropertyType objectType, int age) {
 		LeaseTypeAgeMargin margin = new LeaseTypeAgeMargin();
 
 		ds = DataSourceProvider.getInstance().getDataSource();

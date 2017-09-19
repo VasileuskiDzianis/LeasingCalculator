@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import by.vasilevsky.leasing.domain.currency.Currency;
-import by.vasilevsky.leasing.domain.lease_object.LeaseObject;
-import by.vasilevsky.leasing.domain.lease_object.LeaseObjectType;
+import by.vasilevsky.leasing.domain.lease_object.Property;
+import by.vasilevsky.leasing.domain.lease_object.PropertyType;
 import by.vasilevsky.leasing.domain.payments.PaymentsSchedule;
 import by.vasilevsky.leasing.service.ServiceFactory;
 import by.vasilevsky.leasing.service.ServiceFactoryImpl;
@@ -34,16 +34,16 @@ public class PaymentsScheduleController extends HttpServlet {
 		LeaseTypeInsuranceService leaseTypeInsuranceService = serviceFactory.getLeaseTypeInsuranceService();
 
 		PaymentsSchedule paymentsSchedule = new PaymentsSchedule();
-		LeaseObject leaseObject = new LeaseObject();
+		Property property = new Property();
 		paymentsSchedule.setCurrency(Currency.valueOf(Currency.class, request.getParameter("currency")));
 		paymentsSchedule.setPrepaymentPercentage(Float.parseFloat(request.getParameter("prepay")));
 		paymentsSchedule.setBuyingOutPercentage(Float.parseFloat(request.getParameter("byuingoutpercent")));
 		paymentsSchedule.setLeaseDuration(Integer.parseInt(request.getParameter("duration")));
 
-		leaseObject
-				.setLeaseObjectType(LeaseObjectType.valueOf(LeaseObjectType.class, request.getParameter("objecttype")));
-		leaseObject.setAge(Integer.parseInt(request.getParameter("age")));
-		leaseObject.setCurrency(paymentsSchedule.getCurrency());
+		property
+				.setPropertyType(PropertyType.valueOf(PropertyType.class, request.getParameter("objecttype")));
+		property.setAge(Integer.parseInt(request.getParameter("age")));
+		property.setCurrency(paymentsSchedule.getCurrency());
 
 		boolean noVatOnCost = false;
 
@@ -53,14 +53,14 @@ public class PaymentsScheduleController extends HttpServlet {
 
 		if (request.getParameter("cost") != "") {
 			if (noVatOnCost) {
-				leaseObject.setPrice(Float.parseFloat(request.getParameter("cost")));
+				property.setPrice(Float.parseFloat(request.getParameter("cost")));
 			} else {
-				leaseObject.setPrice(
+				property.setPrice(
 						Float.parseFloat(request.getParameter("cost")) / (1 + PaymentsScheduleService.VAT_RATE));
 			}
-			leaseObject.setVat(leaseObject.getPrice() * PaymentsScheduleService.VAT_RATE);
+			property.setVat(property.getPrice() * PaymentsScheduleService.VAT_RATE);
 		} else {
-			leaseObject.setPrice(0f);
+			property.setPrice(0f);
 		}
 
 		boolean includeInsurance = false;
@@ -69,7 +69,7 @@ public class PaymentsScheduleController extends HttpServlet {
 		}
 
 		if (includeInsurance) {
-			float insuranceRate = leaseTypeInsuranceService.findInsuranceByObjectType(leaseObject.getLeaseObjectType())
+			float insuranceRate = leaseTypeInsuranceService.findInsuranceByObjectType(property.getPropertyType())
 					.getInsuranceRate();
 			paymentsSchedule.setInsuranceRate(insuranceRate);
 		}
@@ -77,11 +77,11 @@ public class PaymentsScheduleController extends HttpServlet {
 		float leaseCurrencyRate = leaseCurrencyRateService.findLeaseRateByCurrency(paymentsSchedule.getCurrency())
 				.getCurrencyRate();
 		float leaseTypeAgeMarginRate = leaseTypeAgeMarginService
-				.findLeaseRateByTypeAndAge(leaseObject.getLeaseObjectType(), leaseObject.getAge()).getMargin();
+				.findLeaseRateByTypeAndAge(property.getPropertyType(), property.getAge()).getMargin();
 
 		paymentsSchedule.setLeaseRate(leaseCurrencyRate + leaseTypeAgeMarginRate);
-		paymentsSchedule.setLeaseObject(leaseObject);
-		paymentsScheduleService.calculatePayments(paymentsSchedule);
+		paymentsSchedule.setProperty(property);
+		paymentsScheduleService.countPayments(paymentsSchedule);
 
 		request.setAttribute("paymentsSchedule", paymentsSchedule);
 		RequestDispatcher view = request.getRequestDispatcher("payments_schedule.tiles");
