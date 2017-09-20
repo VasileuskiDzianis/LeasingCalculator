@@ -19,8 +19,7 @@
 	<input type="hidden" name="userId" value="${profileFormModel.userId}"/>
 	<input type="hidden" name="detailsId" value="${profileFormModel.detailsId}"/>
 	<div class="submit-container">
-	<input type="submit" value="Сохранить"/>
+	<input type="submit" value="Сохранить"/> <div class="form-err-message">${profileFormModel.mainMessage}</div>
 	</div>
-	<div class="form-message">${registrationFormModel.mainMessage}</div>
  </form>
 </div>

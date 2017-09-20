@@ -19,54 +19,67 @@ import by.vasilevsky.leasing.service.payments.PaymentsScheduleService;
 import by.vasilevsky.leasing.service.rate.insurance.LeaseTypeInsuranceService;
 import by.vasilevsky.leasing.service.rate.lease.LeaseCurrencyRateService;
 import by.vasilevsky.leasing.service.rate.lease.LeaseTypeAgeMarginService;
+import by.vasilevsky.leasing.view.CalculatorFormModel;
 
 @WebServlet(urlPatterns = { "/calculate" })
 public class PaymentsScheduleController extends HttpServlet {
 	private static final long serialVersionUID = -267046298350756472L;
 
-	private ServiceFactory serviceFactory = new ServiceFactoryImpl();
+	private ServiceFactory serviceFactory;
+	private PaymentsScheduleService paymentsScheduleService;
+	private LeaseCurrencyRateService leaseCurrencyRateService;
+	private LeaseTypeAgeMarginService leaseTypeAgeMarginService;
+	private LeaseTypeInsuranceService leaseTypeInsuranceService;
+
+	@Override
+	public void init() {
+		serviceFactory = new ServiceFactoryImpl();
+		paymentsScheduleService = serviceFactory.getPaymentsScheduleService();
+		leaseCurrencyRateService = serviceFactory.getLeaseCurrencyRateService();
+		leaseTypeAgeMarginService = serviceFactory.getLeaseTypeAgeMarginService();
+		leaseTypeInsuranceService = serviceFactory.getLeaseTypeInsuranceService();
+	}
 
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		PaymentsScheduleService paymentsScheduleService = serviceFactory.getPaymentsScheduleService();
-		LeaseCurrencyRateService leaseCurrencyRateService = serviceFactory.getLeaseCurrencyRateService();
-		LeaseTypeAgeMarginService leaseTypeAgeMarginService = serviceFactory.getLeaseTypeAgeMarginService();
-		LeaseTypeInsuranceService leaseTypeInsuranceService = serviceFactory.getLeaseTypeInsuranceService();
+		CalculatorFormModel model = new CalculatorFormModel();
+		model.setCurrency(request.getParameter("currency"));
+		model.setObjectType(request.getParameter("objecttype"));
+		model.setAge(request.getParameter("age"));
+		model.setCost(request.getParameter("cost"));
+		model.setNoVatOnCost(request.getParameter("no_vat_on_cost"));
+		model.setPrepay(request.getParameter("prepay"));
+		model.setDuration(request.getParameter("duration"));
+		model.setByuingout(request.getParameter("byuingoutpercent"));
+		model.setInsurance(request.getParameter("include_insurance"));
+		checkCalculatorFormModel(model);
+		if (model.isErrorsExist()) {
+			request.setAttribute("calculatorFormModel", model);
+			RequestDispatcher view = request.getRequestDispatcher("calculator.tiles");
+			view.forward(request, response);
 
+			return;
+		}
 		PaymentsSchedule paymentsSchedule = new PaymentsSchedule();
 		Property property = new Property();
-		paymentsSchedule.setCurrency(Currency.valueOf(Currency.class, request.getParameter("currency")));
-		paymentsSchedule.setPrepaymentPercentage(Float.parseFloat(request.getParameter("prepay")));
-		paymentsSchedule.setBuyingOutPercentage(Float.parseFloat(request.getParameter("byuingoutpercent")));
-		paymentsSchedule.setLeaseDuration(Integer.parseInt(request.getParameter("duration")));
-
-		property
-				.setPropertyType(PropertyType.valueOf(PropertyType.class, request.getParameter("objecttype")));
-		property.setAge(Integer.parseInt(request.getParameter("age")));
+		paymentsSchedule.setCurrency(Currency.valueOf(Currency.class, model.getCurrency()));
+		paymentsSchedule.setPrepaymentPercentage(Float.parseFloat(model.getPrepay()));
+		paymentsSchedule.setBuyingOutPercentage(Float.parseFloat(model.getByuingout()));
+		paymentsSchedule.setLeaseDuration(Integer.parseInt(model.getDuration()));
+		property.setPropertyType(PropertyType.valueOf(PropertyType.class, model.getObjectType()));
+		property.setAge(Integer.parseInt(model.getAge()));
 		property.setCurrency(paymentsSchedule.getCurrency());
 
-		boolean noVatOnCost = false;
+		boolean noVatOnCost = Boolean.parseBoolean(model.getNoVatOnCost());
 
-		if (request.getParameter("no_vat_on_cost") != null) {
-			noVatOnCost = Boolean.parseBoolean(request.getParameter("no_vat_on_cost"));
-		}
-
-		if (request.getParameter("cost") != "") {
-			if (noVatOnCost) {
-				property.setPrice(Float.parseFloat(request.getParameter("cost")));
-			} else {
-				property.setPrice(
-						Float.parseFloat(request.getParameter("cost")) / (1 + PaymentsScheduleService.VAT_RATE));
-			}
-			property.setVat(property.getPrice() * PaymentsScheduleService.VAT_RATE);
+		if (noVatOnCost) {
+			property.setPrice(Float.parseFloat(model.getCost()));
 		} else {
-			property.setPrice(0f);
+			property.setPrice(Float.parseFloat(model.getCost()) / (1 + PaymentsScheduleService.VAT_RATE));
 		}
+		property.setVat(property.getPrice() * PaymentsScheduleService.VAT_RATE);
 
-		boolean includeInsurance = false;
-		if (request.getParameter("include_insurance") != null) {
-			includeInsurance = Boolean.parseBoolean(request.getParameter("include_insurance"));
-		}
+		boolean includeInsurance = Boolean.parseBoolean(model.getInsurance());
 
 		if (includeInsurance) {
 			float insuranceRate = leaseTypeInsuranceService.findInsuranceByObjectType(property.getPropertyType())
@@ -86,5 +99,50 @@ public class PaymentsScheduleController extends HttpServlet {
 		request.setAttribute("paymentsSchedule", paymentsSchedule);
 		RequestDispatcher view = request.getRequestDispatcher("payments_schedule.tiles");
 		view.forward(request, response);
+	}
+
+	private void checkCalculatorFormModel(CalculatorFormModel model) {
+		try {
+			Currency.valueOf(Currency.class, model.getCurrency());
+		} catch (IllegalArgumentException | NullPointerException e) {
+			model.setErrorsExist(true);
+			model.setCurrencyMessage("не корректные данные");
+		}
+		try {
+			PropertyType.valueOf(PropertyType.class, model.getObjectType());
+		} catch (IllegalArgumentException | NullPointerException e) {
+			model.setErrorsExist(true);
+			model.setObjectTypeMessage("не корректные данные");
+		}
+		try {
+			Integer.parseInt(model.getAge());
+		} catch (NumberFormatException | NullPointerException e) {
+			model.setErrorsExist(true);
+			model.setAgeMessage("не корректные данные");
+		}
+		try {
+			Integer.parseInt(model.getDuration());
+		} catch (NumberFormatException | NullPointerException e) {
+			model.setErrorsExist(true);
+			model.setDurationMessage("не корректные данные");
+		}
+		try {
+			Float.parseFloat(model.getCost());
+		} catch (NumberFormatException | NullPointerException e) {
+			model.setErrorsExist(true);
+			model.setCostMessage("не корректные данные");
+		}
+		try {
+			Float.parseFloat(model.getPrepay());
+		} catch (NumberFormatException | NullPointerException e) {
+			model.setErrorsExist(true);
+			model.setPrepayMessage("не корректные данные");
+		}
+		try {
+			Float.parseFloat(model.getByuingout());
+		} catch (NumberFormatException | NullPointerException e) {
+			model.setErrorsExist(true);
+			model.setByuingoutMessage("не корректные данные");
+		}
 	}
 }

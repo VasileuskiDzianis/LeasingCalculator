@@ -6,6 +6,8 @@ import org.apache.commons.validator.routines.EmailValidator;
 
 public class Validator {
 	private static final String PATTERN_PASSWORD = "[a-zA-Z]{6,}";
+	private static final String PATTERN_NAME = "^[a-zA-Zа-яА-Я]+(([',. -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$";
+	private static final String PATTERN_NUMBER = "\\d{1,}";
 
 	public static final boolean validatePassword(String password) {
 		if (password == null) {
@@ -23,12 +25,23 @@ public class Validator {
 		return emailValidator.isValid(login);
 	}
 
-	public static final boolean validateName(String login) {
-		if (login == null) {
+	public static final boolean validateName(String input) {
+		if (input == null) {
 
 			return false;
 		}
+		String trimmedInput = input.trim();
 
-		return true;
+		return Pattern.matches(PATTERN_NAME, trimmedInput);
+	}
+
+	public static final boolean validateNumber(String input) {
+		if (input == null) {
+
+			return false;
+		}
+		String trimmedInput = input.trim();
+
+		return Pattern.matches(PATTERN_NUMBER, trimmedInput);
 	}
 }

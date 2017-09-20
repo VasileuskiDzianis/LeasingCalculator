@@ -45,7 +45,6 @@ public class RegistrationServiceImpl implements RegistrationService {
 			throw new RuntimeException("Password encoding error", e);
 		}
 		user.setPassword(encodedPassword);
-
 		userService.saveUser(user);
 	}
 }

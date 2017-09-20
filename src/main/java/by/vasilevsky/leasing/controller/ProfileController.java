@@ -8,6 +8,7 @@ import by.vasilevsky.leasing.domain.user.User;
 import by.vasilevsky.leasing.service.ServiceFactory;
 import by.vasilevsky.leasing.service.ServiceFactoryImpl;
 import by.vasilevsky.leasing.service.user.UserService;
+import by.vasilevsky.leasing.service.validator.Validator;
 import by.vasilevsky.leasing.view.ProfileFormModel;
 
 import java.io.IOException;
@@ -45,13 +46,39 @@ public class ProfileController extends HttpServlet {
 		formModel.setLastName(request.getParameter("lastName"));
 		formModel.setAge(request.getParameter("age"));
 		
-		User user = userService.findUserById(Integer.parseInt(formModel.getUserId()));
-		user.getUserDetails().setFirstName(formModel.getFirstName());
-		user.getUserDetails().setLastName(formModel.getLastName());
-		user.getUserDetails().setAge(Integer.parseInt(formModel.getAge()));
+		checkProfileFormModel(formModel);
 		
-		userService.updateUser(user);
-		
-		response.sendRedirect("profile");
+		if (!formModel.isErrorsExist()) {
+			User user = userService.findUserById(Integer.parseInt(formModel.getUserId()));
+			user.getUserDetails().setFirstName(formModel.getFirstName());
+			user.getUserDetails().setLastName(formModel.getLastName());
+			user.getUserDetails().setAge(Integer.parseInt(formModel.getAge()));
+			userService.updateUser(user);
+			response.sendRedirect("profile");
+			
+			return;
+		}
+		request.setAttribute("profileFormModel", formModel);
+		RequestDispatcher view = request.getRequestDispatcher("profile.tiles");
+		view.forward(request, response);
+	}
+	
+	private void checkProfileFormModel(ProfileFormModel model) {
+		if (model.getUserId() == null || !Validator.validateNumber(model.getUserId())) {
+			model.setErrorsExist(true);
+			model.setMainMessage("Не верный id");
+		}
+		if (model.getFirstName() == null || !Validator.validateName(model.getFirstName())) {
+			model.setErrorsExist(true);
+			model.setFirstNameMessage("не корректные данные");
+		}
+		if (model.getLastName() == null || !Validator.validateName(model.getLastName())) {
+			model.setErrorsExist(true);
+			model.setLastNameMessage("не корректные данные");
+		}
+		if (model.getAge() == null || !Validator.validateNumber(model.getAge())) {
+			model.setErrorsExist(true);
+			model.setAgeMessage("не корректные данные");
+		}
 	}
 }

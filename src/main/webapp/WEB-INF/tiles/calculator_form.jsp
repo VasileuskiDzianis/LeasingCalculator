@@ -12,6 +12,7 @@
 			<option value="EUR">EUR</option>
 			<option value="RUB">RUB</option>
 		</select>
+		<div class="form-err-message">${calculatorFormModel.currencyMessage}</div>
 		<br/>
 		<div class="form-title">Тип предмета:</div>
 		<div class = "form-input">
@@ -23,6 +24,7 @@
 		<input type="radio" name="objecttype" value="EQUIPMENT" />Оборудование<br/>
 		<input type="radio" name="objecttype" value="REALESTATE" />Недвижимость<br/>
 		</div>
+		<div class="form-err-message">${calculatorFormModel.objectTypeMessage}</div>
 		<br/>
 		
 		<div class="form-title">Возраст предмета, лет:</div>
@@ -39,10 +41,12 @@
 			<option value="9">9</option>
 			<option value="10">10</option>
 		</select>
+		<div class="form-err-message">${calculatorFormModel.ageMessage}</div>
 		<br/>
 		
 		<div class="form-title">Стоимость:</div>
 			<input type="text" name="cost" class="input-field"/>
+			<div class="form-err-message">${calculatorFormModel.costMessage}</div>
 		<br/>
 		
 		<div class="form-title">Без НДС:</div>
@@ -59,6 +63,7 @@
 			<option value="0.35">35%</option>
 			<option value="0.40">40%</option>
 		</select>
+		<div class="form-err-message">${calculatorFormModel.prepayMessage}</div>
 		<br/>
 		
 		<div class="form-title">Срок:</div>
@@ -71,6 +76,7 @@
 			<option value="42">42 мес.</option>
 			<option value="48">48 мес.</option>
 		</select>
+		<div class="form-err-message">${calculatorFormModel.durationMessage}</div>
 		<br/>
 		
 		<div class="form-title">Выкупная стоимость:</div>
@@ -84,6 +90,7 @@
 			<option value="0.15">15%</option>
 			<option value="0.20">20%</option>
 		</select>
+		<div class="form-err-message">${calculatorFormModel.byuingoutMessage}</div>
 		<br/>
 	
 		<div class="form-title">Включить страхование:</div>

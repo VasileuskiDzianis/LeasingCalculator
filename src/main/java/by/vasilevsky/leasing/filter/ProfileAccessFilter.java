@@ -1,6 +1,7 @@
 package by.vasilevsky.leasing.filter;
 
 import java.io.IOException;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -25,13 +26,25 @@ public class ProfileAccessFilter implements Filter {
 		String userRole = (String) httpRequest.getSession().getAttribute("userRole");
 
 		if (!UserRole.USER.toString().equals(userRole)) {
-			
+
 			httpRequest.getSession().setAttribute("userRole", UserRole.ANONYMOUS.toString());
 			httpResponse.sendRedirect("logination");
-		} else {
-
-			chain.doFilter(request, response);
+			
+			return;
 		}
+
+		if (httpRequest.getMethod().equalsIgnoreCase("post")) {
+			String userIdFromRequest = httpRequest.getParameter("userId");
+			String userIdFromSession = (String) httpRequest.getSession().getAttribute("userId");
+			
+			if (userIdFromSession == null || !userIdFromSession.equals(userIdFromRequest)) {
+				httpRequest.getSession().setAttribute("userRole", UserRole.ANONYMOUS.toString());
+				httpResponse.sendRedirect("logination");
+				
+				return;
+			}
+		}
+		chain.doFilter(request, response);
 	}
 
 	@Override
@@ -41,8 +54,6 @@ public class ProfileAccessFilter implements Filter {
 
 	@Override
 	public void init(FilterConfig arg0) throws ServletException {
-		// TODO Auto-generated method stub
 
 	}
-
 }

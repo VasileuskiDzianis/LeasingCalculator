@@ -72,18 +72,57 @@
 		<div class="payments-list-col">НДС на погашение стоимости</div>
 		<div class="payments-list-col">Страхование</div>
 		<div class="payments-list-col">НДС на страховнаие</div>
+		<div class="payments-list-col">Всего</div>
 	</div>
 	<c:forEach var="payment" items="${paymentsSchedule.monthlyPayments}">
 		<div class="payments-list-row">
-			<div class="payments-list-col"><fmt:formatDate value="${payment.paymentDate}" pattern="d MMM y"/></div>
-			<div class="payments-list-col">${payment.paymentType}</div>
-			<div class="payments-list-col"><fmt:formatNumber value="${payment.remainingDebt}" minFractionDigits="2" maxFractionDigits="2" /></div>
-			<div class="payments-list-col"><fmt:formatNumber value="${payment.leaseMargin}" minFractionDigits="2" maxFractionDigits="2" /></div>
-			<div class="payments-list-col"><fmt:formatNumber value="${payment.leaseMarginVat}" minFractionDigits="2" maxFractionDigits="2" /></div>
-			<div class="payments-list-col"><fmt:formatNumber value="${payment.propertyCostRepayment}" minFractionDigits="2" maxFractionDigits="2" /></div>
-			<div class="payments-list-col"><fmt:formatNumber value="${payment.propertyCostRepaymentVat}" minFractionDigits="2" maxFractionDigits="2" /></div>
-			<div class="payments-list-col"><fmt:formatNumber value="${payment.insurance}" minFractionDigits="2" maxFractionDigits="2" /></div>
-			<div class="payments-list-col"><fmt:formatNumber value="${payment.insuranceVat}" minFractionDigits="2" maxFractionDigits="2" /></div>
+			<div class="payments-list-col">
+				<fmt:formatDate value="${payment.paymentDate}" pattern="d MMM y" />
+			</div>
+			<div class="payments-list-col">
+				<c:choose>
+					<c:when test="${payment.paymentType eq 'PRE_PAYMENT'}">аванс</c:when>
+				</c:choose>
+				<c:choose>
+					<c:when test="${payment.paymentType eq 'LEASE_PAYMENT'}">лизинговый</c:when>
+				</c:choose>
+				<c:choose>
+					<c:when test="${payment.paymentType eq 'BUYING_OUT_PAYMENT'}">выкуп</c:when>
+				</c:choose>
+			</div>
+			<div class="payments-list-col">
+				<fmt:formatNumber value="${payment.remainingDebt}"
+					minFractionDigits="2" maxFractionDigits="2" />
+			</div>
+			<div class="payments-list-col">
+				<fmt:formatNumber value="${payment.leaseMargin}"
+					minFractionDigits="2" maxFractionDigits="2" />
+			</div>
+			<div class="payments-list-col">
+				<fmt:formatNumber value="${payment.leaseMarginVat}"
+					minFractionDigits="2" maxFractionDigits="2" />
+			</div>
+			<div class="payments-list-col">
+				<fmt:formatNumber value="${payment.propertyCostRepayment}"
+					minFractionDigits="2" maxFractionDigits="2" />
+			</div>
+			<div class="payments-list-col">
+				<fmt:formatNumber value="${payment.propertyCostRepaymentVat}"
+					minFractionDigits="2" maxFractionDigits="2" />
+			</div>
+			<div class="payments-list-col">
+				<fmt:formatNumber value="${payment.insurance}" minFractionDigits="2"
+					maxFractionDigits="2" />
+			</div>
+			<div class="payments-list-col">
+				<fmt:formatNumber value="${payment.insuranceVat}"
+					minFractionDigits="2" maxFractionDigits="2" />
+			</div>
+			<div class="payments-list-col">
+				<fmt:formatNumber
+					value="${payment.leaseMargin + payment.leaseMarginVat + payment.propertyCostRepayment + payment.propertyCostRepaymentVat + payment.insurance+payment.insuranceVat}"
+					minFractionDigits="2" maxFractionDigits="2" />
+			</div>
 		</div>
 	</c:forEach>
 </div>
