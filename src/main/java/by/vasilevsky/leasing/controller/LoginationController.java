@@ -21,10 +21,17 @@ import by.vasilevsky.leasing.view.LoginationFormModel;
 public class LoginationController extends HttpServlet {
 	private static final long serialVersionUID = 8780315513488014012L;
 
-	private ServiceFactory serviceFactory = new ServiceFactoryImpl();
-	private LoginationService loginationService = serviceFactory.getLoginationService();
-	private UserService userService = serviceFactory.getUserService();
+	private ServiceFactory serviceFactory;
+	private LoginationService loginationService;
+	private UserService userService;
 
+	@Override
+	public void init() {
+		serviceFactory = new ServiceFactoryImpl();
+		loginationService = serviceFactory.getLoginationService();
+		userService = serviceFactory.getUserService();
+	}
+	
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher view = request.getRequestDispatcher("logination.tiles");

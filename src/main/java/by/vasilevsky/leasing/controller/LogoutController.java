@@ -14,12 +14,10 @@ import by.vasilevsky.leasing.domain.user.UserRole;
 public class LogoutController extends HttpServlet {
 	private static final long serialVersionUID = 8780315513488014012L;
 
-
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		request.getSession().setAttribute("userRole", UserRole.ANONYMOUS.toString());
 		response.sendRedirect("home");
 	}
-
 }

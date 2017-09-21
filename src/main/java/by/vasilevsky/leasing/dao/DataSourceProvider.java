@@ -1,25 +1,27 @@
 package by.vasilevsky.leasing.dao;
 
+import java.util.Properties;
+
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 
 public final class DataSourceProvider {
-	private static final String DRIVER_CLASS_NAME = "com.mysql.cj.jdbc.Driver";
-	private static final String DB_URL = "jdbc:mysql://localhost:3306/vls";
-	private static final String DB_USER = "dan";
-	private static final String DB_PASSWORD = "pilotpen";
-	private static final int CONN_POOL_SIZE = 5;
+	private static Properties properties;
 
 	private BasicDataSource basicDataSource = new BasicDataSource();
 
 	private DataSourceProvider() {
-		basicDataSource.setDriverClassName(DRIVER_CLASS_NAME);
-		basicDataSource.setUrl(DB_URL);
-		basicDataSource.setUsername(DB_USER);
-		basicDataSource.setPassword(DB_PASSWORD);
-		basicDataSource.setInitialSize(CONN_POOL_SIZE);
-		basicDataSource.setConnectionProperties("useUnicode=yes;characterEncoding=utf8");
+		basicDataSource.setDriverClassName(properties.getProperty("driver"));
+		basicDataSource.setUrl(properties.getProperty("url"));
+		basicDataSource.setUsername(properties.getProperty("user"));
+		basicDataSource.setPassword(properties.getProperty("password"));
+		basicDataSource.setInitialSize(Integer.parseInt(properties.getProperty("poolSize")));
+		basicDataSource.setConnectionProperties(properties.getProperty("connectionProperties"));
+	}
+	
+	public static void setProperties(Properties prop) {
+		properties = prop;
 	}
 
 	private static class DataSourceHolder {

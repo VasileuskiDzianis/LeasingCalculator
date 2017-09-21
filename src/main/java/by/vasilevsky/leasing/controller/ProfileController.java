@@ -19,8 +19,14 @@ import by.vasilevsky.leasing.view.ProfileFormModel;
 public class ProfileController extends HttpServlet {
 	private static final long serialVersionUID = -6602582281415954285L;
 	
-	private ServiceFactory serviceFactory = new ServiceFactoryImpl();
-	private UserService userService = serviceFactory.getUserService();
+	private ServiceFactory serviceFactory;
+	private UserService userService;
+	
+	@Override
+	public void init() {
+		serviceFactory = new ServiceFactoryImpl();
+		userService = serviceFactory.getUserService();
+	}
 
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
