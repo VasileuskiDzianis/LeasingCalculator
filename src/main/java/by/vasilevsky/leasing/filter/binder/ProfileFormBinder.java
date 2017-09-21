@@ -37,19 +37,19 @@ public class ProfileFormBinder implements Filter {
 	private void checkProfileFormModel(ProfileFormModel model) {
 		if (model.getUserId() == null || !Validator.validateNumber(model.getUserId())) {
 			model.setErrorsExist(true);
-			model.setMainMessage("Не верный id");
+			model.setMainMessage("неверный id");
 		}
 		if (model.getFirstName() == null || !Validator.validateName(model.getFirstName())) {
 			model.setErrorsExist(true);
-			model.setFirstNameMessage("не корректные данные");
+			model.setFirstNameMessage("некорректные данные");
 		}
 		if (model.getLastName() == null || !Validator.validateName(model.getLastName())) {
 			model.setErrorsExist(true);
-			model.setLastNameMessage("не корректные данные");
+			model.setLastNameMessage("некорректные данные");
 		}
 		if (model.getAge() == null || !Validator.validateNumber(model.getAge())) {
 			model.setErrorsExist(true);
-			model.setAgeMessage("не корректные данные");
+			model.setAgeMessage("некорректные данные");
 		}
 	}
 

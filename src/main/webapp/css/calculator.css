@@ -55,7 +55,7 @@ body {
 	padding-left: 10px;
 	padding-right: 10px;
 }
-#registration-container, #users-container{
+#registration-container, #users-container, #error-container{
 	width: 850px;
 	background-color: #a7c7eb;
 	margin: auto;
@@ -65,6 +65,11 @@ body {
 	padding-bottom: 20px;
 	padding-left: 10px;
 	padding-right: 10px;
+}
+
+#error-container {
+	color: #585858;
+	font-weight: bold;
 }
 
 .item-content-column {
@@ -88,7 +93,7 @@ body {
 }
 
 .form-err-message {
-	color: red;
+	color: #585858;
 	margin-right: 5px;
 	margin-left: 5px;
 	text-align: left;

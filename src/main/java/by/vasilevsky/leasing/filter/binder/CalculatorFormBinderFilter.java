@@ -43,43 +43,43 @@ public class CalculatorFormBinderFilter implements Filter {
 			Currency.valueOf(Currency.class, model.getCurrency());
 		} catch (IllegalArgumentException | NullPointerException e) {
 			model.setErrors(true);
-			model.setCurrencyMessage("не корректные данные");
+			model.setCurrencyMessage("некорректные данные");
 		}
 		try {
 			PropertyType.valueOf(PropertyType.class, model.getObjectType());
 		} catch (IllegalArgumentException | NullPointerException e) {
 			model.setErrors(true);
-			model.setObjectTypeMessage("не корректные данные");
+			model.setObjectTypeMessage("некорректные данные");
 		}
 		try {
 			Integer.parseInt(model.getAge());
 		} catch (NumberFormatException | NullPointerException e) {
 			model.setErrors(true);
-			model.setAgeMessage("не корректные данные");
+			model.setAgeMessage("некорректные данные");
 		}
 		try {
 			Integer.parseInt(model.getDuration());
 		} catch (NumberFormatException | NullPointerException e) {
 			model.setErrors(true);
-			model.setDurationMessage("не корректные данные");
+			model.setDurationMessage("некорректные данные");
 		}
 		try {
 			Float.parseFloat(model.getCost());
 		} catch (NumberFormatException | NullPointerException e) {
 			model.setErrors(true);
-			model.setCostMessage("не корректные данные");
+			model.setCostMessage("некорректные данные");
 		}
 		try {
 			Float.parseFloat(model.getPrepay());
 		} catch (NumberFormatException | NullPointerException e) {
 			model.setErrors(true);
-			model.setPrepayMessage("не корректные данные");
+			model.setPrepayMessage("некорректные данные");
 		}
 		try {
 			Float.parseFloat(model.getByuingout());
 		} catch (NumberFormatException | NullPointerException e) {
 			model.setErrors(true);
-			model.setByuingoutMessage("не корректные данные");
+			model.setByuingoutMessage("некорректные данные");
 		}
 	}
 

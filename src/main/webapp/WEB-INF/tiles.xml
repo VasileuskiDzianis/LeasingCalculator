@@ -40,4 +40,12 @@
 		<put-attribute name="footer" value="/WEB-INF/tiles/footer.jsp" />
 	</definition>
 	
+	<definition name="error" template="/WEB-INF/layouts/error.jsp">
+		<put-attribute name="title" value="error" />
+		<put-attribute name="header" value="/WEB-INF/tiles/header.jsp" />
+		<put-attribute name="menu" value="/WEB-INF/tiles/menu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/tiles/error.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/tiles/footer.jsp" />
+	</definition>
+	
 </tiles-definitions>

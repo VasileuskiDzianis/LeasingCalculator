@@ -33,16 +33,16 @@ public class RegistrationFormBinderFilter implements Filter {
 	
 	private void checkRegistartionFormModel(RegistrationFormModel formModel) {
 		if (formModel.getFirstPassword() == null) {
-			formModel.setFirstPasswordMessage("Поле не может быть пустым");
+			formModel.setFirstPasswordMessage("поле не может быть пустым");
 			formModel.setErrors(true);
 		}
 		if (formModel.getLogin() == null) {
-			formModel.setLoginMessage("Поле не может быть пустым");
+			formModel.setLoginMessage("поле не может быть пустым");
 			formModel.setErrors(true);
 		}
 		if (formModel.getFirstPassword() != null
 				&& (!formModel.getFirstPassword().equals(formModel.getSecondPassword()))) {
-			formModel.setSecondPasswordMessage("Пароли не совпадают");
+			formModel.setSecondPasswordMessage("пароли не совпадают");
 			formModel.setErrors(true);
 		}
 		if (!Validator.validatePassword(formModel.getFirstPassword())) {
@@ -50,7 +50,7 @@ public class RegistrationFormBinderFilter implements Filter {
 			formModel.setErrors(true);
 		}
 		if (!Validator.validateLogin(formModel.getLogin())) {
-			formModel.setLoginMessage("Не корректный адрес");
+			formModel.setLoginMessage("некорректный адрес");
 			formModel.setErrors(true);
 		}
 	}
@@ -64,5 +64,4 @@ public class RegistrationFormBinderFilter implements Filter {
 	public void init(FilterConfig arg0) throws ServletException {
 
 	}
-	
 }

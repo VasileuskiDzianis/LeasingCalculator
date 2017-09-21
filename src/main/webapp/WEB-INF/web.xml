@@ -3,7 +3,6 @@
 	xmlns="http://java.sun.com/xml/ns/javaee"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	metadata-complete="false" version="3.0">
-
 	<listener>
 		<listener-class>org.apache.tiles.extras.complete.CompleteAutoloadTilesListener</listener-class>
 	</listener>
@@ -15,7 +14,23 @@
 		<servlet-name>Tiles Dispatch Servlet</servlet-name>
 		<url-pattern>*.tiles</url-pattern>
 	</servlet-mapping>
-
+	<!-- Errors mapping -->
+	<error-page>
+		<error-code>404</error-code>
+		<location>/exception</location>
+	</error-page>
+	
+	<error-page>
+   		<exception-type>java.lang.Exception</exception-type >
+   		<location>/exception</location>
+	</error-page>
+	
+	<error-page>
+   		<exception-type>java.lang.IllegalArgumentException</exception-type >
+   		<location>/exception</location>
+	</error-page>
+	
+	<!-- UTF8 Filtering -->
 	<filter>
 		<filter-name>utf8filter</filter-name>
 		<filter-class>by.vasilevsky.leasing.filter.Utf8Filter</filter-class>
