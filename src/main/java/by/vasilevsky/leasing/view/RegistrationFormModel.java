@@ -10,7 +10,7 @@ public class RegistrationFormModel {
 	private String firstPassword;
 	private String secondPassword;
 
-	private boolean errorsExist;
+	private boolean errors;
 
 	public String getLogin() {
 		return login;
@@ -36,12 +36,12 @@ public class RegistrationFormModel {
 		this.secondPassword = secondPassword;
 	}
 
-	public boolean isErrorsExist() {
-		return errorsExist;
+	public boolean hasErrors() {
+		return errors;
 	}
 
-	public void setHasErrors(boolean hasErrors) {
-		this.errorsExist = hasErrors;
+	public void setErrors(boolean errors) {
+		this.errors = errors;
 	}
 
 	public String getMainMessage() {

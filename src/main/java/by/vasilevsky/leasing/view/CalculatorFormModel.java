@@ -22,7 +22,7 @@ public class CalculatorFormModel {
 	private String insuranceMessage;
 
 	private String mainMessage;
-	private boolean errorsExist;
+	private boolean errors;
 
 	public String getCurrency() {
 		return currency;
@@ -176,11 +176,11 @@ public class CalculatorFormModel {
 		this.mainMessage = mainMessage;
 	}
 
-	public boolean isErrorsExist() {
-		return errorsExist;
+	public boolean hasErrors() {
+		return errors;
 	}
 
-	public void setErrorsExist(boolean errorsExist) {
-		this.errorsExist = errorsExist;
+	public void setErrors(boolean errors) {
+		this.errors = errors;
 	}
 }

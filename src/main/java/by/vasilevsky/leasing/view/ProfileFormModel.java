@@ -21,7 +21,7 @@ public class ProfileFormModel {
 		this.mainMessage = mainMessage;
 	}
 
-	private boolean errorsExist;
+	private boolean errors;
 
 	public String getUserId() {
 		return userId;
@@ -87,11 +87,11 @@ public class ProfileFormModel {
 		this.ageMessage = ageMessage;
 	}
 
-	public boolean isErrorsExist() {
-		return errorsExist;
+	public boolean hasErrors() {
+		return errors;
 	}
 
-	public void setErrorsExist(boolean errorsExist) {
-		this.errorsExist = errorsExist;
+	public void setErrorsExist(boolean errors) {
+		this.errors = errors;
 	}
 }

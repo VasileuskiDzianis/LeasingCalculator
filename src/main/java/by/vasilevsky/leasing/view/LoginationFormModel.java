@@ -6,7 +6,7 @@ public class LoginationFormModel {
 	private String login;
 	private String password;
 
-	private boolean errorsExist;
+	private boolean errors;
 
 	public String getMainMessage() {
 		return mainMessage;
@@ -32,11 +32,11 @@ public class LoginationFormModel {
 		this.password = password;
 	}
 
-	public boolean isErrorsExist() {
-		return errorsExist;
+	public boolean hasErrors() {
+		return errors;
 	}
 
-	public void setErrorsExist(boolean errorsExist) {
-		this.errorsExist = errorsExist;
+	public void setErrorsExist(boolean errors) {
+		this.errors = errors;
 	}
 }

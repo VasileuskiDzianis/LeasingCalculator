@@ -42,18 +42,8 @@ public class PaymentsScheduleController extends HttpServlet {
 
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		CalculatorFormModel model = new CalculatorFormModel();
-		model.setCurrency(request.getParameter("currency"));
-		model.setObjectType(request.getParameter("objecttype"));
-		model.setAge(request.getParameter("age"));
-		model.setCost(request.getParameter("cost"));
-		model.setNoVatOnCost(request.getParameter("no_vat_on_cost"));
-		model.setPrepay(request.getParameter("prepay"));
-		model.setDuration(request.getParameter("duration"));
-		model.setByuingout(request.getParameter("byuingoutpercent"));
-		model.setInsurance(request.getParameter("include_insurance"));
-		checkCalculatorFormModel(model);
-		if (model.isErrorsExist()) {
+		CalculatorFormModel model = (CalculatorFormModel) request.getAttribute("calculatorFormModel");
+		if (model.hasErrors()) {
 			request.setAttribute("calculatorFormModel", model);
 			RequestDispatcher view = request.getRequestDispatcher("calculator.tiles");
 			view.forward(request, response);
@@ -99,50 +89,5 @@ public class PaymentsScheduleController extends HttpServlet {
 		request.setAttribute("paymentsSchedule", paymentsSchedule);
 		RequestDispatcher view = request.getRequestDispatcher("payments_schedule.tiles");
 		view.forward(request, response);
-	}
-
-	private void checkCalculatorFormModel(CalculatorFormModel model) {
-		try {
-			Currency.valueOf(Currency.class, model.getCurrency());
-		} catch (IllegalArgumentException | NullPointerException e) {
-			model.setErrorsExist(true);
-			model.setCurrencyMessage("не корректные данные");
-		}
-		try {
-			PropertyType.valueOf(PropertyType.class, model.getObjectType());
-		} catch (IllegalArgumentException | NullPointerException e) {
-			model.setErrorsExist(true);
-			model.setObjectTypeMessage("не корректные данные");
-		}
-		try {
-			Integer.parseInt(model.getAge());
-		} catch (NumberFormatException | NullPointerException e) {
-			model.setErrorsExist(true);
-			model.setAgeMessage("не корректные данные");
-		}
-		try {
-			Integer.parseInt(model.getDuration());
-		} catch (NumberFormatException | NullPointerException e) {
-			model.setErrorsExist(true);
-			model.setDurationMessage("не корректные данные");
-		}
-		try {
-			Float.parseFloat(model.getCost());
-		} catch (NumberFormatException | NullPointerException e) {
-			model.setErrorsExist(true);
-			model.setCostMessage("не корректные данные");
-		}
-		try {
-			Float.parseFloat(model.getPrepay());
-		} catch (NumberFormatException | NullPointerException e) {
-			model.setErrorsExist(true);
-			model.setPrepayMessage("не корректные данные");
-		}
-		try {
-			Float.parseFloat(model.getByuingout());
-		} catch (NumberFormatException | NullPointerException e) {
-			model.setErrorsExist(true);
-			model.setByuingoutMessage("не корректные данные");
-		}
 	}
 }

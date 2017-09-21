@@ -1,7 +1,6 @@
-package by.vasilevsky.leasing.filter;
+package by.vasilevsky.leasing.filter.security;
 
 import java.io.IOException;
-
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -14,8 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import by.vasilevsky.leasing.domain.user.UserRole;
 
-@WebFilter("/profile")
-public class ProfileAccessFilter implements Filter {
+@WebFilter("/users")
+public class UsersAccessFilter implements Filter {
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
@@ -25,26 +24,14 @@ public class ProfileAccessFilter implements Filter {
 
 		String userRole = (String) httpRequest.getSession().getAttribute("userRole");
 
-		if (!UserRole.USER.toString().equals(userRole)) {
+		if (!UserRole.ADMIN.toString().equals(userRole)) {
 
 			httpRequest.getSession().setAttribute("userRole", UserRole.ANONYMOUS.toString());
 			httpResponse.sendRedirect("logination");
-			
-			return;
-		}
+		} else {
 
-		if (httpRequest.getMethod().equalsIgnoreCase("post")) {
-			String userIdFromRequest = httpRequest.getParameter("userId");
-			String userIdFromSession = (String) httpRequest.getSession().getAttribute("userId");
-			
-			if (userIdFromSession == null || !userIdFromSession.equals(userIdFromRequest)) {
-				httpRequest.getSession().setAttribute("userRole", UserRole.ANONYMOUS.toString());
-				httpResponse.sendRedirect("logination");
-				
-				return;
-			}
+			chain.doFilter(request, response);
 		}
-		chain.doFilter(request, response);
 	}
 
 	@Override
