@@ -29,28 +29,39 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public User findUserById(int id) {
-
+		
 		return daoFactory.getUserDao().findUserById(id);
 	}
 
 	@Override
 	public User findUserByLogin(String login) {
-		
+		if (login == null) {
+			throw new IllegalArgumentException();
+		}
 		return daoFactory.getUserDao().findUserByLogin(login);
 	}
 
 	@Override
 	public void saveUser(User user) {
+		if (!isUserValid(user)) {
+			throw new IllegalArgumentException();
+		}
 		daoFactory.getUserDao().saveUser(user);
 	}
 
 	@Override
 	public void updateUser(User user) {
+		if (!isUserValid(user)) {
+			throw new IllegalArgumentException();
+		}
 		daoFactory.getUserDao().updateUser(user);
 	}
 
 	@Override
 	public void deleteUser(User user) {
+		if (!isUserValid(user)) {
+			throw new IllegalArgumentException();
+		}
 		daoFactory.getUserDao().deleteUser(user);
 	}
 
@@ -58,5 +69,16 @@ public class UserServiceImpl implements UserService {
 	public List<User> findAll() {
 		
 		return daoFactory.getUserDao().findAll();
+	}
+	
+	private boolean isUserValid(User user) {
+		
+		return user != null
+				&& user.getLogin() != null
+				&& user.getPassword() != null
+				&& user.getUserRole() != null
+				&& user.getUserDetails().getAge() >= 0
+				&& user.getUserDetails().getFirstName() != null
+				&& user.getUserDetails().getLastName() != null;
 	}
 }

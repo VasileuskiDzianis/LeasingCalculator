@@ -35,11 +35,15 @@ public class PaymentsScheduleServiceImpl implements PaymentsScheduleService {
 
 	@Override
 	public void countPayments(PaymentsSchedule schedule) {
+		if (!isPaymentsScheduleValid(schedule)) {
+			throw new IllegalArgumentException();
+		}
 		List<MonthlyPayment> payments = new ArrayList<>();
 		Calendar calendar = new GregorianCalendar();
 		Property property = schedule.getProperty();
 		float debt = property.getPrice() + property.getVat();
 		float costRepayment = countCostRepayment(schedule);
+		
 		MonthlyPayment prepayment = countSpecialPayment(PaymentType.PRE_PAYMENT, property,
 				schedule.getPrepaymentPercentage(), calendar.getTime(), debt);
 		payments.add(prepayment);
@@ -96,5 +100,21 @@ public class PaymentsScheduleServiceImpl implements PaymentsScheduleService {
 
 		return property.getPrice() * (1 - schedule.getBuyingOutPercentage() - schedule.getPrepaymentPercentage())
 				/ schedule.getLeaseDuration();
+	}
+	
+	private boolean isPaymentsScheduleValid(PaymentsSchedule schedule) {
+				
+		return schedule != null 
+				&& schedule.getBuyingOutPercentage() >= 0f
+				&& schedule.getCurrency() != null 
+				&& schedule.getInsuranceRate() >= 0f
+				&& schedule.getLeaseDuration() >= 0
+				&& schedule.getLeaseRate() >= 0f
+				&& schedule.getPrepaymentPercentage() >= 0f
+				&& schedule.getProperty().getPropertyType() != null
+				&& schedule.getProperty().getCurrency() != null
+				&& schedule.getProperty().getAge() >= 0
+				&& schedule.getProperty().getPrice() > 0f
+				&& schedule.getProperty().getVat() > 0f;
 	}
 }

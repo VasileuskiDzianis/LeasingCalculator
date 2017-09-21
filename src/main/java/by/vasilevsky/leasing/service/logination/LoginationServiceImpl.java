@@ -32,6 +32,10 @@ public class LoginationServiceImpl implements LoginationService {
 
 	@Override
 	public UserRole authenticateUser(String login, String password) {
+		if (login == null || password == null) {
+			throw new IllegalArgumentException();
+		}
+		
 		User user = userService.findUserByLogin(login);
 		if (user == null) {
 

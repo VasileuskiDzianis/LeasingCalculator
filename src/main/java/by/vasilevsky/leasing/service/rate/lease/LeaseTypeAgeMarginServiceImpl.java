@@ -28,7 +28,10 @@ public class LeaseTypeAgeMarginServiceImpl implements LeaseTypeAgeMarginService 
 
 	@Override
 	public LeaseTypeAgeMargin findLeaseRateByTypeAndAge(PropertyType objectType, int age) {
-
+		if (objectType == null || age < 0) {
+			throw new IllegalArgumentException();
+		}
+		
 		return daoFactory.getLeaseTypeAgeMarginDao().findLeaseRateByTypeAndAge(objectType, age);
 	}
 }

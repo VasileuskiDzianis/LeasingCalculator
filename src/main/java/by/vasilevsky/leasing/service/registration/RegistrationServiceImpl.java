@@ -28,6 +28,9 @@ public class RegistrationServiceImpl implements RegistrationService {
 
 	@Override
 	public boolean isLoginExisting(String login) {
+		if (login == null) {
+			throw new IllegalArgumentException();
+		}
 		UserService userService = serviceFactory.getUserService();
 		User user = userService.findUserByLogin(login);
 
@@ -36,6 +39,9 @@ public class RegistrationServiceImpl implements RegistrationService {
 
 	@Override
 	public void registerNewUser(User user) {
+		if (user == null) {
+			throw new IllegalArgumentException();
+		}
 		UserService userService = serviceFactory.getUserService();
 		String encodedPassword;
 		try {

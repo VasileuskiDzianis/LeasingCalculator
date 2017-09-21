@@ -28,7 +28,9 @@ public class LeaseTypeInsuranceServiceImpl implements LeaseTypeInsuranceService 
 
 	@Override
 	public LeaseTypeInsurance findInsuranceByObjectType(PropertyType objectType) {
-
+		if (objectType == null) {
+			throw new IllegalArgumentException();
+		}
 		return daoFactory.getLeaseTypeInsuranceDao().findInsuranceByObjectType(objectType);
 	}
 }

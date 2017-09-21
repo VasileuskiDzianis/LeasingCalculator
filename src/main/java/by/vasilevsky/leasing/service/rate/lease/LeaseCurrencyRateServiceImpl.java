@@ -28,6 +28,9 @@ public class LeaseCurrencyRateServiceImpl implements LeaseCurrencyRateService {
 
 	@Override
 	public LeaseCurrencyRate findLeaseRateByCurrency(Currency currency) {
+		if (currency == null) {
+			throw new IllegalArgumentException();
+		}
 
 		return daoFactory.getLeaseCurrencyRateDao().findLeaseRateByCurrency(currency);
 	}

@@ -19,8 +19,11 @@ public class PasswordService {
 	 * storing in a database. Empty passwords are not supported.
 	 */
 	public static String getSaltedHash(String password) throws Exception {
+		if (password == null) {
+			throw new IllegalArgumentException();
+		}
 		byte[] salt = SecureRandom.getInstance("SHA1PRNG").generateSeed(saltLen);
-		
+
 		// store the salt with the password
 		return Base64.encodeBase64String(salt) + "$" + hash(password, salt);
 	}
@@ -30,12 +33,16 @@ public class PasswordService {
 	 * of the password.
 	 */
 	public static boolean check(String password, String stored) throws Exception {
+		if (password == null || stored == null) {
+			throw new IllegalArgumentException();
+		}
+
 		String[] saltAndPass = stored.split("\\$");
 		if (saltAndPass.length != 2) {
 			throw new IllegalStateException("The stored password have the form 'salt$hash'");
 		}
 		String hashOfInput = hash(password, Base64.decodeBase64(saltAndPass[0]));
-		
+
 		return hashOfInput.equals(saltAndPass[1]);
 	}
 
@@ -46,7 +53,7 @@ public class PasswordService {
 			throw new IllegalArgumentException("Empty passwords are not supported.");
 		SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
 		SecretKey key = f.generateSecret(new PBEKeySpec(password.toCharArray(), salt, iterations, desiredKeyLen));
-		
+
 		return Base64.encodeBase64String(key.getEncoded());
 	}
 }
