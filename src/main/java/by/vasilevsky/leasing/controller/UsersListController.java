@@ -19,14 +19,8 @@ import by.vasilevsky.leasing.service.validator.Validator;
 public class UsersListController extends HttpServlet {
 	private static final long serialVersionUID = -6602582281415954285L;
 
-	private ServiceFactory serviceFactory;
-	private UserService userService;
-	
-	@Override
-	public void init() {
-		serviceFactory = ServiceFactory.getInstance();
-		userService = serviceFactory.getUserService();
-	}
+	private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
+	private final UserService userService = serviceFactory.getUserService();
 
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

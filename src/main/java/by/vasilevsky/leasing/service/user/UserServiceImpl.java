@@ -7,7 +7,7 @@ import by.vasilevsky.leasing.domain.user.User;
 
 public class UserServiceImpl implements UserService {
 	private static volatile UserServiceImpl instance;
-	private static DaoFactory daoFactory = DaoFactory.getInstance();
+	private static final DaoFactory daoFactory = DaoFactory.getInstance();
 	
 	private UserServiceImpl() {
 		

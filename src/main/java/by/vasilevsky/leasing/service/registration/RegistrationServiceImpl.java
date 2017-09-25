@@ -6,7 +6,7 @@ import by.vasilevsky.leasing.service.user.UserService;
 
 public class RegistrationServiceImpl implements RegistrationService {
 	private static volatile RegistrationServiceImpl instance;
-	private static ServiceFactory serviceFactory = ServiceFactory.getInstance();
+	private static final ServiceFactory serviceFactory = ServiceFactory.getInstance();
 
 	private RegistrationServiceImpl() {
 

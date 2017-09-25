@@ -6,7 +6,7 @@ import by.vasilevsky.leasing.domain.rate.lease.LeaseCurrencyRate;
 
 public class LeaseCurrencyRateServiceImpl implements LeaseCurrencyRateService {
 	private static volatile LeaseCurrencyRateServiceImpl instance;
-	private static DaoFactory daoFactory = DaoFactory.getInstance();
+	private static final DaoFactory daoFactory = DaoFactory.getInstance();
 
 	private LeaseCurrencyRateServiceImpl() {
 

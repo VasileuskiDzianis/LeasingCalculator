@@ -7,10 +7,10 @@ import by.vasilevsky.leasing.service.registration.PasswordService;
 import by.vasilevsky.leasing.service.user.UserService;
 
 public class LoginationServiceImpl implements LoginationService {
-	private ServiceFactory serviceFactory = ServiceFactory.getInstance();
-	private UserService userService = serviceFactory.getUserService();
-	
 	private static volatile LoginationServiceImpl instance;
+	
+	private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
+	private final UserService userService = serviceFactory.getUserService();
 	
 	private LoginationServiceImpl() {
 		

@@ -6,7 +6,7 @@ import by.vasilevsky.leasing.domain.rate.insurance.LeaseTypeInsurance;
 
 public class LeaseTypeInsuranceServiceImpl implements LeaseTypeInsuranceService {
 	private static volatile LeaseTypeInsuranceServiceImpl instance;
-	private static DaoFactory daoFactory = DaoFactory.getInstance();
+	private static final DaoFactory daoFactory = DaoFactory.getInstance();
 
 	private LeaseTypeInsuranceServiceImpl() {
 

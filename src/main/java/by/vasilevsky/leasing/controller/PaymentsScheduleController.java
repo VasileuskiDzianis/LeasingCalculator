@@ -24,20 +24,11 @@ import by.vasilevsky.leasing.service.rate.lease.LeaseTypeAgeMarginService;
 public class PaymentsScheduleController extends HttpServlet {
 	private static final long serialVersionUID = -267046298350756472L;
 
-	private ServiceFactory serviceFactory;
-	private PaymentsScheduleService paymentsScheduleService;
-	private LeaseCurrencyRateService leaseCurrencyRateService;
-	private LeaseTypeAgeMarginService leaseTypeAgeMarginService;
-	private LeaseTypeInsuranceService leaseTypeInsuranceService;
-
-	@Override
-	public void init() {
-		serviceFactory = ServiceFactory.getInstance();
-		paymentsScheduleService = serviceFactory.getPaymentsScheduleService();
-		leaseCurrencyRateService = serviceFactory.getLeaseCurrencyRateService();
-		leaseTypeAgeMarginService = serviceFactory.getLeaseTypeAgeMarginService();
-		leaseTypeInsuranceService = serviceFactory.getLeaseTypeInsuranceService();
-	}
+	private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
+	private final PaymentsScheduleService paymentsScheduleService = serviceFactory.getPaymentsScheduleService();
+	private final LeaseCurrencyRateService leaseCurrencyRateService = serviceFactory.getLeaseCurrencyRateService();
+	private final LeaseTypeAgeMarginService leaseTypeAgeMarginService = serviceFactory.getLeaseTypeAgeMarginService();
+	private final LeaseTypeInsuranceService leaseTypeInsuranceService = serviceFactory.getLeaseTypeInsuranceService();
 
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {

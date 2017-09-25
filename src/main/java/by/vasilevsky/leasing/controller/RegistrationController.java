@@ -21,14 +21,8 @@ import by.vasilevsky.leasing.service.registration.RegistrationService;
 public class RegistrationController extends HttpServlet {
 	private static final long serialVersionUID = 8780315513488014013L;
 
-	private ServiceFactory serviceFactory;
-	private RegistrationService registrationService;
-
-	@Override
-	public void init() {
-		serviceFactory = ServiceFactoryImpl.getInstance();
-		registrationService = serviceFactory.getRegistrationService();
-	}
+	private final ServiceFactory serviceFactory = ServiceFactoryImpl.getInstance();
+	private final RegistrationService registrationService = serviceFactory.getRegistrationService();
 
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

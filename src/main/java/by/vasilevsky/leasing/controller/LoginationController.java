@@ -20,17 +20,10 @@ import by.vasilevsky.leasing.service.user.UserService;
 public class LoginationController extends HttpServlet {
 	private static final long serialVersionUID = 8780315513488014012L;
 
-	private ServiceFactory serviceFactory;
-	private LoginationService loginationService;
-	private UserService userService;
+	private ServiceFactory serviceFactory = ServiceFactory.getInstance();
+	private LoginationService loginationService = serviceFactory.getLoginationService();
+	private UserService userService = serviceFactory.getUserService();
 
-	@Override
-	public void init() {
-		serviceFactory = ServiceFactory.getInstance();
-		loginationService = serviceFactory.getLoginationService();
-		userService = serviceFactory.getUserService();
-	}
-	
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher view = request.getRequestDispatcher("logination.tiles");
@@ -44,7 +37,7 @@ public class LoginationController extends HttpServlet {
 			UserRole userRole = loginationService.authenticateUser(model.getLogin(), model.getPassword());
 			if (!userRole.equals(UserRole.ANONYMOUS)) {
 				User user = userService.findUserByLogin(model.getLogin());
-				
+
 				request.getSession().setAttribute("userRole", userRole.toString());
 				request.getSession().setAttribute("userId", Integer.toString(user.getId()));
 				response.sendRedirect("home");

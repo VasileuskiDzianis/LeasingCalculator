@@ -6,7 +6,7 @@ import by.vasilevsky.leasing.domain.rate.lease.LeaseTypeAgeMargin;
 
 public class LeaseTypeAgeMarginServiceImpl implements LeaseTypeAgeMarginService {
 	private static volatile LeaseTypeAgeMarginServiceImpl instance;
-	private static DaoFactory daoFactory = DaoFactory.getInstance();
+	private static final DaoFactory daoFactory = DaoFactory.getInstance();
 
 	private LeaseTypeAgeMarginServiceImpl() {
 
