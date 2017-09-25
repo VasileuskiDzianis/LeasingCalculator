@@ -10,8 +10,6 @@ import by.vasilevsky.leasing.service.user.UserService;
 
 public interface ServiceFactory {
 	
-	static ServiceFactory instance = ServiceFactoryImpl.getInstance();
-	
 	UserService getUserService();
 	
 	PaymentsScheduleService getPaymentsScheduleService();
@@ -28,6 +26,6 @@ public interface ServiceFactory {
 	
 	static ServiceFactory getInstance() {
 		
-		return instance;
+		return ServiceFactoryImpl.getInstance();
 	}
 }

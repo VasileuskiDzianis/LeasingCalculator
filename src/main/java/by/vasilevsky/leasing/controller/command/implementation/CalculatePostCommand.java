@@ -1,14 +1,9 @@
-package by.vasilevsky.leasing.controller;
+package by.vasilevsky.leasing.controller.command.implementation;
 
-import java.io.IOException;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import by.vasilevsky.leasing.controller.command.Command;
 import by.vasilevsky.leasing.controller.forms.CalculatorFormModel;
 import by.vasilevsky.leasing.domain.currency.Currency;
 import by.vasilevsky.leasing.domain.lease_object.Property;
@@ -20,25 +15,38 @@ import by.vasilevsky.leasing.service.rate.insurance.LeaseTypeInsuranceService;
 import by.vasilevsky.leasing.service.rate.lease.LeaseCurrencyRateService;
 import by.vasilevsky.leasing.service.rate.lease.LeaseTypeAgeMarginService;
 
-@WebServlet(urlPatterns = { "/calculate" })
-public class PaymentsScheduleController extends HttpServlet {
-	private static final long serialVersionUID = -267046298350756472L;
-
+public class CalculatePostCommand implements Command {
+	private static volatile CalculatePostCommand instance;
 	private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
 	private final PaymentsScheduleService paymentsScheduleService = serviceFactory.getPaymentsScheduleService();
 	private final LeaseCurrencyRateService leaseCurrencyRateService = serviceFactory.getLeaseCurrencyRateService();
 	private final LeaseTypeAgeMarginService leaseTypeAgeMarginService = serviceFactory.getLeaseTypeAgeMarginService();
 	private final LeaseTypeInsuranceService leaseTypeInsuranceService = serviceFactory.getLeaseTypeInsuranceService();
+	
+	private CalculatePostCommand() {
+		
+	}
+	
+	public static Command getInstance() {
+		CalculatePostCommand localInstance = instance;
+		if (localInstance == null) {
+			synchronized (CalculatePostCommand.class) {
+				localInstance = instance;
+				if (localInstance == null) {
+					instance = localInstance = new CalculatePostCommand();
+				}
+			}
+		}
+		return localInstance;
+	}
 
 	@Override
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+	public String execute(HttpServletRequest request, HttpServletResponse response) {
 		CalculatorFormModel model = (CalculatorFormModel) request.getAttribute("calculatorFormModel");
 		if (model.hasErrors()) {
 			request.setAttribute("calculatorFormModel", model);
-			RequestDispatcher view = request.getRequestDispatcher("calculator.tiles");
-			view.forward(request, response);
 
-			return;
+			return "calculator.tiles";
 		}
 		PaymentsSchedule paymentsSchedule = new PaymentsSchedule();
 		Property property = new Property();
@@ -77,7 +85,7 @@ public class PaymentsScheduleController extends HttpServlet {
 		paymentsScheduleService.countPayments(paymentsSchedule);
 
 		request.setAttribute("paymentsSchedule", paymentsSchedule);
-		RequestDispatcher view = request.getRequestDispatcher("payments_schedule.tiles");
-		view.forward(request, response);
+		
+		return "payments_schedule.tiles";
 	}
 }

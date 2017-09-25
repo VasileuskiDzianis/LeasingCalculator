@@ -1,14 +1,9 @@
-package by.vasilevsky.leasing.controller;
+package by.vasilevsky.leasing.controller.command.implementation;
 
-import java.io.IOException;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import by.vasilevsky.leasing.controller.command.Command;
 import by.vasilevsky.leasing.controller.forms.RegistrationFormModel;
 import by.vasilevsky.leasing.domain.user.User;
 import by.vasilevsky.leasing.domain.user.UserDetails;
@@ -17,21 +12,30 @@ import by.vasilevsky.leasing.service.ServiceFactory;
 import by.vasilevsky.leasing.service.ServiceFactoryImpl;
 import by.vasilevsky.leasing.service.registration.RegistrationService;
 
-@WebServlet(urlPatterns = { "/registration" })
-public class RegistrationController extends HttpServlet {
-	private static final long serialVersionUID = 8780315513488014013L;
-
+public class RegistrationPostCommand implements Command {
+	private static volatile RegistrationPostCommand instance;
 	private final ServiceFactory serviceFactory = ServiceFactoryImpl.getInstance();
 	private final RegistrationService registrationService = serviceFactory.getRegistrationService();
 
-	@Override
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher view = request.getRequestDispatcher("registration.tiles");
-		view.forward(request, response);
+	private RegistrationPostCommand() {
+
+	}
+
+	public static Command getInstance() {
+		RegistrationPostCommand localInstance = instance;
+		if (localInstance == null) {
+			synchronized (RegistrationPostCommand.class) {
+				localInstance = instance;
+				if (localInstance == null) {
+					instance = localInstance = new RegistrationPostCommand();
+				}
+			}
+		}
+		return localInstance;
 	}
 
 	@Override
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public String execute(HttpServletRequest request, HttpServletResponse response) {
 		RegistrationFormModel model = (RegistrationFormModel) request.getAttribute("registrationFormModel");
 		if (model.getLogin() != null && registrationService.isLoginExisting(model.getLogin())) {
 			model.setLoginMessage("Адрес занят");
@@ -39,8 +43,8 @@ public class RegistrationController extends HttpServlet {
 		}
 		if (model.hasErrors()) {
 			request.setAttribute("registrationFormModel", model);
-			RequestDispatcher view = request.getRequestDispatcher("registration.tiles");
-			view.forward(request, response);
+			
+			return "registration.tiles";
 		} else {
 			User user = new User();
 			user.setLogin(model.getLogin());
@@ -56,8 +60,8 @@ public class RegistrationController extends HttpServlet {
 			model.setMainMessage("Зарегистрирован");
 
 			request.setAttribute("registrationFormModel", model);
-			RequestDispatcher view = request.getRequestDispatcher("registration.tiles");
-			view.forward(request, response);
+			
+			return "registration.tiles";
 		}
 	}
 }

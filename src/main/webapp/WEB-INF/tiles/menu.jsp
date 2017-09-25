@@ -5,6 +5,7 @@
 <div id="menu-container">
 	<div id="menu-content">
 		<a class="menu" href="<c:url value="/" />">домой</a>
+		<a class="menu" href="<c:url value="/calculate" />">калькулятор</a>
 		<c:if test="${userRole eq 'ADMIN'}">
 			<a class="menu" href="<c:url value="/users" />">пользователи</a>
 		</c:if>
