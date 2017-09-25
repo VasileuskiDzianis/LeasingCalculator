@@ -9,13 +9,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import by.vasilevsky.leasing.controller.forms.RegistrationFormModel;
 import by.vasilevsky.leasing.domain.user.User;
 import by.vasilevsky.leasing.domain.user.UserDetails;
 import by.vasilevsky.leasing.domain.user.UserRole;
 import by.vasilevsky.leasing.service.ServiceFactory;
 import by.vasilevsky.leasing.service.ServiceFactoryImpl;
 import by.vasilevsky.leasing.service.registration.RegistrationService;
-import by.vasilevsky.leasing.view.RegistrationFormModel;
 
 @WebServlet(urlPatterns = { "/registration" })
 public class RegistrationController extends HttpServlet {
@@ -26,7 +26,7 @@ public class RegistrationController extends HttpServlet {
 
 	@Override
 	public void init() {
-		serviceFactory = new ServiceFactoryImpl();
+		serviceFactory = ServiceFactoryImpl.getInstance();
 		registrationService = serviceFactory.getRegistrationService();
 	}
 

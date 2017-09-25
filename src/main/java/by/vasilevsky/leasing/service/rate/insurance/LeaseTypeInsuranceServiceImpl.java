@@ -1,13 +1,12 @@
 package by.vasilevsky.leasing.service.rate.insurance;
 
 import by.vasilevsky.leasing.dao.DaoFactory;
-import by.vasilevsky.leasing.dao.DaoFactoryImpl;
 import by.vasilevsky.leasing.domain.lease_object.PropertyType;
 import by.vasilevsky.leasing.domain.rate.insurance.LeaseTypeInsurance;
 
 public class LeaseTypeInsuranceServiceImpl implements LeaseTypeInsuranceService {
 	private static volatile LeaseTypeInsuranceServiceImpl instance;
-	private static DaoFactory daoFactory = new DaoFactoryImpl();
+	private static DaoFactory daoFactory = DaoFactory.getInstance();
 
 	private LeaseTypeInsuranceServiceImpl() {
 

@@ -1,20 +1,30 @@
 package by.vasilevsky.leasing.dao.user;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import by.vasilevsky.leasing.dao.DaoFactory;
-import by.vasilevsky.leasing.dao.DaoFactoryImpl;
+import by.vasilevsky.leasing.dao.DataSourceProvider;
 import by.vasilevsky.leasing.domain.user.User;
 import by.vasilevsky.leasing.domain.user.UserDetails;
 import by.vasilevsky.leasing.domain.user.UserRole;
 
 public class UserDaoImplTest {
+	private static final String DEFAULT_DRIVER_CLASS_NAME = "com.mysql.cj.jdbc.Driver";
+	private static final String DEFAULT_DB_URL = "jdbc:mysql://localhost:3306/vls";
+	private static final String DEFAULT_DB_USER = "dan";
+	private static final String DEFAULT_DB_PASSWORD = "pilotpen";
+	private static final String DEFAULT_CON_PROP = "useUnicode=yes;characterEncoding=utf8";
+	private static final String DEFAULT_CONN_POOL_SIZE = "5";
+	
 	private static final int EXPECTED_USER_ID2 = 2;
 	private static final String EXPECTED_USER_LOGIN2 = "4sol@tut.by";
 	private static final String EXPECTED_USER_PSW2 = "PDhidatxaFssF7PWkm8y+f6kmMC9JnO7xSPyfXVWOUA=$8O0ZuJx3yK6gNLFeekGwRRW33kqSmhvkIvNZQmEUsQI=";
@@ -54,8 +64,17 @@ public class UserDaoImplTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		DaoFactory daoFactory = new DaoFactoryImpl();
+		DaoFactory daoFactory = DaoFactory.getInstance();
 		userDao = daoFactory.getUserDao();
+		Properties database = new Properties();
+		database.put("driver", DEFAULT_DRIVER_CLASS_NAME);
+		database.put("url", DEFAULT_DB_URL);
+		database.put("user", DEFAULT_DB_USER);
+		database.put("password", DEFAULT_DB_PASSWORD);
+		database.put("poolSize", DEFAULT_CONN_POOL_SIZE);
+		database.put("connectionProperties", DEFAULT_CON_PROP);
+		DataSourceProvider.setProperties(database);
+		
 		
 		expectedUser1 = new User();
 		expectedUser1.setId(EXPECTED_USER_ID1);

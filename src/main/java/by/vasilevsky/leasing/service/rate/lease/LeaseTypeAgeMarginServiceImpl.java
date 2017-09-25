@@ -1,13 +1,12 @@
 package by.vasilevsky.leasing.service.rate.lease;
 
 import by.vasilevsky.leasing.dao.DaoFactory;
-import by.vasilevsky.leasing.dao.DaoFactoryImpl;
 import by.vasilevsky.leasing.domain.lease_object.PropertyType;
 import by.vasilevsky.leasing.domain.rate.lease.LeaseTypeAgeMargin;
 
 public class LeaseTypeAgeMarginServiceImpl implements LeaseTypeAgeMarginService {
 	private static volatile LeaseTypeAgeMarginServiceImpl instance;
-	private static DaoFactory daoFactory = new DaoFactoryImpl();
+	private static DaoFactory daoFactory = DaoFactory.getInstance();
 
 	private LeaseTypeAgeMarginServiceImpl() {
 
@@ -31,7 +30,7 @@ public class LeaseTypeAgeMarginServiceImpl implements LeaseTypeAgeMarginService 
 		if (objectType == null || age < 0) {
 			throw new IllegalArgumentException();
 		}
-		
+
 		return daoFactory.getLeaseTypeAgeMarginDao().findLeaseRateByTypeAndAge(objectType, age);
 	}
 }

@@ -7,6 +7,8 @@ import by.vasilevsky.leasing.dao.user.UserDao;
 
 public interface DaoFactory {
 	
+	static DaoFactory instance = DaoFactoryImpl.getInstance();
+	
 	UserDao getUserDao();
 	
 	LeaseTypeInsuranceDao getLeaseTypeInsuranceDao();
@@ -15,5 +17,9 @@ public interface DaoFactory {
 	
 	LeaseTypeAgeMarginDao getLeaseTypeAgeMarginDao();
 	
+	static DaoFactory getInstance() {
+		
+		return instance;
+	}
 	
 }

@@ -1,4 +1,4 @@
-package by.vasilevsky.leasing.view;
+package by.vasilevsky.leasing.controller.forms;
 
 public class LoginationFormModel {
 	private String mainMessage;

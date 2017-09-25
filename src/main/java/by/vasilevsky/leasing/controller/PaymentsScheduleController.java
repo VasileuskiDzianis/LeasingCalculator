@@ -9,17 +9,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import by.vasilevsky.leasing.controller.forms.CalculatorFormModel;
 import by.vasilevsky.leasing.domain.currency.Currency;
 import by.vasilevsky.leasing.domain.lease_object.Property;
 import by.vasilevsky.leasing.domain.lease_object.PropertyType;
 import by.vasilevsky.leasing.domain.payments.PaymentsSchedule;
 import by.vasilevsky.leasing.service.ServiceFactory;
-import by.vasilevsky.leasing.service.ServiceFactoryImpl;
 import by.vasilevsky.leasing.service.payments.PaymentsScheduleService;
 import by.vasilevsky.leasing.service.rate.insurance.LeaseTypeInsuranceService;
 import by.vasilevsky.leasing.service.rate.lease.LeaseCurrencyRateService;
 import by.vasilevsky.leasing.service.rate.lease.LeaseTypeAgeMarginService;
-import by.vasilevsky.leasing.view.CalculatorFormModel;
 
 @WebServlet(urlPatterns = { "/calculate" })
 public class PaymentsScheduleController extends HttpServlet {
@@ -33,7 +32,7 @@ public class PaymentsScheduleController extends HttpServlet {
 
 	@Override
 	public void init() {
-		serviceFactory = new ServiceFactoryImpl();
+		serviceFactory = ServiceFactory.getInstance();
 		paymentsScheduleService = serviceFactory.getPaymentsScheduleService();
 		leaseCurrencyRateService = serviceFactory.getLeaseCurrencyRateService();
 		leaseTypeAgeMarginService = serviceFactory.getLeaseTypeAgeMarginService();

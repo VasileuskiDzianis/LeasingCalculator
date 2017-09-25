@@ -10,9 +10,10 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
+
+import by.vasilevsky.leasing.controller.forms.CalculatorFormModel;
 import by.vasilevsky.leasing.domain.currency.Currency;
 import by.vasilevsky.leasing.domain.lease_object.PropertyType;
-import by.vasilevsky.leasing.view.CalculatorFormModel;
 
 @WebFilter("/calculate")
 public class CalculatorFormBinderFilter implements Filter {

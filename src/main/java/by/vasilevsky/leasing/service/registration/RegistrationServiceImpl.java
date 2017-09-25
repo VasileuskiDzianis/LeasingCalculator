@@ -2,12 +2,11 @@ package by.vasilevsky.leasing.service.registration;
 
 import by.vasilevsky.leasing.domain.user.User;
 import by.vasilevsky.leasing.service.ServiceFactory;
-import by.vasilevsky.leasing.service.ServiceFactoryImpl;
 import by.vasilevsky.leasing.service.user.UserService;
 
 public class RegistrationServiceImpl implements RegistrationService {
 	private static volatile RegistrationServiceImpl instance;
-	private static ServiceFactory serviceFactory = new ServiceFactoryImpl();
+	private static ServiceFactory serviceFactory = ServiceFactory.getInstance();
 
 	private RegistrationServiceImpl() {
 

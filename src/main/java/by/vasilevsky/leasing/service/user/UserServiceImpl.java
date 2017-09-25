@@ -3,12 +3,11 @@ package by.vasilevsky.leasing.service.user;
 import java.util.List;
 
 import by.vasilevsky.leasing.dao.DaoFactory;
-import by.vasilevsky.leasing.dao.DaoFactoryImpl;
 import by.vasilevsky.leasing.domain.user.User;
 
 public class UserServiceImpl implements UserService {
 	private static volatile UserServiceImpl instance;
-	private static DaoFactory daoFactory = new DaoFactoryImpl();
+	private static DaoFactory daoFactory = DaoFactory.getInstance();
 	
 	private UserServiceImpl() {
 		

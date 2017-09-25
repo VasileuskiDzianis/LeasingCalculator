@@ -1,17 +1,19 @@
 package by.vasilevsky.leasing.controller;
 
-import javax.servlet.*;
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import by.vasilevsky.leasing.domain.user.User;
 import by.vasilevsky.leasing.service.ServiceFactory;
-import by.vasilevsky.leasing.service.ServiceFactoryImpl;
 import by.vasilevsky.leasing.service.user.UserService;
 import by.vasilevsky.leasing.service.validator.Validator;
-
-import java.io.IOException;
-import java.util.List;
 
 @WebServlet(urlPatterns = { "/users" })
 public class UsersListController extends HttpServlet {
@@ -22,7 +24,7 @@ public class UsersListController extends HttpServlet {
 	
 	@Override
 	public void init() {
-		serviceFactory = new ServiceFactoryImpl();
+		serviceFactory = ServiceFactory.getInstance();
 		userService = serviceFactory.getUserService();
 	}
 

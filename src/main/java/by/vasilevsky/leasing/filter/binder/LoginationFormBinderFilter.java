@@ -10,7 +10,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
-import by.vasilevsky.leasing.view.LoginationFormModel;
+
+import by.vasilevsky.leasing.controller.forms.LoginationFormModel;
 
 @WebFilter("/logination")
 public class LoginationFormBinderFilter implements Filter {

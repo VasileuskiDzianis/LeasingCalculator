@@ -3,12 +3,11 @@ package by.vasilevsky.leasing.service.logination;
 import by.vasilevsky.leasing.domain.user.User;
 import by.vasilevsky.leasing.domain.user.UserRole;
 import by.vasilevsky.leasing.service.ServiceFactory;
-import by.vasilevsky.leasing.service.ServiceFactoryImpl;
 import by.vasilevsky.leasing.service.registration.PasswordService;
 import by.vasilevsky.leasing.service.user.UserService;
 
 public class LoginationServiceImpl implements LoginationService {
-	private ServiceFactory serviceFactory = new ServiceFactoryImpl();
+	private ServiceFactory serviceFactory = ServiceFactory.getInstance();
 	private UserService userService = serviceFactory.getUserService();
 	
 	private static volatile LoginationServiceImpl instance;

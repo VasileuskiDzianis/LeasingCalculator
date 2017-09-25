@@ -9,13 +9,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import by.vasilevsky.leasing.controller.forms.LoginationFormModel;
 import by.vasilevsky.leasing.domain.user.User;
 import by.vasilevsky.leasing.domain.user.UserRole;
 import by.vasilevsky.leasing.service.ServiceFactory;
-import by.vasilevsky.leasing.service.ServiceFactoryImpl;
 import by.vasilevsky.leasing.service.logination.LoginationService;
 import by.vasilevsky.leasing.service.user.UserService;
-import by.vasilevsky.leasing.view.LoginationFormModel;
 
 @WebServlet(urlPatterns = { "/logination" })
 public class LoginationController extends HttpServlet {
@@ -27,7 +26,7 @@ public class LoginationController extends HttpServlet {
 
 	@Override
 	public void init() {
-		serviceFactory = new ServiceFactoryImpl();
+		serviceFactory = ServiceFactory.getInstance();
 		loginationService = serviceFactory.getLoginationService();
 		userService = serviceFactory.getUserService();
 	}

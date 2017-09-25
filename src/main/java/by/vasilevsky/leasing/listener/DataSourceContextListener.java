@@ -22,9 +22,8 @@ public class DataSourceContextListener implements ServletContextListener {
 	private static final String DEFAULT_CONN_POOL_SIZE = "5";
 
 	public void contextInitialized(ServletContextEvent arg0) {
-		Properties database;
 		InputStream input = null;
-		database = new Properties();
+		Properties database = new Properties();
 		try {
 			input = getClass().getResourceAsStream(DEFAULT_DB_PROP);
 			database.load(input);

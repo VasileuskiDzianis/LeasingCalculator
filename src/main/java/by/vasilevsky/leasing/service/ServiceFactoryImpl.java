@@ -16,7 +16,25 @@ import by.vasilevsky.leasing.service.user.UserService;
 import by.vasilevsky.leasing.service.user.UserServiceImpl;
 
 public class ServiceFactoryImpl implements ServiceFactory {
-
+	private static volatile ServiceFactoryImpl instance;
+	
+	private ServiceFactoryImpl () {
+		
+	}
+	
+	public static ServiceFactory getInstance() {
+		ServiceFactoryImpl localInstance = instance;
+		if (localInstance == null) {
+			synchronized (ServiceFactoryImpl.class) {
+				localInstance = instance;
+				if (localInstance == null) {
+					instance = localInstance = new ServiceFactoryImpl();
+				}
+			}
+		}
+		return localInstance;
+	}
+	
 	@Override
 	public UserService getUserService() {
 		

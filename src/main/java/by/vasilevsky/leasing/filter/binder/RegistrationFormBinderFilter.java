@@ -10,8 +10,9 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
+
+import by.vasilevsky.leasing.controller.forms.RegistrationFormModel;
 import by.vasilevsky.leasing.service.validator.Validator;
-import by.vasilevsky.leasing.view.RegistrationFormModel;
 
 @WebFilter("/registration")
 public class RegistrationFormBinderFilter implements Filter {

@@ -9,11 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import by.vasilevsky.leasing.controller.forms.ProfileFormModel;
 import by.vasilevsky.leasing.domain.user.User;
 import by.vasilevsky.leasing.service.ServiceFactory;
-import by.vasilevsky.leasing.service.ServiceFactoryImpl;
 import by.vasilevsky.leasing.service.user.UserService;
-import by.vasilevsky.leasing.view.ProfileFormModel;
 
 @WebServlet(urlPatterns = "/profile")
 public class ProfileController extends HttpServlet {
@@ -24,7 +23,7 @@ public class ProfileController extends HttpServlet {
 	
 	@Override
 	public void init() {
-		serviceFactory = new ServiceFactoryImpl();
+		serviceFactory = ServiceFactory.getInstance();
 		userService = serviceFactory.getUserService();
 	}
 

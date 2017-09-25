@@ -7,6 +7,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import by.vasilevsky.leasing.domain.currency.Currency;
 import by.vasilevsky.leasing.domain.lease_object.Property;
 import by.vasilevsky.leasing.domain.lease_object.PropertyType;
 import by.vasilevsky.leasing.domain.payments.MonthlyPayment;
@@ -18,6 +19,8 @@ public class PaymentsScheduleServiceImplTest {
 	private static final int LEASE_OBJECT_AGE = 1;
 	private static final float LEASE_OBJECT_PRICE = 10000f;
 	private static final float LEASE_OBJECT_VAT = 2000f;
+	
+	private static final Currency CURRENCY = Currency.USD;
 	
 	private static final float PREPAYMENT_PERCENTAGE = 0.1f;
 	private static final float BUYINGOUT_PERCENTAGE = 0.1f;
@@ -44,12 +47,14 @@ public class PaymentsScheduleServiceImplTest {
 		property.setPropertyType(LEASE_OBJECT_TYPE);
 		property.setPrice(LEASE_OBJECT_PRICE);
 		property.setVat(LEASE_OBJECT_VAT);
+		property.setCurrency(CURRENCY);
 		paymentsSchedule.setProperty(property);
 		paymentsSchedule.setBuyingOutPercentage(BUYINGOUT_PERCENTAGE);
 		paymentsSchedule.setPrepaymentPercentage(PREPAYMENT_PERCENTAGE);
 		paymentsSchedule.setInsuranceRate(INSURANCE_RATE);
 		paymentsSchedule.setLeaseDuration(LEASE_DURATION);
 		paymentsSchedule.setLeaseRate(LEASE_RATE);
+		paymentsSchedule.setCurrency(CURRENCY);
 		
 	}
 
