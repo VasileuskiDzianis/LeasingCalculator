@@ -1,6 +1,7 @@
 package by.vasilevsky.leasing.controller.error;
 
 import java.io.IOException;
+import java.util.ResourceBundle;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,16 +16,18 @@ public class ExceptionHandler extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		ResourceBundle messages = (ResourceBundle) request.getAttribute("messages");
 		Throwable exception = (Throwable) request.getAttribute("javax.servlet.error.exception");
 		Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
+		
 		if (exception != null && exception.getClass() == Exception.class) {
-			request.setAttribute("errorMessage", "500: Внутренняя ошибка");
+			request.setAttribute("errorMessage", messages.getString("error.message.500internal"));
 		} else if (exception != null && exception.getClass() == IllegalArgumentException.class) {
-			request.setAttribute("errorMessage", "Введены некорректные данные");
+			request.setAttribute("errorMessage", messages.getString("error.message.baddata"));
 		} else if (statusCode == 404) {
-			request.setAttribute("errorMessage", "404: Запрашиваемая страница не найдена");
+			request.setAttribute("errorMessage", messages.getString("error.message.404internal"));
 		} else {
-			request.setAttribute("errorMessage", "500: Внутренняя ошибка");
+			request.setAttribute("errorMessage", messages.getString("error.message.500internal"));
 		}
 		RequestDispatcher view = request.getRequestDispatcher("error.tiles");
 		view.forward(request, response);

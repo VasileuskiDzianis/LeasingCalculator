@@ -5,32 +5,28 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <div id="payments-schedule">
 	<div id="payments-schedule-parameters-container">
-		<fmt:setLocale value="ru_RU" />
+		<fmt:setLocale value="${locale}" />
 		<div class="payments-schedule-parameter-item">
-			<div class="payments-schedule-parameter-item-title">Предмет
-				лизинга:</div>
+			<div class="payments-schedule-parameter-item-title">${messages['label.payments.objecttype']}:</div>
 			<div class="payments-schedule-parameter-item-value">
 				${paymentsSchedule.property.propertyType}</div>
 		</div>
 		<div class="payments-schedule-parameter-item">
-			<div class="payments-schedule-parameter-item-title">Контрактная
-				стоимость:</div>
+			<div class="payments-schedule-parameter-item-title">${messages['label.payments.cost']}:</div>
 			<div class="payments-schedule-parameter-item-value">
 				<fmt:formatNumber value="${paymentsSchedule.property.price}"
 					minFractionDigits="2" maxFractionDigits="2" />
 			</div>
 		</div>
 		<div class="payments-schedule-parameter-item">
-			<div class="payments-schedule-parameter-item-title">НДС на
-				стоимость:</div>
+			<div class="payments-schedule-parameter-item-title">${messages['label.payments.vat']}:</div>
 			<div class="payments-schedule-parameter-item-value">
 				<fmt:formatNumber value="${paymentsSchedule.property.vat}"
 					minFractionDigits="2" maxFractionDigits="2" />
 			</div>
 		</div>
 		<div class="payments-schedule-parameter-item">
-			<div class="payments-schedule-parameter-item-title">Cтоимость c
-				НДС:</div>
+			<div class="payments-schedule-parameter-item-title">${messages['label.payments.fullcost']}:</div>
 			<div class="payments-schedule-parameter-item-value">
 				<fmt:formatNumber
 					value="${paymentsSchedule.property.price + paymentsSchedule.property.vat}"
@@ -38,8 +34,7 @@
 			</div>
 		</div>
 		<div class="payments-schedule-parameter-item">
-			<div class="payments-schedule-parameter-item-title">Авансовый
-				платеж:</div>
+			<div class="payments-schedule-parameter-item-title">${messages['label.payments.prepayment']}:</div>
 			<div class="payments-schedule-parameter-item-value">
 				<fmt:formatNumber type="percent"
 					value="${paymentsSchedule.prepaymentPercentage}"
@@ -47,8 +42,7 @@
 			</div>
 		</div>
 		<div class="payments-schedule-parameter-item">
-			<div class="payments-schedule-parameter-item-title">Выкупной
-				платеж:</div>
+			<div class="payments-schedule-parameter-item-title">${messages['label.payments.buyingout']}:</div>
 			<div class="payments-schedule-parameter-item-value">
 				<fmt:formatNumber type="percent"
 					value="${paymentsSchedule.buyingOutPercentage}"
@@ -56,23 +50,22 @@
 			</div>
 		</div>
 		<div class="payments-schedule-parameter-item">
-			<div class="payments-schedule-parameter-item-title">Валюта
-				графика:</div>
+			<div class="payments-schedule-parameter-item-title">${messages['label.payments.currency']}:</div>
 			<div class="payments-schedule-parameter-item-value">${paymentsSchedule.currency}</div>
 		</div>
 	</div>
 
 	<div class="payments-list-row">
-		<div class="payments-list-col">Дата</div>
-		<div class="payments-list-col">Назначение</div>
-		<div class="payments-list-col">Долг</div>
-		<div class="payments-list-col">Лизинговая ставка</div>
-		<div class="payments-list-col">НДС на лизинговую ставку</div>
-		<div class="payments-list-col">Погашение стоимости</div>
-		<div class="payments-list-col">НДС на погашение стоимости</div>
-		<div class="payments-list-col">Страхование</div>
-		<div class="payments-list-col">НДС на страховнаие</div>
-		<div class="payments-list-col">Всего</div>
+		<div class="payments-list-col">${messages['label.payments.date']}</div>
+		<div class="payments-list-col">${messages['label.payments.purpose']}</div>
+		<div class="payments-list-col">${messages['label.payments.debt']}</div>
+		<div class="payments-list-col">${messages['label.payments.leaserate']}</div>
+		<div class="payments-list-col">${messages['label.payments.leaseratevat']}</div>
+		<div class="payments-list-col">${messages['label.payments.repayment']}</div>
+		<div class="payments-list-col">${messages['label.payments.repaymentvat']}</div>
+		<div class="payments-list-col">${messages['label.payments.insurance']}</div>
+		<div class="payments-list-col">${messages['label.payments.insurancevat']}</div>
+		<div class="payments-list-col">${messages['label.payments.total']}</div>
 	</div>
 	<c:forEach var="payment" items="${paymentsSchedule.monthlyPayments}">
 		<div class="payments-list-row">
@@ -81,13 +74,13 @@
 			</div>
 			<div class="payments-list-col">
 				<c:choose>
-					<c:when test="${payment.paymentType eq 'PRE_PAYMENT'}">аванс</c:when>
+					<c:when test="${payment.paymentType eq 'PRE_PAYMENT'}">${messages['label.payments.purpose.prepay']}</c:when>
 				</c:choose>
 				<c:choose>
-					<c:when test="${payment.paymentType eq 'LEASE_PAYMENT'}">лизинговый</c:when>
+					<c:when test="${payment.paymentType eq 'LEASE_PAYMENT'}">${messages['label.payments.purpose.lease']}</c:when>
 				</c:choose>
 				<c:choose>
-					<c:when test="${payment.paymentType eq 'BUYING_OUT_PAYMENT'}">выкуп</c:when>
+					<c:when test="${payment.paymentType eq 'BUYING_OUT_PAYMENT'}">${messages['label.payments.purpose.buyout']}</c:when>
 				</c:choose>
 			</div>
 			<div class="payments-list-col">

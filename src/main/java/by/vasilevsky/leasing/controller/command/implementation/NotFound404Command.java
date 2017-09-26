@@ -1,5 +1,7 @@
 package by.vasilevsky.leasing.controller.command.implementation;
 
+import java.util.ResourceBundle;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -27,7 +29,9 @@ public class NotFound404Command implements Command {
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) {
-		request.setAttribute("errorMessage", "404: Запрашиваемая страница не найдена");
+		ResourceBundle messages = (ResourceBundle) request.getAttribute("messages");
+		
+		request.setAttribute("errorMessage", messages.getString("error.message.404internal"));
 
 		return "error.tiles";
 	}

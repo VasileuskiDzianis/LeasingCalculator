@@ -1,6 +1,7 @@
 package by.vasilevsky.leasing.filter.binder;
 
 import java.io.IOException;
+import java.util.ResourceBundle;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -18,23 +19,24 @@ public class LoginationFormBinderFilter implements Filter {
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
+		ResourceBundle messages = (ResourceBundle) request.getAttribute("messages");
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		if (httpRequest.getMethod().equalsIgnoreCase("post")) {
 			LoginationFormModel model = new LoginationFormModel();
 
 			model.setLogin(request.getParameter("login"));
 			model.setPassword(request.getParameter("password"));
-			checkLoginationFormModel(model);
+			checkLoginationFormModel(model, messages);
 
 			request.setAttribute("loginationFormModel", model);
 		}
 		chain.doFilter(request, response);
 	}
 
-	private void checkLoginationFormModel(LoginationFormModel formModel) {
+	private void checkLoginationFormModel(LoginationFormModel formModel, ResourceBundle messages) {
 		if (formModel.getLogin() == null || formModel.getPassword() == null || formModel.getLogin().length() == 0
 				|| formModel.getPassword().length() == 0) {
-			formModel.setMainMessage("Не верные логин или пароль");
+			formModel.setMainMessage(messages.getString("form.message.incorrectlogorpsw"));
 			formModel.setErrorsExist(true);
 		}
 	}

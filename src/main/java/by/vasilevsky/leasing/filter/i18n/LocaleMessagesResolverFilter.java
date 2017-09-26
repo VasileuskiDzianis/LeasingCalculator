@@ -1,6 +1,8 @@
-package by.vasilevsky.leasing.filter;
+package by.vasilevsky.leasing.filter.i18n;
 
 import java.io.IOException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -9,14 +11,19 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-public class Utf8Filter implements Filter {
-	
-	@Override
+public class LocaleMessagesResolverFilter implements Filter {
+
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
+		Locale locale = (Locale) request.getAttribute("locale");
+		ResourceBundle messages = ResourceBundle.getBundle("i18n", locale);
 
-		request.setCharacterEncoding("UTF-8");
+		request.setAttribute("messages", messages);
 		chain.doFilter(request, response);
+	}
+
+	@Override
+	public void init(FilterConfig fConfig) throws ServletException {
 
 	}
 
@@ -25,8 +32,4 @@ public class Utf8Filter implements Filter {
 
 	}
 
-	@Override
-	public void init(FilterConfig arg0) throws ServletException {
-
-	}
 }
