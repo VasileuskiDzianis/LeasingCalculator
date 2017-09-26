@@ -6,25 +6,25 @@ import javax.sql.DataSource;
 
 import by.vasilevsky.leasing.dao.DataSourceProvider;
 import by.vasilevsky.leasing.domain.lease_object.PropertyType;
-import by.vasilevsky.leasing.domain.rate.insurance.LeaseTypeInsurance;
+import by.vasilevsky.leasing.domain.rate.insurance.Insurance;
 
-public class LeaseTypeInsuranceDaoImpl implements LeaseTypeInsuranceDao {
-	private final static String REQUEST_FIND_LEASE_RATE = "SELECT lti.id, lti.insurance FROM leaseTypeInsurance AS lti JOIN leaseObjectType AS lot ON lti.objectTypeId=lot.id WHERE lot.objectType=?;";
+public class InsuranceDaoImpl implements InsuranceDao {
+	private final static String REQUEST_FIND_LEASE_RATE = "SELECT i.id, i.insurance FROM insurance AS i JOIN leaseObjectType AS lot ON i.objectTypeId=lot.id WHERE lot.objectType=?;";
 
 	private DataSource ds;
-	private static volatile LeaseTypeInsuranceDaoImpl instance;
+	private static volatile InsuranceDaoImpl instance;
 
-	private LeaseTypeInsuranceDaoImpl() {
+	private InsuranceDaoImpl() {
 
 	}
 
-	public static LeaseTypeInsuranceDao getInstance() {
-		LeaseTypeInsuranceDaoImpl localInstance = instance;
+	public static InsuranceDao getInstance() {
+		InsuranceDaoImpl localInstance = instance;
 		if (localInstance == null) {
-			synchronized (LeaseTypeInsuranceDaoImpl.class) {
+			synchronized (InsuranceDaoImpl.class) {
 				localInstance = instance;
 				if (localInstance == null) {
-					instance = localInstance = new LeaseTypeInsuranceDaoImpl();
+					instance = localInstance = new InsuranceDaoImpl();
 				}
 			}
 		}
@@ -32,8 +32,8 @@ public class LeaseTypeInsuranceDaoImpl implements LeaseTypeInsuranceDao {
 	}
 
 	@Override
-	public LeaseTypeInsurance findInsuranceByObjectType(PropertyType objectType) {
-		LeaseTypeInsurance insurance = new LeaseTypeInsurance();
+	public Insurance findInsuranceByObjectType(PropertyType objectType) {
+		Insurance insurance = new Insurance();
 
 		ds = DataSourceProvider.getInstance().getDataSource();
 		Connection con = null;
@@ -48,7 +48,7 @@ public class LeaseTypeInsuranceDaoImpl implements LeaseTypeInsuranceDao {
 			stmt.setString(1, objectType.toString());
 			rs = stmt.executeQuery();
 			if (rs.next()) {
-				insurance.setInsuranceRate(rs.getFloat("insurance"));
+				insurance.setRate(rs.getFloat("insurance"));
 				insurance.setId(rs.getInt("id"));
 			}
 

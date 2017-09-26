@@ -2,9 +2,9 @@ package by.vasilevsky.leasing.domain.rate.lease;
 
 import by.vasilevsky.leasing.domain.lease_object.PropertyType;
 
-public class LeaseTypeAgeMargin {
+public class Margin {
 	private int id;
-	private PropertyType objectType;
+	private PropertyType propertyType;
 	private int objectAge;
 	private float margin;
 
@@ -16,19 +16,19 @@ public class LeaseTypeAgeMargin {
 		this.id = id;
 	}
 
-	public PropertyType getObjectType() {
-		return objectType;
+	public PropertyType getPropertyType() {
+		return propertyType;
 	}
 
-	public void setObjectType(PropertyType objectType) {
-		this.objectType = objectType;
+	public void setPropertyType(PropertyType propertyType) {
+		this.propertyType = propertyType;
 	}
 
-	public int getObjectAge() {
+	public int getPropertyAge() {
 		return objectAge;
 	}
 
-	public void setObjectAge(int objectAge) {
+	public void setPropertyAge(int objectAge) {
 		this.objectAge = objectAge;
 	}
 

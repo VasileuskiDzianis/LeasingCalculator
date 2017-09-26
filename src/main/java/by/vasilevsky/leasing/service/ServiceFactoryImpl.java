@@ -4,12 +4,12 @@ import by.vasilevsky.leasing.service.logination.LoginationService;
 import by.vasilevsky.leasing.service.logination.LoginationServiceImpl;
 import by.vasilevsky.leasing.service.payments.PaymentsScheduleService;
 import by.vasilevsky.leasing.service.payments.PaymentsScheduleServiceImpl;
-import by.vasilevsky.leasing.service.rate.insurance.LeaseTypeInsuranceService;
-import by.vasilevsky.leasing.service.rate.insurance.LeaseTypeInsuranceServiceImpl;
-import by.vasilevsky.leasing.service.rate.lease.LeaseCurrencyRateService;
-import by.vasilevsky.leasing.service.rate.lease.LeaseCurrencyRateServiceImpl;
-import by.vasilevsky.leasing.service.rate.lease.LeaseTypeAgeMarginService;
-import by.vasilevsky.leasing.service.rate.lease.LeaseTypeAgeMarginServiceImpl;
+import by.vasilevsky.leasing.service.rate.insurance.InsuranceService;
+import by.vasilevsky.leasing.service.rate.insurance.InsuranceServiceImpl;
+import by.vasilevsky.leasing.service.rate.lease.BaseRateService;
+import by.vasilevsky.leasing.service.rate.lease.BaseRateServiceImpl;
+import by.vasilevsky.leasing.service.rate.lease.MarginService;
+import by.vasilevsky.leasing.service.rate.lease.MarginServiceImpl;
 import by.vasilevsky.leasing.service.registration.RegistrationService;
 import by.vasilevsky.leasing.service.registration.RegistrationServiceImpl;
 import by.vasilevsky.leasing.service.user.UserService;
@@ -48,21 +48,21 @@ public class ServiceFactoryImpl implements ServiceFactory {
 	}
 
 	@Override
-	public LeaseTypeInsuranceService getLeaseTypeInsuranceService() {
+	public InsuranceService getInsuranceService() {
 		
-		return LeaseTypeInsuranceServiceImpl.getInstance();
+		return InsuranceServiceImpl.getInstance();
 	}
 
 	@Override
-	public LeaseCurrencyRateService getLeaseCurrencyRateService() {
+	public BaseRateService getBaseRateService() {
 		
-		return LeaseCurrencyRateServiceImpl.getInstance();
+		return BaseRateServiceImpl.getInstance();
 	}
 
 	@Override
-	public LeaseTypeAgeMarginService getLeaseTypeAgeMarginService() {
+	public MarginService getMarginService() {
 		
-		return LeaseTypeAgeMarginServiceImpl.getInstance();
+		return MarginServiceImpl.getInstance();
 	}
 	
 	@Override

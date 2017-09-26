@@ -10,9 +10,9 @@ import org.junit.Test;
 import by.vasilevsky.leasing.dao.DaoFactory;
 import by.vasilevsky.leasing.dao.DataSourceProvider;
 import by.vasilevsky.leasing.domain.lease_object.PropertyType;
-import by.vasilevsky.leasing.domain.rate.lease.LeaseTypeAgeMargin;
+import by.vasilevsky.leasing.domain.rate.lease.Margin;
 
-public class LeaseTypeAgeMarginDaoImplTest {
+public class MarginDaoImplTest {
 	private static final String DEFAULT_DRIVER_CLASS_NAME = "com.mysql.cj.jdbc.Driver";
 	private static final String DEFAULT_DB_URL = "jdbc:mysql://localhost:3306/vls";
 	private static final String DEFAULT_DB_USER = "dan";
@@ -24,7 +24,7 @@ public class LeaseTypeAgeMarginDaoImplTest {
 	private static final int GIVEN_OBJECT_AGE = 2;
 	private static final float EXPECTED_RATE = 0.023f;
 
-	private LeaseTypeAgeMarginDao marginDao;
+	private MarginDao marginDao;
 
 	@Before
 	public void setUp() {
@@ -45,7 +45,7 @@ public class LeaseTypeAgeMarginDaoImplTest {
 
 	@Test
 	public void findLeaseRateByTypeAndAgeTest() {
-		LeaseTypeAgeMargin margin = marginDao.findLeaseRateByTypeAndAge(GIVEN_OBJECT_TYPE, GIVEN_OBJECT_AGE);
+		Margin margin = marginDao.findMarginByTypeAndAge(GIVEN_OBJECT_TYPE, GIVEN_OBJECT_AGE);
 
 		assertEquals(EXPECTED_RATE, margin.getMargin(), 0.00001);
 	}

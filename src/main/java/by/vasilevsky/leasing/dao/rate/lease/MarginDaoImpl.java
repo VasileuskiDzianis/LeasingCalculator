@@ -6,25 +6,25 @@ import javax.sql.DataSource;
 
 import by.vasilevsky.leasing.dao.DataSourceProvider;
 import by.vasilevsky.leasing.domain.lease_object.PropertyType;
-import by.vasilevsky.leasing.domain.rate.lease.LeaseTypeAgeMargin;
+import by.vasilevsky.leasing.domain.rate.lease.Margin;
 
-public class LeaseTypeAgeMarginDaoImpl implements LeaseTypeAgeMarginDao {
-	private final static String REQUEST_FIND_LEASE_RATE = "SELECT ltam.id, ltam.margin FROM leaseTypeAgeMargin AS ltam JOIN leaseObjectType AS lot ON ltam.objectTypeId=lot.id WHERE ltam.objectAge=? AND lot.objectType=?;";
+public class MarginDaoImpl implements MarginDao {
+	private final static String REQUEST_FIND_LEASE_RATE = "SELECT m.id, m.margin FROM margin AS m JOIN leaseObjectType AS lot ON m.objectTypeId=lot.id WHERE m.objectAge=? AND lot.objectType=?;";
 
 	private DataSource ds;
-	private static volatile LeaseTypeAgeMarginDaoImpl instance;
+	private static volatile MarginDaoImpl instance;
 
-	private LeaseTypeAgeMarginDaoImpl() {
+	private MarginDaoImpl() {
 
 	}
 
-	public static LeaseTypeAgeMarginDao getInstance() {
-		LeaseTypeAgeMarginDaoImpl localInstance = instance;
+	public static MarginDao getInstance() {
+		MarginDaoImpl localInstance = instance;
 		if (localInstance == null) {
-			synchronized (LeaseTypeAgeMarginDaoImpl.class) {
+			synchronized (MarginDaoImpl.class) {
 				localInstance = instance;
 				if (localInstance == null) {
-					instance = localInstance = new LeaseTypeAgeMarginDaoImpl();
+					instance = localInstance = new MarginDaoImpl();
 				}
 			}
 		}
@@ -32,16 +32,16 @@ public class LeaseTypeAgeMarginDaoImpl implements LeaseTypeAgeMarginDao {
 	}
 
 	@Override
-	public LeaseTypeAgeMargin findLeaseRateByTypeAndAge(PropertyType objectType, int age) {
-		LeaseTypeAgeMargin margin = new LeaseTypeAgeMargin();
+	public Margin findMarginByTypeAndAge(PropertyType objectType, int age) {
+		Margin margin = new Margin();
 
 		ds = DataSourceProvider.getInstance().getDataSource();
 		Connection con = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
-		margin.setObjectAge(age);
-		margin.setObjectType(objectType);
+		margin.setPropertyAge(age);
+		margin.setPropertyType(objectType);
 
 		try {
 			con = ds.getConnection();
@@ -54,7 +54,7 @@ public class LeaseTypeAgeMarginDaoImpl implements LeaseTypeAgeMarginDao {
 				margin.setId(rs.getInt("id"));
 			}
 		} catch (SQLException e) {
-			throw new RuntimeException("Finding lease rate exception: ", e);
+			throw new RuntimeException("Finding margin exception: ", e);
 		} finally {
 			try {
 				if (rs != null) {

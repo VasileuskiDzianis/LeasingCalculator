@@ -9,24 +9,27 @@ import by.vasilevsky.leasing.domain.currency.Currency;
 import by.vasilevsky.leasing.domain.lease_object.Property;
 import by.vasilevsky.leasing.domain.lease_object.PropertyType;
 import by.vasilevsky.leasing.domain.payments.PaymentsSchedule;
+import by.vasilevsky.leasing.domain.rate.insurance.Insurance;
+import by.vasilevsky.leasing.domain.rate.lease.BaseRate;
+import by.vasilevsky.leasing.domain.rate.lease.Margin;
 import by.vasilevsky.leasing.service.ServiceFactory;
 import by.vasilevsky.leasing.service.payments.PaymentsScheduleService;
-import by.vasilevsky.leasing.service.rate.insurance.LeaseTypeInsuranceService;
-import by.vasilevsky.leasing.service.rate.lease.LeaseCurrencyRateService;
-import by.vasilevsky.leasing.service.rate.lease.LeaseTypeAgeMarginService;
+import by.vasilevsky.leasing.service.rate.insurance.InsuranceService;
+import by.vasilevsky.leasing.service.rate.lease.BaseRateService;
+import by.vasilevsky.leasing.service.rate.lease.MarginService;
 
 public class CalculatePostCommand implements Command {
 	private static volatile CalculatePostCommand instance;
 	private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
-	private final PaymentsScheduleService paymentsScheduleService = serviceFactory.getPaymentsScheduleService();
-	private final LeaseCurrencyRateService leaseCurrencyRateService = serviceFactory.getLeaseCurrencyRateService();
-	private final LeaseTypeAgeMarginService leaseTypeAgeMarginService = serviceFactory.getLeaseTypeAgeMarginService();
-	private final LeaseTypeInsuranceService leaseTypeInsuranceService = serviceFactory.getLeaseTypeInsuranceService();
-	
+	private final PaymentsScheduleService paymentsService = serviceFactory.getPaymentsScheduleService();
+	private final BaseRateService rateService = serviceFactory.getBaseRateService();
+	private final MarginService marginService = serviceFactory.getMarginService();
+	private final InsuranceService insuranceService = serviceFactory.getInsuranceService();
+
 	private CalculatePostCommand() {
-		
+
 	}
-	
+
 	public static Command getInstance() {
 		CalculatePostCommand localInstance = instance;
 		if (localInstance == null) {
@@ -48,18 +51,22 @@ public class CalculatePostCommand implements Command {
 
 			return "calculator.tiles";
 		}
-		PaymentsSchedule paymentsSchedule = new PaymentsSchedule();
+		Property property = buildProperty(model);
+		PaymentsSchedule payments = buildPaymentsSchedule(model, property);
+		paymentsService.countPayments(payments);
+
+		request.setAttribute("paymentsSchedule", payments);
+
+		return "payments_schedule.tiles";
+	}
+
+	private Property buildProperty(CalculatorFormModel model) {
 		Property property = new Property();
-		paymentsSchedule.setCurrency(Currency.valueOf(Currency.class, model.getCurrency()));
-		paymentsSchedule.setPrepaymentPercentage(Float.parseFloat(model.getPrepay()));
-		paymentsSchedule.setBuyingOutPercentage(Float.parseFloat(model.getByuingout()));
-		paymentsSchedule.setLeaseDuration(Integer.parseInt(model.getDuration()));
 		property.setPropertyType(PropertyType.valueOf(PropertyType.class, model.getObjectType()));
 		property.setAge(Integer.parseInt(model.getAge()));
-		property.setCurrency(paymentsSchedule.getCurrency());
-
+		property.setCurrency(Currency.valueOf(Currency.class, model.getCurrency()));
+		
 		boolean noVatOnCost = Boolean.parseBoolean(model.getNoVatOnCost());
-
 		if (noVatOnCost) {
 			property.setPrice(Float.parseFloat(model.getCost()));
 		} else {
@@ -67,25 +74,27 @@ public class CalculatePostCommand implements Command {
 		}
 		property.setVat(property.getPrice() * PaymentsScheduleService.VAT_RATE);
 
-		boolean includeInsurance = Boolean.parseBoolean(model.getInsurance());
+		return property;
+	}
 
-		if (includeInsurance) {
-			float insuranceRate = leaseTypeInsuranceService.findInsuranceByObjectType(property.getPropertyType())
-					.getInsuranceRate();
-			paymentsSchedule.setInsuranceRate(insuranceRate);
-		}
-
-		float leaseCurrencyRate = leaseCurrencyRateService.findLeaseRateByCurrency(paymentsSchedule.getCurrency())
-				.getCurrencyRate();
-		float leaseTypeAgeMarginRate = leaseTypeAgeMarginService
-				.findLeaseRateByTypeAndAge(property.getPropertyType(), property.getAge()).getMargin();
-
-		paymentsSchedule.setLeaseRate(leaseCurrencyRate + leaseTypeAgeMarginRate);
-		paymentsSchedule.setProperty(property);
-		paymentsScheduleService.countPayments(paymentsSchedule);
-
-		request.setAttribute("paymentsSchedule", paymentsSchedule);
+	private PaymentsSchedule buildPaymentsSchedule(CalculatorFormModel model, Property property) {
+		PaymentsSchedule payments = new PaymentsSchedule();
+		payments.setCurrency(Currency.valueOf(Currency.class, model.getCurrency()));
+		payments.setPrepaymentPercentage(Float.parseFloat(model.getPrepay()));
+		payments.setBuyingOutPercentage(Float.parseFloat(model.getByuingout()));
+		payments.setLeaseDuration(Integer.parseInt(model.getDuration()));
 		
-		return "payments_schedule.tiles";
+		boolean includeInsurance = Boolean.parseBoolean(model.getInsurance());
+		if (includeInsurance) {
+			Insurance insurance = insuranceService.findInsuranceByObjectType(property.getPropertyType());
+			payments.setInsuranceRate(insurance.getRate());
+		}
+		BaseRate rate = rateService.findRateByCurrency(payments.getCurrency());
+		Margin margin = marginService.findMarginByTypeAndAge(property.getPropertyType(), property.getAge());
+
+		payments.setLeaseRate(rate.getRate() + margin.getMargin());
+		payments.setProperty(property);
+
+		return payments;
 	}
 }

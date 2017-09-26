@@ -9,25 +9,25 @@ import javax.sql.DataSource;
 
 import by.vasilevsky.leasing.dao.DataSourceProvider;
 import by.vasilevsky.leasing.domain.currency.Currency;
-import by.vasilevsky.leasing.domain.rate.lease.LeaseCurrencyRate;
+import by.vasilevsky.leasing.domain.rate.lease.BaseRate;
 
-public class LeaseCurrencyRateDaoImpl implements LeaseCurrencyRateDao {
-	private final static String REQUEST_FIND_LEASE_RATE = "SELECT lcr.currencyId, lcr.currencyRate FROM leaseCurrencyRate AS lcr JOIN currency AS c ON lcr.currencyId=c.id WHERE c.currencyName=?;";
+public class BaseRateDaoImpl implements BaseRateDao {
+	private final static String REQUEST_FIND_LEASE_RATE = "SELECT br.currencyId, br.currencyRate FROM baseRate AS br JOIN currency AS c ON br.currencyId=c.id WHERE c.currencyName=?;";
 
 	private DataSource ds;
-	private static volatile LeaseCurrencyRateDaoImpl instance;
+	private static volatile BaseRateDaoImpl instance;
 	
-	private LeaseCurrencyRateDaoImpl() {
+	private BaseRateDaoImpl() {
 		
 	}
 	
-	public static LeaseCurrencyRateDaoImpl getInstance() {
-		LeaseCurrencyRateDaoImpl localInstance = instance;
+	public static BaseRateDaoImpl getInstance() {
+		BaseRateDaoImpl localInstance = instance;
 		if (localInstance == null) {
-			synchronized(LeaseCurrencyRateDaoImpl.class) {
+			synchronized(BaseRateDaoImpl.class) {
 				localInstance = instance;
 				if(localInstance == null) {
-					localInstance = instance = new LeaseCurrencyRateDaoImpl();
+					localInstance = instance = new BaseRateDaoImpl();
 				}
 			}
 		}
@@ -35,8 +35,8 @@ public class LeaseCurrencyRateDaoImpl implements LeaseCurrencyRateDao {
 	}
 
 	@Override
-	public LeaseCurrencyRate findLeaseRateByCurrency(Currency currency) {
-		LeaseCurrencyRate rate = new LeaseCurrencyRate();
+	public BaseRate findLeaseRateByCurrency(Currency currency) {
+		BaseRate rate = new BaseRate();
 
 		ds = DataSourceProvider.getInstance().getDataSource();
 		Connection con = null;
@@ -51,7 +51,7 @@ public class LeaseCurrencyRateDaoImpl implements LeaseCurrencyRateDao {
 			stmt.setString(1, currency.toString());
 			rs = stmt.executeQuery();
 			if (rs.next()) {
-				rate.setCurrencyRate(rs.getFloat("currencyRate"));
+				rate.setRate(rs.getFloat("currencyRate"));
 				rate.setId(rs.getInt("currencyId"));
 			}
 

@@ -1,6 +1,7 @@
-package by.vasilevsky.leasing.controller.command;
+package by.vasilevsky.leasing.controller.command.implementation;
 
-import by.vasilevsky.leasing.controller.command.implementation.*;
+import by.vasilevsky.leasing.controller.command.Command;
+import by.vasilevsky.leasing.controller.command.CommandProvider;
 
 public class CommandProviderImpl implements CommandProvider {
 	private static volatile CommandProviderImpl instance;

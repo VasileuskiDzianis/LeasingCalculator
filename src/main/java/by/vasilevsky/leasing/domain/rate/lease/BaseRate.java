@@ -2,10 +2,10 @@ package by.vasilevsky.leasing.domain.rate.lease;
 
 import by.vasilevsky.leasing.domain.currency.Currency;
 
-public class LeaseCurrencyRate {
+public class BaseRate {
 	private int id;
 	private Currency currency;
-	private float currencyRate;
+	private float rate;
 
 	public int getId() {
 		return id;
@@ -23,11 +23,11 @@ public class LeaseCurrencyRate {
 		this.currency = currency;
 	}
 
-	public float getCurrencyRate() {
-		return currencyRate;
+	public float getRate() {
+		return rate;
 	}
 
-	public void setCurrencyRate(float currencyRate) {
-		this.currencyRate = currencyRate;
+	public void setRate(float rate) {
+		this.rate = rate;
 	}
 }

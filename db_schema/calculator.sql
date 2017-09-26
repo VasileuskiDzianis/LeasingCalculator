@@ -24,8 +24,8 @@ CREATE TABLE userRole (
 	PRIMARY KEY (id)
 )ENGINE=InnoDB CHARSET=utf8;
 
-DROP TABLE IF EXISTS leaseTypeAgeMargin;
-CREATE TABLE leaseTypeAgeMargin (
+DROP TABLE IF EXISTS margin;
+CREATE TABLE margin (
 	id INT NOT NULL AUTO_INCREMENT,
 	objectTypeId INT NOT NULL,
 	objectAge INT NOT NULL,
@@ -47,16 +47,16 @@ CREATE TABLE currency (
 	PRIMARY KEY (id)
 )ENGINE=InnoDB CHARSET=utf8;
 
-DROP TABLE IF EXISTS leaseCurrencyRate;
-CREATE TABLE leaseCurrencyRate (
+DROP TABLE IF EXISTS baseRate;
+CREATE TABLE baseRate (
 	id INT NOT NULL AUTO_INCREMENT,
 	currencyId INT NOT NULL,
 	currencyRate float NOT NULL,
 	PRIMARY KEY (id)
 )ENGINE=InnoDB CHARSET=utf8;
 
-DROP TABLE IF EXISTS leaseTypeInsurance;
-CREATE TABLE leaseTypeInsurance (
+DROP TABLE IF EXISTS insurance;
+CREATE TABLE insurance (
 	id INT NOT NULL AUTO_INCREMENT,
 	objectTypeId INT NOT NULL,
 	insurance FLOAT NOT NULL,
@@ -64,7 +64,7 @@ CREATE TABLE leaseTypeInsurance (
 )ENGINE=InnoDB CHARSET=utf8;
 
 
-LOCK TABLES user WRITE, userDetails WRITE, userRole WRITE, leaseTypeAgeMargin WRITE, leaseObjectType WRITE, leaseCurrencyRate WRITE, currency WRITE, leaseTypeInsurance WRITE;
+LOCK TABLES user WRITE, userDetails WRITE, userRole WRITE, margin WRITE, leaseObjectType WRITE, baseRate WRITE, currency WRITE, insurance WRITE;
 
 INSERT INTO user VALUES 
 	('1', '4denver@mail.ru', 'PDhidatxaFssF7PWkm8y+f6kmMC9JnO7xSPyfXVWOUA=$8O0ZuJx3yK6gNLFeekGwRRW33kqSmhvkIvNZQmEUsQI=', '1', '2'),
@@ -94,13 +94,13 @@ INSERT INTO currency VALUES
 	('3', 'EUR'),
 	('4', 'RUB');
 
-INSERT INTO leaseCurrencyRate VALUES 
+INSERT INTO baseRate VALUES 
 	('1', '1', '0.18'),
 	('2', '2', '0.09'),
 	('3', '3', '0.09'),
 	('4', '4', '0.16');
 
-INSERT INTO leaseTypeAgeMargin VALUES 
+INSERT INTO margin VALUES 
 	('1', '1', '0', '0.02'),
 	('2', '1', '1', '0.022'),
 	('3', '1', '2', '0.023'),
@@ -130,7 +130,7 @@ INSERT INTO leaseTypeAgeMargin VALUES
 	('27', '7', '2', '0.02'),
 	('28', '7', '3', '0.02');
 	
-INSERT INTO leaseTypeInsurance VALUES 
+INSERT INTO insurance VALUES 
 	('1', '1', '0.03'),
 	('2', '2', '0.025'),
 	('3', '3', '0.02'),
