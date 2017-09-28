@@ -26,7 +26,7 @@ public class LocaleChangeFilter implements Filter {
 		String targetLanguage = request.getParameter(LANG_PARAM_NAME);
 		
 		if (targetLanguage != null) {
-			httpRequest.setAttribute("locale", new Locale(targetLanguage));
+			httpRequest.setAttribute(CookieLocaleResolverFilter.LOCALE_ALIAS, new Locale(targetLanguage));
 			Cookie langCookie = new Cookie(LANG_COOKIE_NAME, targetLanguage);
 			langCookie.setMaxAge(COOKIE_MAX_AGE);
 			httpResponse.addCookie(langCookie);

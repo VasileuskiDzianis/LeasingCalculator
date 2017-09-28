@@ -1,10 +1,8 @@
 package by.vasilevsky.leasing.controller.command;
 
-import by.vasilevsky.leasing.controller.command.implementation.CommandProviderImpl;
-
 public interface CommandProvider {
 	
-	Command getCommand(String urlMapping);
+	Command getCommand(String method, String url);
 	
 	static CommandProvider getInstance() {
 		
