@@ -3,6 +3,7 @@ package by.vasilevsky.leasing.dao.user;
 import java.util.List;
 
 import by.vasilevsky.leasing.domain.user.User;
+import by.vasilevsky.leasing.domain.user.UserDetails;
 
 public interface UserDao {
 	
@@ -18,4 +19,7 @@ public interface UserDao {
 	
 	List<User> findAll();
 
+	void updateUserDetails(UserDetails userDetails);
+
+	void deleteUserById(int id);
 }

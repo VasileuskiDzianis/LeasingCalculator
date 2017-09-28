@@ -10,26 +10,10 @@ import by.vasilevsky.leasing.domain.rate.insurance.Insurance;
 
 public class InsuranceDaoImpl implements InsuranceDao {
 	private final static String REQUEST_FIND_LEASE_RATE = "SELECT i.id, i.insurance FROM insurance AS i JOIN leaseObjectType AS lot ON i.objectTypeId=lot.id WHERE lot.objectType=?;";
-
+	private static final String INSURANCE_DB_MAPPING_ID = "id";
+	private static final String INSURANCE_DB_MAPPING_VALUE = "insurance";
+	
 	private DataSource ds;
-	private static volatile InsuranceDaoImpl instance;
-
-	private InsuranceDaoImpl() {
-
-	}
-
-	public static InsuranceDao getInstance() {
-		InsuranceDaoImpl localInstance = instance;
-		if (localInstance == null) {
-			synchronized (InsuranceDaoImpl.class) {
-				localInstance = instance;
-				if (localInstance == null) {
-					instance = localInstance = new InsuranceDaoImpl();
-				}
-			}
-		}
-		return localInstance;
-	}
 
 	@Override
 	public Insurance findInsuranceByObjectType(PropertyType objectType) {
@@ -48,8 +32,8 @@ public class InsuranceDaoImpl implements InsuranceDao {
 			stmt.setString(1, objectType.toString());
 			rs = stmt.executeQuery();
 			if (rs.next()) {
-				insurance.setRate(rs.getFloat("insurance"));
-				insurance.setId(rs.getInt("id"));
+				insurance.setRate(rs.getFloat(INSURANCE_DB_MAPPING_VALUE));
+				insurance.setId(rs.getInt(INSURANCE_DB_MAPPING_ID));
 			}
 
 		} catch (SQLException e) {

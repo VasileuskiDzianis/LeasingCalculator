@@ -4,6 +4,7 @@ import java.util.List;
 
 import by.vasilevsky.leasing.dao.DaoFactory;
 import by.vasilevsky.leasing.domain.user.User;
+import by.vasilevsky.leasing.domain.user.UserDetails;
 
 public class UserServiceImpl implements UserService {
 	private static volatile UserServiceImpl instance;
@@ -55,6 +56,14 @@ public class UserServiceImpl implements UserService {
 		}
 		daoFactory.getUserDao().updateUser(user);
 	}
+	
+	@Override
+	public void updateUserDetails(UserDetails userDetails) {
+		if (!isUserDetailsValid(userDetails)) {
+			throw new IllegalArgumentException();
+		}
+		daoFactory.getUserDao().updateUserDetails(userDetails);
+	}
 
 	@Override
 	public void deleteUser(User user) {
@@ -62,6 +71,12 @@ public class UserServiceImpl implements UserService {
 			throw new IllegalArgumentException();
 		}
 		daoFactory.getUserDao().deleteUser(user);
+	}
+	
+	@Override
+	public void deleteUserById(int id) {
+		
+		daoFactory.getUserDao().deleteUserById(id);
 	}
 
 	@Override
@@ -76,8 +91,13 @@ public class UserServiceImpl implements UserService {
 				&& user.getLogin() != null
 				&& user.getPassword() != null
 				&& user.getUserRole() != null
-				&& user.getUserDetails().getAge() >= 0
-				&& user.getUserDetails().getFirstName() != null
-				&& user.getUserDetails().getLastName() != null;
+				&& isUserDetailsValid(user.getUserDetails());
+	}
+	private boolean isUserDetailsValid(UserDetails userDetails) {
+		
+		return userDetails != null
+				&& userDetails.getAge() >= 0
+				&& userDetails.getFirstName() != null
+				&& userDetails.getLastName() != null;
 	}
 }

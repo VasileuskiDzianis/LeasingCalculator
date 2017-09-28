@@ -41,6 +41,10 @@ public class ProfileFormBinder implements Filter {
 			model.setErrorsExist(true);
 			model.setMainMessage(messages.getString("form.message.incorrectdata"));
 		}
+		if (model.getDetailsId() == null || !Validator.validateNumber(model.getDetailsId())) {
+			model.setErrorsExist(true);
+			model.setMainMessage(messages.getString("form.message.incorrectdata"));
+		}
 		if (model.getFirstName() == null || !Validator.validateName(model.getFirstName())) {
 			model.setErrorsExist(true);
 			model.setFirstNameMessage(messages.getString("form.message.incorrectdata"));

@@ -11,9 +11,17 @@ import by.vasilevsky.leasing.dao.user.UserDaoImpl;
 
 public class DaoFactoryImpl implements DaoFactory {
 	private static volatile DaoFactoryImpl instance;
+	
+	private final UserDao userDao;
+	private final InsuranceDao insuranceDao;
+	private final BaseRateDao baseRateDao;
+	private final MarginDao marginDao;
 
 	private DaoFactoryImpl() {
-
+		userDao = new UserDaoImpl();
+		insuranceDao = new InsuranceDaoImpl();
+		baseRateDao = new BaseRateDaoImpl();
+		marginDao = new MarginDaoImpl();
 	}
 
 	public static DaoFactory getInstance() {
@@ -32,24 +40,24 @@ public class DaoFactoryImpl implements DaoFactory {
 	@Override
 	public UserDao getUserDao() {
 
-		return UserDaoImpl.getInstance();
+		return userDao;
 	}
 
 	@Override
 	public InsuranceDao getInsuranceDao() {
 
-		return InsuranceDaoImpl.getInstance();
+		return insuranceDao;
 	}
 
 	@Override
 	public BaseRateDao getBaseRateDao() {
 
-		return BaseRateDaoImpl.getInstance();
+		return baseRateDao;
 	}
 
 	@Override
 	public MarginDao getLeaseTypeAgeMarginDao() {
 
-		return MarginDaoImpl.getInstance();
+		return marginDao;
 	}
 }

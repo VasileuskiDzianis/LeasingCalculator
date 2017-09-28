@@ -10,7 +10,7 @@ import by.vasilevsky.leasing.controller.command.Command;
 import by.vasilevsky.leasing.controller.command.PageMapping;
 import by.vasilevsky.leasing.controller.command.UrlMapping;
 import by.vasilevsky.leasing.controller.forms.ProfileFormModel;
-import by.vasilevsky.leasing.domain.user.User;
+import by.vasilevsky.leasing.domain.user.UserDetails;
 import by.vasilevsky.leasing.service.ServiceFactory;
 import by.vasilevsky.leasing.service.user.UserService;
 
@@ -22,19 +22,25 @@ public class ProfileUpdateCommand implements Command {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ProfileFormModel model = (ProfileFormModel) request.getAttribute(ProfileFormModel.ALIAS);
 		if (!model.hasErrors()) {
-			
-			//fix it: it doesn't need to find by id
-			User user = userService.findUserById(Integer.parseInt(model.getUserId()));
-			user.getUserDetails().setFirstName(model.getFirstName());
-			user.getUserDetails().setLastName(model.getLastName());
-			user.getUserDetails().setAge(Integer.parseInt(model.getAge()));
-			userService.updateUser(user);
-			
+			UserDetails userDetails = buildUserDetailsFromModel(model);
+			userService.updateUserDetails(userDetails);
+
 			response.sendRedirect(UrlMapping.PROFILE);
+			
 			return;
 		}
 		request.setAttribute(ProfileFormModel.ALIAS, model);
 
 		request.getRequestDispatcher(PageMapping.PROFILE).forward(request, response);
+	}
+
+	private UserDetails buildUserDetailsFromModel(ProfileFormModel model) {
+		UserDetails userDetails = new UserDetails();
+		userDetails.setId(Integer.parseInt(model.getDetailsId()));
+		userDetails.setFirstName(model.getFirstName());
+		userDetails.setLastName(model.getLastName());
+		userDetails.setAge(Integer.parseInt(model.getAge()));
+
+		return userDetails;
 	}
 }

@@ -31,25 +31,18 @@ public class UserDaoImpl implements UserDao {
 	private static final String REQ_UPDATE_DETAILS = "UPDATE userDetails SET firstName=?, lastName=?, age=? WHERE detailsId=?;";
 	private static final String REQ_UPDATE_USER = "UPDATE user SET login=?, password=?, roleId=? WHERE id=?;";
 
+	private static final String USER_DB_MAPPING_ID = "id";
+	private static final String USER_DB_MAPPING_LOGIN = "login";
+	private static final String USER_DB_MAPPING_PSW = "password";
+	private static final String USER_DB_MAPPING_ROLE = "role";
+	private static final String USER_DB_MAPPING_DETAILS_ID = "detailsId";
+	private static final String USER_DB_MAPPING_FIRST_NAME = "firstName";
+	private static final String USER_DB_MAPPING_LAST_NAME = "lastName";
+	private static final String USER_DB_MAPPING_AGE = "age";
+
+	private static final int NOT_EXISTENT_ROLE_ID = 0;
+
 	private DataSource ds;
-	private static volatile UserDaoImpl instance;
-
-	private UserDaoImpl() {
-
-	}
-
-	public static UserDao getInstance() {
-		UserDaoImpl localInstance = instance;
-		if (localInstance == null) {
-			synchronized (UserDaoImpl.class) {
-				localInstance = instance;
-				if (localInstance == null) {
-					instance = localInstance = new UserDaoImpl();
-				}
-			}
-		}
-		return localInstance;
-	}
 
 	@Override
 	public void updateUser(User user) {
@@ -83,22 +76,65 @@ public class UserDaoImpl implements UserDao {
 	public void deleteUser(User user) {
 		ds = DataSourceProvider.getInstance().getDataSource();
 		Connection con = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-
-		deleteUserDetails(user.getUserDetails());
+		PreparedStatement stmtDeleteUser = null;
+		PreparedStatement stmtDeleteDetails = null;
 
 		try {
 			con = ds.getConnection();
-			stmt = con.prepareStatement(REQ_DELETE_USER);
-			stmt.setInt(1, user.getId());
-			stmt.executeUpdate();
+			con.setAutoCommit(false);
+			stmtDeleteUser = con.prepareStatement(REQ_DELETE_USER);
+			stmtDeleteUser.setInt(1, user.getId());
+			stmtDeleteUser.executeUpdate();
 
+			stmtDeleteDetails = con.prepareStatement(REQ_DELETE_DETAILS);
+			stmtDeleteDetails.setInt(1, user.getUserDetails().getId());
+			stmtDeleteDetails.executeUpdate();
+
+			con.commit();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			try {
+				con.rollback();
+			} catch (SQLException ex) {
+				throw new RuntimeException("transaction rollback exception", ex);
+			}
 			throw new RuntimeException("deleteUser exception", e);
 		} finally {
-			closeResources(rs, stmt, con);
+			closeResources(null, stmtDeleteUser, con);
+			closeResources(null, stmtDeleteDetails, null);
+		}
+	}
+
+	@Override
+	public void deleteUserById(int id) {
+		ds = DataSourceProvider.getInstance().getDataSource();
+		Connection con = null;
+		PreparedStatement stmtDeleteUser = null;
+		PreparedStatement stmtDeleteUserDetails = null;
+
+		User user = findUserById(id);
+
+		try {
+			con = ds.getConnection();
+			con.setAutoCommit(false);
+			stmtDeleteUser = con.prepareStatement(REQ_DELETE_USER);
+			stmtDeleteUser.setInt(1, user.getId());
+			stmtDeleteUser.executeUpdate();
+
+			stmtDeleteUserDetails = con.prepareStatement(REQ_DELETE_DETAILS);
+			stmtDeleteUserDetails.setInt(1, user.getUserDetails().getId());
+			stmtDeleteUserDetails.executeUpdate();
+
+			con.commit();
+		} catch (SQLException e) {
+			try {
+				con.rollback();
+			} catch (SQLException ex) {
+				throw new RuntimeException("transaction rollback exception", ex);
+			}
+			throw new RuntimeException("deleteUser exception", e);
+		} finally {
+			closeResources(null, stmtDeleteUser, con);
+			closeResources(null, stmtDeleteUserDetails, null);
 		}
 	}
 
@@ -117,15 +153,15 @@ public class UserDaoImpl implements UserDao {
 
 			if (rs.next()) {
 				User user = new User();
-				user.setId(rs.getInt("id"));
-				user.setLogin(rs.getString("login"));
-				user.setPassword(rs.getString("password"));
-				user.setUserRole(UserRole.valueOf(rs.getString("role")));
+				user.setId(rs.getInt(USER_DB_MAPPING_ID));
+				user.setLogin(rs.getString(USER_DB_MAPPING_LOGIN));
+				user.setPassword(rs.getString(USER_DB_MAPPING_PSW));
+				user.setUserRole(UserRole.valueOf(rs.getString(USER_DB_MAPPING_ROLE)));
 				UserDetails userDetails = new UserDetails();
-				userDetails.setId(rs.getInt("detailsId"));
-				userDetails.setFirstName(rs.getString("firstName"));
-				userDetails.setLastName(rs.getString("lastName"));
-				userDetails.setAge(rs.getInt("age"));
+				userDetails.setId(rs.getInt(USER_DB_MAPPING_DETAILS_ID));
+				userDetails.setFirstName(rs.getString(USER_DB_MAPPING_FIRST_NAME));
+				userDetails.setLastName(rs.getString(USER_DB_MAPPING_LAST_NAME));
+				userDetails.setAge(rs.getInt(USER_DB_MAPPING_AGE));
 				user.setUserDetails(userDetails);
 
 				return user;
@@ -154,15 +190,15 @@ public class UserDaoImpl implements UserDao {
 
 			if (rs.next()) {
 				User user = new User();
-				user.setId(rs.getInt("id"));
-				user.setLogin(rs.getString("login"));
-				user.setPassword(rs.getString("password"));
-				user.setUserRole(UserRole.valueOf(rs.getString("role")));
+				user.setId(rs.getInt(USER_DB_MAPPING_ID));
+				user.setLogin(rs.getString(USER_DB_MAPPING_LOGIN));
+				user.setPassword(rs.getString(USER_DB_MAPPING_PSW));
+				user.setUserRole(UserRole.valueOf(rs.getString(USER_DB_MAPPING_ROLE)));
 				UserDetails userDetails = new UserDetails();
-				userDetails.setId(rs.getInt("detailsId"));
-				userDetails.setFirstName(rs.getString("firstName"));
-				userDetails.setLastName(rs.getString("lastName"));
-				userDetails.setAge(rs.getInt("age"));
+				userDetails.setId(rs.getInt(USER_DB_MAPPING_DETAILS_ID));
+				userDetails.setFirstName(rs.getString(USER_DB_MAPPING_FIRST_NAME));
+				userDetails.setLastName(rs.getString(USER_DB_MAPPING_LAST_NAME));
+				userDetails.setAge(rs.getInt(USER_DB_MAPPING_AGE));
 				user.setUserDetails(userDetails);
 
 				return user;
@@ -190,23 +226,23 @@ public class UserDaoImpl implements UserDao {
 			users = new ArrayList<User>();
 			while (rs.next()) {
 				User user = new User();
-				user.setId(rs.getInt("id"));
-				user.setLogin(rs.getString("login"));
-				user.setPassword(rs.getString("password"));
-				user.setUserRole(UserRole.valueOf(rs.getString("role")));
+				user.setId(rs.getInt(USER_DB_MAPPING_ID));
+				user.setLogin(rs.getString(USER_DB_MAPPING_LOGIN));
+				user.setPassword(rs.getString(USER_DB_MAPPING_PSW));
+				user.setUserRole(UserRole.valueOf(rs.getString(USER_DB_MAPPING_ROLE)));
 				UserDetails userDetails = new UserDetails();
-				userDetails.setId(rs.getInt("detailsId"));
-				userDetails.setFirstName(rs.getString("firstName"));
-				userDetails.setLastName(rs.getString("lastName"));
-				userDetails.setAge(rs.getInt("age"));
+				userDetails.setId(rs.getInt(USER_DB_MAPPING_DETAILS_ID));
+				userDetails.setFirstName(rs.getString(USER_DB_MAPPING_FIRST_NAME));
+				userDetails.setLastName(rs.getString(USER_DB_MAPPING_LAST_NAME));
+				userDetails.setAge(rs.getInt(USER_DB_MAPPING_AGE));
 				user.setUserDetails(userDetails);
-				
+
 				users.add(user);
 			}
 			return users;
 		} catch (SQLException e) {
 			users = Collections.emptyList();
-			
+
 			return users;
 		} finally {
 			closeResources(rs, stmt, con);
@@ -217,31 +253,48 @@ public class UserDaoImpl implements UserDao {
 	public void saveUser(User user) {
 		ds = DataSourceProvider.getInstance().getDataSource();
 		Connection con = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
+		PreparedStatement stmtSaveUser = null;
+		ResultSet rsSaveUser = null;
+		PreparedStatement stmtSaveDetails = null;
+		ResultSet rsSaveDetails = null;
 
-		saveUserDetails(user.getUserDetails());
 		int userRoleId = findUserRoleId(user.getUserRole());
 
 		try {
 			con = ds.getConnection();
-			stmt = con.prepareStatement(REQ_SAVE_USER, Statement.RETURN_GENERATED_KEYS);
-			stmt.setString(1, user.getLogin());
-			stmt.setString(2, user.getPassword());
-			stmt.setInt(3, user.getUserDetails().getId());
-			stmt.setInt(4, userRoleId);
-			stmt.executeUpdate();
-			rs = stmt.getGeneratedKeys();
+			con.setAutoCommit(false);
 
-			if (rs.next()) {
-				user.setId(rs.getInt(1));
+			stmtSaveDetails = con.prepareStatement(REQ_SAVE_USER_DETAILS, Statement.RETURN_GENERATED_KEYS);
+			stmtSaveDetails.setString(1, user.getUserDetails().getFirstName());
+			stmtSaveDetails.setString(2, user.getUserDetails().getLastName());
+			stmtSaveDetails.setInt(3, user.getUserDetails().getAge());
+			stmtSaveDetails.executeUpdate();
+			rsSaveDetails = stmtSaveDetails.getGeneratedKeys();
+			if (rsSaveDetails.next()) {
+				user.getUserDetails().setId(rsSaveDetails.getInt(1));
 			}
 
+			stmtSaveUser = con.prepareStatement(REQ_SAVE_USER, Statement.RETURN_GENERATED_KEYS);
+			stmtSaveUser.setString(1, user.getLogin());
+			stmtSaveUser.setString(2, user.getPassword());
+			stmtSaveUser.setInt(3, user.getUserDetails().getId());
+			stmtSaveUser.setInt(4, userRoleId);
+			stmtSaveUser.executeUpdate();
+			rsSaveUser = stmtSaveUser.getGeneratedKeys();
+			if (rsSaveUser.next()) {
+				user.setId(rsSaveUser.getInt(1));
+			}
+			con.commit();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			try {
+				con.rollback();
+			} catch (SQLException ex) {
+				throw new RuntimeException("transaction rollback exception", ex);
+			}
 			throw new RuntimeException("saveUser() exception", e);
 		} finally {
-			closeResources(rs, stmt, con);
+			closeResources(rsSaveUser, stmtSaveUser, null);
+			closeResources(rsSaveDetails, stmtSaveDetails, con);
 		}
 	}
 
@@ -263,35 +316,15 @@ public class UserDaoImpl implements UserDao {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
 			throw new RuntimeException("findUserRoleId exception", e);
 		} finally {
 			closeResources(rs, stmt, con);
 		}
-		return 0;
+		return NOT_EXISTENT_ROLE_ID;
 	}
 
-	private void deleteUserDetails(UserDetails userDetails) {
-		ds = DataSourceProvider.getInstance().getDataSource();
-		Connection con = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-
-		try {
-			con = ds.getConnection();
-			stmt = con.prepareStatement(REQ_DELETE_DETAILS);
-			stmt.setInt(1, userDetails.getId());
-			stmt.executeUpdate();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new RuntimeException("deleteUserDetails exception", e);
-		} finally {
-			closeResources(rs, stmt, con);
-		}
-	}
-
-	private void updateUserDetails(UserDetails userDetails) {
+	@Override
+	public void updateUserDetails(UserDetails userDetails) {
 		ds = DataSourceProvider.getInstance().getDataSource();
 		Connection con = null;
 		PreparedStatement stmt = null;
@@ -305,34 +338,6 @@ public class UserDaoImpl implements UserDao {
 			stmt.setInt(3, userDetails.getAge());
 			stmt.setInt(4, userDetails.getId());
 			stmt.executeUpdate();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new RuntimeException("saveUserDetails exception", e);
-		} finally {
-			closeResources(rs, stmt, con);
-		}
-	}
-
-	private void saveUserDetails(UserDetails userDetails) {
-		ds = DataSourceProvider.getInstance().getDataSource();
-		Connection con = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-
-		try {
-			con = ds.getConnection();
-			stmt = con.prepareStatement(REQ_SAVE_USER_DETAILS, Statement.RETURN_GENERATED_KEYS);
-			stmt.setString(1, userDetails.getFirstName());
-			stmt.setString(2, userDetails.getLastName());
-			stmt.setInt(3, userDetails.getAge());
-			stmt.executeUpdate();
-
-			rs = stmt.getGeneratedKeys();
-
-			if (rs.next()) {
-				userDetails.setId(rs.getInt(1));
-			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -11,25 +11,10 @@ import by.vasilevsky.leasing.domain.rate.lease.Margin;
 public class MarginDaoImpl implements MarginDao {
 	private final static String REQUEST_FIND_LEASE_RATE = "SELECT m.id, m.margin FROM margin AS m JOIN leaseObjectType AS lot ON m.objectTypeId=lot.id WHERE m.objectAge=? AND lot.objectType=?;";
 
+	private static final String MARGIN_DB_MAPPING_ID = "id";
+	private static final String MARGIN_DB_MAPPING_VALUE = "margin";
+
 	private DataSource ds;
-	private static volatile MarginDaoImpl instance;
-
-	private MarginDaoImpl() {
-
-	}
-
-	public static MarginDao getInstance() {
-		MarginDaoImpl localInstance = instance;
-		if (localInstance == null) {
-			synchronized (MarginDaoImpl.class) {
-				localInstance = instance;
-				if (localInstance == null) {
-					instance = localInstance = new MarginDaoImpl();
-				}
-			}
-		}
-		return localInstance;
-	}
 
 	@Override
 	public Margin findMarginByTypeAndAge(PropertyType objectType, int age) {
@@ -50,8 +35,8 @@ public class MarginDaoImpl implements MarginDao {
 			stmt.setString(2, objectType.toString());
 			rs = stmt.executeQuery();
 			if (rs.next()) {
-				margin.setMargin(rs.getFloat("margin"));
-				margin.setId(rs.getInt("id"));
+				margin.setMargin(rs.getFloat(MARGIN_DB_MAPPING_VALUE));
+				margin.setId(rs.getInt(MARGIN_DB_MAPPING_ID));
 			}
 		} catch (SQLException e) {
 			throw new RuntimeException("Finding margin exception: ", e);
