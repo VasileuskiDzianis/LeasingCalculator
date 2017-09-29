@@ -13,26 +13,18 @@ import by.vasilevsky.leasing.domain.payments.PaymentsSchedule;
 
 public class PaymentsScheduleServiceImpl implements PaymentsScheduleService {
 	private static final int PAYMENT_INTERVAL = 1;
-
-	private static volatile PaymentsScheduleServiceImpl instance;
-
-	private PaymentsScheduleServiceImpl() {
-
-	}
-
-	public static PaymentsScheduleService getInstance() {
-		PaymentsScheduleServiceImpl localInstance = instance;
-		if (localInstance == null) {
-			synchronized (PaymentsScheduleServiceImpl.class) {
-				localInstance = instance;
-				if (localInstance == null) {
-					instance = localInstance = new PaymentsScheduleServiceImpl();
-				}
-			}
-		}
-		return localInstance;
-	}
-
+	private static final int INTERVALS_NUMBER_IN_A_YEAR = 12;
+	
+	private static final float ZERO_VAT_VALUE = 0f;
+	private static final float MIN_BUYOUT_PERCENT = 0f;
+	private static final float MIN_INSURANCE_RATE = 0f;
+	private static final float MIN_LEASE_RATE = 0f;
+	private static final float MIN_PREPAY_PERCENT = 0f;
+	private static final float MIN_PRICE = 0f;
+	private static final float MIN_VAT = 0f;
+	private static final int MIN_DURATION = 0;
+	private static final int MIN_AGE = 0;
+	
 	@Override
 	public void countPayments(PaymentsSchedule schedule) {
 		if (!isPaymentsScheduleValid(schedule)) {
@@ -62,7 +54,7 @@ public class PaymentsScheduleServiceImpl implements PaymentsScheduleService {
 
 	private boolean isPropertyPriceHasVat(Property property) {
 
-		return (property.getVat() == 0f) ? false : true;
+		return (property.getVat() == ZERO_VAT_VALUE) ? false : true;
 	}
 
 	private MonthlyPayment countLeasePayment(PaymentsSchedule schedule, Date date, float debt, float costRepayment) {
@@ -71,9 +63,9 @@ public class PaymentsScheduleServiceImpl implements PaymentsScheduleService {
 		payment.setPaymentDate(date);
 		payment.setRemainingDebt(debt);
 		payment.setPaymentType(PaymentType.LEASE_PAYMENT);
-		payment.setLeaseMargin(schedule.getLeaseRate() * debt / 12);
+		payment.setLeaseMargin(schedule.getLeaseRate() * debt / INTERVALS_NUMBER_IN_A_YEAR);
 		payment.setLeaseMarginVat(payment.getLeaseMargin() * VAT_RATE);
-		payment.setInsurance((property.getPrice() + property.getVat()) * schedule.getInsuranceRate() / 12);
+		payment.setInsurance((property.getPrice() + property.getVat()) * schedule.getInsuranceRate() / INTERVALS_NUMBER_IN_A_YEAR);
 		payment.setInsuranceVat(payment.getInsurance() * VAT_RATE);
 		payment.setPropertyCostRepayment(costRepayment);
 		if (isPropertyPriceHasVat(property)) {
@@ -105,16 +97,16 @@ public class PaymentsScheduleServiceImpl implements PaymentsScheduleService {
 	private boolean isPaymentsScheduleValid(PaymentsSchedule schedule) {
 				
 		return schedule != null 
-				&& schedule.getBuyingOutPercentage() >= 0f
+				&& schedule.getBuyingOutPercentage() >= MIN_BUYOUT_PERCENT
 				&& schedule.getCurrency() != null 
-				&& schedule.getInsuranceRate() >= 0f
-				&& schedule.getLeaseDuration() >= 0
-				&& schedule.getLeaseRate() >= 0f
-				&& schedule.getPrepaymentPercentage() >= 0f
+				&& schedule.getInsuranceRate() >= MIN_INSURANCE_RATE
+				&& schedule.getLeaseDuration() >= MIN_DURATION
+				&& schedule.getLeaseRate() >= MIN_LEASE_RATE
+				&& schedule.getPrepaymentPercentage() >= MIN_PREPAY_PERCENT
 				&& schedule.getProperty().getPropertyType() != null
 				&& schedule.getProperty().getCurrency() != null
-				&& schedule.getProperty().getAge() >= 0
-				&& schedule.getProperty().getPrice() > 0f
-				&& schedule.getProperty().getVat() > 0f;
+				&& schedule.getProperty().getAge() >= MIN_AGE
+				&& schedule.getProperty().getPrice() > MIN_PRICE
+				&& schedule.getProperty().getVat() > MIN_VAT;
 	}
 }

@@ -9,7 +9,7 @@ import by.vasilevsky.leasing.dao.rate.lease.MarginDaoImpl;
 import by.vasilevsky.leasing.dao.user.UserDao;
 import by.vasilevsky.leasing.dao.user.UserDaoImpl;
 
-public class DaoFactoryImpl implements DaoFactory {
+public final class DaoFactoryImpl implements DaoFactory {
 	private static volatile DaoFactoryImpl instance;
 	
 	private final UserDao userDao;

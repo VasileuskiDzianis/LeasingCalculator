@@ -15,10 +15,25 @@ import by.vasilevsky.leasing.service.registration.RegistrationServiceImpl;
 import by.vasilevsky.leasing.service.user.UserService;
 import by.vasilevsky.leasing.service.user.UserServiceImpl;
 
-public class ServiceFactoryImpl implements ServiceFactory {
+public final class ServiceFactoryImpl implements ServiceFactory {
 	private static volatile ServiceFactoryImpl instance;
 	
+	private final UserService userService;
+	private final PaymentsScheduleService paymentsScheduleService;
+	private final InsuranceService insuranceService;
+	private final BaseRateService baseRateService;
+	private final MarginService marginService;
+	private final RegistrationService registrationService;
+	private final LoginationService loginationService;
+	
 	private ServiceFactoryImpl () {
+		userService = new UserServiceImpl();
+		paymentsScheduleService = new PaymentsScheduleServiceImpl();
+		insuranceService = new InsuranceServiceImpl();
+		baseRateService = new BaseRateServiceImpl();
+		marginService = new MarginServiceImpl();
+		registrationService = new RegistrationServiceImpl();
+		loginationService = new LoginationServiceImpl();
 		
 	}
 	
@@ -38,42 +53,42 @@ public class ServiceFactoryImpl implements ServiceFactory {
 	@Override
 	public UserService getUserService() {
 		
-		return UserServiceImpl.getInstance();
+		return userService;
 	}
 
 	@Override
 	public PaymentsScheduleService getPaymentsScheduleService() {
 		
-		return PaymentsScheduleServiceImpl.getInstance();
+		return paymentsScheduleService;
 	}
 
 	@Override
 	public InsuranceService getInsuranceService() {
 		
-		return InsuranceServiceImpl.getInstance();
+		return insuranceService;
 	}
 
 	@Override
 	public BaseRateService getBaseRateService() {
 		
-		return BaseRateServiceImpl.getInstance();
+		return baseRateService;
 	}
 
 	@Override
 	public MarginService getMarginService() {
 		
-		return MarginServiceImpl.getInstance();
+		return marginService;
 	}
 	
 	@Override
 	public RegistrationService getRegistrationService() {
 		
-		return RegistrationServiceImpl.getInstance();
+		return registrationService;
 	}
 
 	@Override
 	public LoginationService getLoginationService() {
 		
-		return LoginationServiceImpl.getInstance();
+		return loginationService;
 	}
 }

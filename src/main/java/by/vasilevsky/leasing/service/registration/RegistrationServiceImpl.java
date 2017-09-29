@@ -5,32 +5,13 @@ import by.vasilevsky.leasing.service.ServiceFactory;
 import by.vasilevsky.leasing.service.user.UserService;
 
 public class RegistrationServiceImpl implements RegistrationService {
-	private static volatile RegistrationServiceImpl instance;
-	private static final ServiceFactory serviceFactory = ServiceFactory.getInstance();
-
-	private RegistrationServiceImpl() {
-
-	}
-
-	public static RegistrationService getInstance() {
-		RegistrationServiceImpl localInstance = instance;
-		if (localInstance == null) {
-			synchronized (RegistrationServiceImpl.class) {
-				localInstance = instance;
-				if (localInstance == null) {
-					instance = localInstance = new RegistrationServiceImpl();
-				}
-			}
-		}
-		return localInstance;
-	}
-
+	
 	@Override
 	public boolean isLoginExisting(String login) {
 		if (login == null) {
 			throw new IllegalArgumentException();
 		}
-		UserService userService = serviceFactory.getUserService();
+		UserService userService = ServiceFactory.getInstance().getUserService();
 		User user = userService.findUserByLogin(login);
 
 		return (user == null) ? false : true;
@@ -41,7 +22,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 		if (user == null) {
 			throw new IllegalArgumentException();
 		}
-		UserService userService = serviceFactory.getUserService();
+		UserService userService = ServiceFactory.getInstance().getUserService();
 		String encodedPassword;
 		try {
 			encodedPassword = PasswordService.getSaltedHash(user.getPassword());

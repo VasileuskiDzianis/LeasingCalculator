@@ -7,25 +7,9 @@ import by.vasilevsky.leasing.domain.user.User;
 import by.vasilevsky.leasing.domain.user.UserDetails;
 
 public class UserServiceImpl implements UserService {
-	private static volatile UserServiceImpl instance;
-	private static final DaoFactory daoFactory = DaoFactory.getInstance();
+	private static final int MIN_AGE = 0;
 	
-	private UserServiceImpl() {
-		
-	}
-	
-	public static UserService getInstance() {
-		UserServiceImpl localInstance = instance;
-		if (localInstance == null) {
-			synchronized (UserServiceImpl.class) {
-				localInstance = instance;
-				if (localInstance == null) {
-					instance = localInstance = new UserServiceImpl();
-				}
-			}
-		}
-		return localInstance;
-	}
+	private final DaoFactory daoFactory = DaoFactory.getInstance();
 	
 	@Override
 	public User findUserById(int id) {
@@ -96,7 +80,7 @@ public class UserServiceImpl implements UserService {
 	private boolean isUserDetailsValid(UserDetails userDetails) {
 		
 		return userDetails != null
-				&& userDetails.getAge() >= 0
+				&& userDetails.getAge() >= MIN_AGE
 				&& userDetails.getFirstName() != null
 				&& userDetails.getLastName() != null;
 	}

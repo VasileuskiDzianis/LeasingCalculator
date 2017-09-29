@@ -15,17 +15,13 @@ public class ServletDispatcher extends HttpServlet {
 	private static final String METHOD_GET = "get";
 	private static final String METHOD_POST = "post";
 	
-	
-	private CommandProvider commandProvider = CommandProvider.getInstance();
-	
-	
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		commandProvider.getCommand(METHOD_GET, request.getServletPath()).execute(request, response);
+		CommandProvider.getInstance().getCommand(METHOD_GET, request.getServletPath()).execute(request, response);
 	}
 	
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		commandProvider.getCommand(METHOD_POST, request.getServletPath()).execute(request, response);
+		CommandProvider.getInstance().getCommand(METHOD_POST, request.getServletPath()).execute(request, response);
 	}
 }

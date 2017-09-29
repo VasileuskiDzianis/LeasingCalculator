@@ -17,19 +17,15 @@ public class BaseRateDaoImpl implements BaseRateDao {
 	private static final String BASE_RATE_DB_MAPPING_ID = "currencyId";
 	private static final String BASE_RATE_DB_MAPPING_VALUE = "currencyRate";
 
-	private DataSource ds;
-
 	@Override
 	public BaseRate findLeaseRateByCurrency(Currency currency) {
-		BaseRate rate = new BaseRate();
-
-		ds = DataSourceProvider.getInstance().getDataSource();
+		DataSource ds = DataSourceProvider.getInstance().getDataSource();
 		Connection con = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
+		BaseRate rate = new BaseRate();
 		rate.setCurrency(currency);
-
 		try {
 			con = ds.getConnection();
 			stmt = con.prepareStatement(REQUEST_FIND_LEASE_RATE);
@@ -39,7 +35,6 @@ public class BaseRateDaoImpl implements BaseRateDao {
 				rate.setRate(rs.getFloat(BASE_RATE_DB_MAPPING_VALUE));
 				rate.setId(rs.getInt(BASE_RATE_DB_MAPPING_ID));
 			}
-
 		} catch (SQLException e) {
 			throw new RuntimeException("Finding currency rate exception: ", e);
 		} finally {
@@ -53,7 +48,6 @@ public class BaseRateDaoImpl implements BaseRateDao {
 				if (con != null) {
 					con.close();
 				}
-
 			} catch (SQLException e) {
 				throw new RuntimeException("Resources closing exception: ", e);
 			}

@@ -1,14 +1,18 @@
-package by.vasilevsky.leasing.service.validator;
+package by.vasilevsky.leasing.validator;
 
 import java.util.regex.Pattern;
 
 import org.apache.commons.validator.routines.EmailValidator;
 
-public class Validator {
+public final class Validator {
 	private static final String PATTERN_PASSWORD = "[a-zA-Z]{6,}";
 	private static final String PATTERN_NAME = "^[a-zA-Zа-яА-Я]+(([',. -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$";
 	private static final String PATTERN_NUMBER = "\\d{1,}";
-
+	
+	private Validator() {
+		
+	}
+	
 	public static final boolean validatePassword(String password) {
 		if (password == null) {
 

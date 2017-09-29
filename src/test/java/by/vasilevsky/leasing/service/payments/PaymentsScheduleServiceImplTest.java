@@ -36,7 +36,7 @@ public class PaymentsScheduleServiceImplTest {
 	private static final float PRECISION = 0.000001f;
 	
 	PaymentsSchedule paymentsSchedule;
-	PaymentsScheduleService paymentsService = PaymentsScheduleServiceImpl.getInstance();
+	PaymentsScheduleService paymentsService = new PaymentsScheduleServiceImpl();
 	
 
 	@Before

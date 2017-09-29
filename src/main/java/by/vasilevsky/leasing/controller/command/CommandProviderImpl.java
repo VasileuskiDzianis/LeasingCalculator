@@ -5,7 +5,7 @@ import java.util.Map;
 
 import by.vasilevsky.leasing.controller.command.impl.*;
 
-public class CommandProviderImpl implements CommandProvider {
+public final class CommandProviderImpl implements CommandProvider {
 	private static volatile CommandProviderImpl instance;
 
 	private static final String METHOD_GET = "get";

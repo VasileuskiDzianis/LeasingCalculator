@@ -14,20 +14,16 @@ public class MarginDaoImpl implements MarginDao {
 	private static final String MARGIN_DB_MAPPING_ID = "id";
 	private static final String MARGIN_DB_MAPPING_VALUE = "margin";
 
-	private DataSource ds;
-
 	@Override
 	public Margin findMarginByTypeAndAge(PropertyType objectType, int age) {
-		Margin margin = new Margin();
-
-		ds = DataSourceProvider.getInstance().getDataSource();
+		DataSource ds = DataSourceProvider.getInstance().getDataSource();
 		Connection con = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
+		Margin margin = new Margin();
 		margin.setPropertyAge(age);
 		margin.setPropertyType(objectType);
-
 		try {
 			con = ds.getConnection();
 			stmt = con.prepareStatement(REQUEST_FIND_LEASE_RATE);

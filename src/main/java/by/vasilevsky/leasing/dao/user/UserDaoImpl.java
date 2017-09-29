@@ -42,12 +42,9 @@ public class UserDaoImpl implements UserDao {
 
 	private static final int NOT_EXISTENT_ROLE_ID = 0;
 
-	private DataSource ds;
-
 	@Override
 	public void updateUser(User user) {
-
-		ds = DataSourceProvider.getInstance().getDataSource();
+		DataSource ds = DataSourceProvider.getInstance().getDataSource();
 		Connection con = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -74,7 +71,7 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public void deleteUser(User user) {
-		ds = DataSourceProvider.getInstance().getDataSource();
+		DataSource ds = DataSourceProvider.getInstance().getDataSource();
 		Connection con = null;
 		PreparedStatement stmtDeleteUser = null;
 		PreparedStatement stmtDeleteDetails = null;
@@ -106,7 +103,7 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public void deleteUserById(int id) {
-		ds = DataSourceProvider.getInstance().getDataSource();
+		DataSource ds = DataSourceProvider.getInstance().getDataSource();
 		Connection con = null;
 		PreparedStatement stmtDeleteUser = null;
 		PreparedStatement stmtDeleteUserDetails = null;
@@ -140,7 +137,7 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public User findUserById(int id) {
-		ds = DataSourceProvider.getInstance().getDataSource();
+		DataSource ds = DataSourceProvider.getInstance().getDataSource();
 		Connection con = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -177,7 +174,7 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public User findUserByLogin(String login) {
-		ds = DataSourceProvider.getInstance().getDataSource();
+		DataSource ds = DataSourceProvider.getInstance().getDataSource();
 		Connection con = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -214,7 +211,7 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public List<User> findAll() {
-		ds = DataSourceProvider.getInstance().getDataSource();
+		DataSource ds = DataSourceProvider.getInstance().getDataSource();
 		Connection con = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -251,7 +248,7 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public void saveUser(User user) {
-		ds = DataSourceProvider.getInstance().getDataSource();
+		DataSource ds = DataSourceProvider.getInstance().getDataSource();
 		Connection con = null;
 		PreparedStatement stmtSaveUser = null;
 		ResultSet rsSaveUser = null;
@@ -299,7 +296,7 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	private int findUserRoleId(UserRole userRole) {
-		ds = DataSourceProvider.getInstance().getDataSource();
+		DataSource ds = DataSourceProvider.getInstance().getDataSource();
 		Connection con = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -325,7 +322,7 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public void updateUserDetails(UserDetails userDetails) {
-		ds = DataSourceProvider.getInstance().getDataSource();
+		DataSource ds = DataSourceProvider.getInstance().getDataSource();
 		Connection con = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
