@@ -13,48 +13,50 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 
 import by.vasilevsky.leasing.controller.forms.RegistrationFormModel;
+import by.vasilevsky.leasing.filter.i18n.MessageMapping;
 import by.vasilevsky.leasing.validator.Validator;
 
 @WebFilter("/registration")
 public class RegistrationFormBinderFilter implements Filter {
+	private static final String METHOD_POST = "post";
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
-		ResourceBundle messages = (ResourceBundle) request.getAttribute("messages");
-		
-		if (httpRequest.getMethod().equalsIgnoreCase("post")) {
+		ResourceBundle messages = (ResourceBundle) request.getAttribute(MessageMapping.ALIAS);
+
+		if (httpRequest.getMethod().equalsIgnoreCase(METHOD_POST)) {
 			RegistrationFormModel model = new RegistrationFormModel();
-			model.setLogin(request.getParameter("login"));
-			model.setFirstPassword(request.getParameter("password1"));
-			model.setSecondPassword(request.getParameter("password2"));
+			model.setLogin(request.getParameter(RegistrationFormMapping.FIELD_LOGIN));
+			model.setFirstPassword(request.getParameter(RegistrationFormMapping.FIELD_PASSWORD_1));
+			model.setSecondPassword(request.getParameter(RegistrationFormMapping.FIELD_PASSWORD_2));
 			checkRegistartionFormModel(model, messages);
-		
-			request.setAttribute("registrationFormModel", model);
+
+			request.setAttribute(RegistrationFormMapping.ALIAS, model);
 		}
 		chain.doFilter(request, response);
 	}
-	
+
 	private void checkRegistartionFormModel(RegistrationFormModel formModel, ResourceBundle messages) {
 		if (formModel.getFirstPassword() == null) {
-			formModel.setFirstPasswordMessage(messages.getString("form.message.empty"));
+			formModel.setFirstPasswordMessage(messages.getString(MessageMapping.EMPTY_FIELD));
 			formModel.setErrors(true);
 		}
 		if (formModel.getLogin() == null) {
-			formModel.setLoginMessage(messages.getString("form.message.empty"));
+			formModel.setLoginMessage(messages.getString(MessageMapping.EMPTY_FIELD));
 			formModel.setErrors(true);
 		}
 		if (formModel.getFirstPassword() != null
 				&& (!formModel.getFirstPassword().equals(formModel.getSecondPassword()))) {
-			formModel.setSecondPasswordMessage(messages.getString("form.message.pswmatching"));
+			formModel.setSecondPasswordMessage(messages.getString(MessageMapping.PASSWORDS_DONT_MATCH));
 			formModel.setErrors(true);
 		}
 		if (!Validator.validatePassword(formModel.getFirstPassword())) {
-			formModel.setFirstPasswordMessage(messages.getString("form.message.6chars"));
+			formModel.setFirstPasswordMessage(messages.getString(MessageMapping.TOO_LITTLE_CHARS));
 			formModel.setErrors(true);
 		}
 		if (!Validator.validateLogin(formModel.getLogin())) {
-			formModel.setLoginMessage(messages.getString("form.message.incorrectaddr"));
+			formModel.setLoginMessage(messages.getString(MessageMapping.INCORRECT_EMAIL));
 			formModel.setErrors(true);
 		}
 	}

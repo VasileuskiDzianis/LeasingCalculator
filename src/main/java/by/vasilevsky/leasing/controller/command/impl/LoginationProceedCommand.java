@@ -13,23 +13,22 @@ import by.vasilevsky.leasing.controller.command.UrlMapping;
 import by.vasilevsky.leasing.controller.forms.LoginationFormModel;
 import by.vasilevsky.leasing.domain.user.User;
 import by.vasilevsky.leasing.domain.user.UserRole;
-import by.vasilevsky.leasing.filter.i18n.LocaleMessagesResolverFilter;
+import by.vasilevsky.leasing.filter.binder.LoginationFormMapping;
+import by.vasilevsky.leasing.filter.i18n.MessageMapping;
 import by.vasilevsky.leasing.filter.security.ProfileAccessFilter;
 import by.vasilevsky.leasing.service.ServiceFactory;
 import by.vasilevsky.leasing.service.logination.LoginationService;
 import by.vasilevsky.leasing.service.user.UserService;
 
 public class LoginationProceedCommand implements Command {
-	private static final String INCORRECT_LOGIN_OR_PSW_MSG = "form.message.incorrectlogorpsw";
-	
 	private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
 	private final LoginationService loginationService = serviceFactory.getLoginationService();
 	private final UserService userService = serviceFactory.getUserService();
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		ResourceBundle messages = (ResourceBundle) request.getAttribute(LocaleMessagesResolverFilter.MESSAGES_ALIAS);
-		LoginationFormModel model = (LoginationFormModel) request.getAttribute(LoginationFormModel.ALIAS);
+		ResourceBundle messages = (ResourceBundle) request.getAttribute(MessageMapping.ALIAS);
+		LoginationFormModel model = (LoginationFormModel) request.getAttribute(LoginationFormMapping.ALIAS);
 		if (!model.hasErrors()) {
 			UserRole userRole = loginationService.authenticateUser(model.getLogin(), model.getPassword());
 			if (!userRole.equals(UserRole.ANONYMOUS)) {
@@ -41,8 +40,8 @@ public class LoginationProceedCommand implements Command {
 				return;
 			}
 		}
-		model.setMainMessage(messages.getString(INCORRECT_LOGIN_OR_PSW_MSG));
-		request.setAttribute(LoginationFormModel.ALIAS, model);
+		model.setMainMessage(messages.getString(MessageMapping.INCORRECT_LOGIN_OR_PSW));
+		request.setAttribute(LoginationFormMapping.ALIAS, model);
 		
 		request.getRequestDispatcher(PageMapping.LOGINATION).forward(request, response);
 	}

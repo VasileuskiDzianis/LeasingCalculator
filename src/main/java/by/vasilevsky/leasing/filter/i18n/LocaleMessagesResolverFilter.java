@@ -14,14 +14,12 @@ import javax.servlet.ServletResponse;
 public class LocaleMessagesResolverFilter implements Filter {
 	private static final String I18N_FILE = "i18n";
 	
-	public static final String MESSAGES_ALIAS = "messages";
-
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		Locale locale = (Locale) request.getAttribute(CookieLocaleResolverFilter.LOCALE_ALIAS);
 		ResourceBundle messages = ResourceBundle.getBundle(I18N_FILE, locale);
 
-		request.setAttribute(MESSAGES_ALIAS, messages);
+		request.setAttribute(MessageMapping.ALIAS, messages);
 		chain.doFilter(request, response);
 	}
 

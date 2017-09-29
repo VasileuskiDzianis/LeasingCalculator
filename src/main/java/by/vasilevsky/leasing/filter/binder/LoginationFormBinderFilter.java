@@ -13,22 +13,22 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 
 import by.vasilevsky.leasing.controller.forms.LoginationFormModel;
+import by.vasilevsky.leasing.filter.i18n.MessageMapping;
 
 @WebFilter("/logination")
 public class LoginationFormBinderFilter implements Filter {
+	private static final String METHOD_POST = "post";
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		ResourceBundle messages = (ResourceBundle) request.getAttribute("messages");
+		ResourceBundle messages = (ResourceBundle) request.getAttribute(MessageMapping.ALIAS);
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
-		if (httpRequest.getMethod().equalsIgnoreCase("post")) {
+		if (httpRequest.getMethod().equalsIgnoreCase(METHOD_POST)) {
 			LoginationFormModel model = new LoginationFormModel();
-
-			model.setLogin(request.getParameter("login"));
-			model.setPassword(request.getParameter("password"));
+			model.setLogin(request.getParameter(LoginationFormMapping.FIELD_LOGIN));
+			model.setPassword(request.getParameter(LoginationFormMapping.FIELD_PASSWORD));
 			checkLoginationFormModel(model, messages);
-
-			request.setAttribute("loginationFormModel", model);
+			request.setAttribute(LoginationFormMapping.ALIAS, model);
 		}
 		chain.doFilter(request, response);
 	}
@@ -36,7 +36,7 @@ public class LoginationFormBinderFilter implements Filter {
 	private void checkLoginationFormModel(LoginationFormModel formModel, ResourceBundle messages) {
 		if (formModel.getLogin() == null || formModel.getPassword() == null || formModel.getLogin().length() == 0
 				|| formModel.getPassword().length() == 0) {
-			formModel.setMainMessage(messages.getString("form.message.incorrectlogorpsw"));
+			formModel.setMainMessage(messages.getString(MessageMapping.INCORRECT_LOGIN_OR_PSW));
 			formModel.setErrorsExist(true);
 		}
 	}
@@ -50,5 +50,4 @@ public class LoginationFormBinderFilter implements Filter {
 	public void init(FilterConfig arg0) throws ServletException {
 
 	}
-
 }

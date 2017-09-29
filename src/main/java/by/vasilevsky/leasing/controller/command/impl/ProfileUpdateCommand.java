@@ -11,6 +11,7 @@ import by.vasilevsky.leasing.controller.command.PageMapping;
 import by.vasilevsky.leasing.controller.command.UrlMapping;
 import by.vasilevsky.leasing.controller.forms.ProfileFormModel;
 import by.vasilevsky.leasing.domain.user.UserDetails;
+import by.vasilevsky.leasing.filter.binder.ProfileFormMapping;
 import by.vasilevsky.leasing.service.ServiceFactory;
 import by.vasilevsky.leasing.service.user.UserService;
 
@@ -20,17 +21,15 @@ public class ProfileUpdateCommand implements Command {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		ProfileFormModel model = (ProfileFormModel) request.getAttribute(ProfileFormModel.ALIAS);
+		ProfileFormModel model = (ProfileFormModel) request.getAttribute(ProfileFormMapping.ALIAS);
 		if (!model.hasErrors()) {
 			UserDetails userDetails = buildUserDetailsFromModel(model);
 			userService.updateUserDetails(userDetails);
-
 			response.sendRedirect(UrlMapping.PROFILE);
 			
 			return;
 		}
-		request.setAttribute(ProfileFormModel.ALIAS, model);
-
+		request.setAttribute(ProfileFormMapping.ALIAS, model);
 		request.getRequestDispatcher(PageMapping.PROFILE).forward(request, response);
 	}
 

@@ -10,14 +10,13 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
 public class Utf8Filter implements Filter {
-	
+	private static final String CHARACTER_ENCODING = "UTF-8";
+
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-
-		request.setCharacterEncoding("UTF-8");
+		request.setCharacterEncoding(CHARACTER_ENCODING);
 		chain.doFilter(request, response);
-
 	}
 
 	@Override

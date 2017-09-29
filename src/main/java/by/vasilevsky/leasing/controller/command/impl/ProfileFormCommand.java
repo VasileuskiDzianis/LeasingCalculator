@@ -10,6 +10,7 @@ import by.vasilevsky.leasing.controller.command.Command;
 import by.vasilevsky.leasing.controller.command.PageMapping;
 import by.vasilevsky.leasing.controller.forms.ProfileFormModel;
 import by.vasilevsky.leasing.domain.user.User;
+import by.vasilevsky.leasing.filter.binder.ProfileFormMapping;
 import by.vasilevsky.leasing.filter.security.ProfileAccessFilter;
 import by.vasilevsky.leasing.service.ServiceFactory;
 import by.vasilevsky.leasing.service.user.UserService;
@@ -28,7 +29,7 @@ public class ProfileFormCommand implements Command {
 		model.setFirstName(user.getUserDetails().getFirstName());
 		model.setLastName(user.getUserDetails().getLastName());
 		model.setAge(Integer.toString(user.getUserDetails().getAge()));
-		request.setAttribute(ProfileFormModel.ALIAS, model);
+		request.setAttribute(ProfileFormMapping.ALIAS, model);
 
 		request.getRequestDispatcher(PageMapping.PROFILE).forward(request, response);
 	}

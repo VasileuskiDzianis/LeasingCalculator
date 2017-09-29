@@ -6,5 +6,5 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <div id="header-container">
-	<div id="header-content">${messages["label.header"]}</div>
+	<div id="header-content">${messages['i18n.label.header']}</div>
 </div>

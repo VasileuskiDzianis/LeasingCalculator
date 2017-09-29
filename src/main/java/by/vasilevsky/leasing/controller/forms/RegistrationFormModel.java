@@ -1,8 +1,6 @@
 package by.vasilevsky.leasing.controller.forms;
 
 public class RegistrationFormModel {
-	public static final String ALIAS = "registrationFormModel";
-	
 	private String mainMessage;
 	private String loginMessage;
 	private String firstPasswordMessage;

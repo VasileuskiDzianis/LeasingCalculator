@@ -13,15 +13,13 @@ import by.vasilevsky.leasing.controller.forms.RegistrationFormModel;
 import by.vasilevsky.leasing.domain.user.User;
 import by.vasilevsky.leasing.domain.user.UserDetails;
 import by.vasilevsky.leasing.domain.user.UserRole;
-import by.vasilevsky.leasing.filter.i18n.LocaleMessagesResolverFilter;
+import by.vasilevsky.leasing.filter.binder.RegistrationFormMapping;
+import by.vasilevsky.leasing.filter.i18n.MessageMapping;
 import by.vasilevsky.leasing.service.ServiceFactory;
 import by.vasilevsky.leasing.service.ServiceFactoryImpl;
 import by.vasilevsky.leasing.service.registration.RegistrationService;
 
 public class RegistrationProceedCommand implements Command {
-	private static final String REGISTERED_MESSAGE = "i18n.form.message.registered";
-	private static final String ADDRESS_IN_USE_MESSAGE = "i18n.form.message.addressInUse";
-	
 	private static final String DEFAULT_USER_NAME = "";
 	private static final String DEFAULT_USER_SURNAME = "";
 	private static final int DEFAULT_USER_AGE = 0;
@@ -31,10 +29,10 @@ public class RegistrationProceedCommand implements Command {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		ResourceBundle messages = (ResourceBundle) request.getAttribute(LocaleMessagesResolverFilter.MESSAGES_ALIAS);
-		RegistrationFormModel model = (RegistrationFormModel) request.getAttribute(RegistrationFormModel.ALIAS);
+		ResourceBundle messages = (ResourceBundle) request.getAttribute(MessageMapping.ALIAS);
+		RegistrationFormModel model = (RegistrationFormModel) request.getAttribute(RegistrationFormMapping.ALIAS);
 		if (model.getLogin() != null && registrationService.isLoginExisting(model.getLogin())) {
-			model.setLoginMessage(messages.getString(ADDRESS_IN_USE_MESSAGE));
+			model.setLoginMessage(messages.getString(MessageMapping.ADDRESS_IN_USE_MESSAGE));
 			model.setErrors(true);
 		}
 		if (!model.hasErrors()) {
@@ -48,7 +46,7 @@ public class RegistrationProceedCommand implements Command {
 			userDetails.setLastName(DEFAULT_USER_SURNAME);
 			user.setUserDetails(userDetails);
 			registrationService.registerNewUser(user);
-			model.setMainMessage(messages.getString(REGISTERED_MESSAGE));
+			model.setMainMessage(messages.getString(MessageMapping.REGISTERED_MESSAGE));
 		}
 		request.getRequestDispatcher(PageMapping.REGISTRATION).forward(request, response);
 	}

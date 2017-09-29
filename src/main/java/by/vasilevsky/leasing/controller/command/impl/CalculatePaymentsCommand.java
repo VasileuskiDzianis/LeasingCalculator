@@ -16,6 +16,7 @@ import by.vasilevsky.leasing.domain.payments.PaymentsSchedule;
 import by.vasilevsky.leasing.domain.rate.insurance.Insurance;
 import by.vasilevsky.leasing.domain.rate.lease.BaseRate;
 import by.vasilevsky.leasing.domain.rate.lease.Margin;
+import by.vasilevsky.leasing.filter.binder.CalculatorFormMapping;
 import by.vasilevsky.leasing.service.ServiceFactory;
 import by.vasilevsky.leasing.service.payments.PaymentsScheduleService;
 import by.vasilevsky.leasing.service.rate.insurance.InsuranceService;
@@ -33,9 +34,11 @@ public class CalculatePaymentsCommand implements Command {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		CalculatorFormModel model = (CalculatorFormModel) request.getAttribute(CalculatorFormModel.ALIAS);
+		CalculatorFormModel model = (CalculatorFormModel) request.getAttribute(CalculatorFormMapping.ALIAS);
 		if (model.hasErrors()) {
 			request.getRequestDispatcher(PageMapping.CALCULATOR_FORM).forward(request, response);
+			
+			return;
 		}
 		Property property = buildProperty(model);
 		PaymentsSchedule payments = buildPaymentsSchedule(model, property);

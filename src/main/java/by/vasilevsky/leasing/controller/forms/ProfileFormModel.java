@@ -1,8 +1,6 @@
 package by.vasilevsky.leasing.controller.forms;
 
 public class ProfileFormModel {
-	public static final String ALIAS = "profileFormModel";
-	
 	private String userId;
 	private String detailsId;
 	private String firstName;

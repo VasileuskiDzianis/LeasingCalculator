@@ -27,7 +27,6 @@ public class ProfileAccessFilter implements Filter {
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
 		String userRole = (String) httpRequest.getSession().getAttribute(USER_ROLE_ALIAS);
 		if (!UserRole.USER.toString().equals(userRole)) {
-
 			httpRequest.getSession().setAttribute(USER_ROLE_ALIAS, UserRole.ANONYMOUS.toString());
 			httpResponse.sendRedirect(UrlMapping.LOGINATION);
 			
@@ -36,7 +35,6 @@ public class ProfileAccessFilter implements Filter {
 		if (httpRequest.getMethod().equalsIgnoreCase(METHOD_POST)) {
 			String userIdFromRequest = httpRequest.getParameter(USER_ID_ALIAS);
 			String userIdFromSession = (String) httpRequest.getSession().getAttribute(USER_ID_ALIAS);
-			
 			if (userIdFromSession == null || !userIdFromSession.equals(userIdFromRequest)) {
 				httpRequest.getSession().setAttribute(USER_ROLE_ALIAS, UserRole.ANONYMOUS.toString());
 				httpResponse.sendRedirect(UrlMapping.LOGINATION);

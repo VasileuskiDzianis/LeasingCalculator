@@ -1,8 +1,6 @@
 package by.vasilevsky.leasing.controller.forms;
 
 public class CalculatorFormModel {
-	public static final String ALIAS = "calculatorFormModel";
-	
 	private String currency;
 	private String objectType;
 	private String age;
