@@ -1,30 +1,26 @@
 package by.vasilevsky.leasing.dao;
 
+import java.sql.SQLException;
 import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import org.apache.commons.dbcp2.BasicDataSource;
+import by.vasilevsky.leasing.dao.pool.ConnectionPool;
+import by.vasilevsky.leasing.dao.pool.ConnectionPoolImpl;
 
 public final class DataSourceProvider {
-	private static final String PROP_MAPPING_DRIVER = "driver";
-	private static final String PROP_MAPPING_URL = "url";
-	private static final String PROP_MAPPING_USER = "user";
-	private static final String PROP_MAPPING_PASSWORD = "password";
-	private static final String PROP_MAPPING_POOL_SIZE = "poolSize";
-	private static final String PROP_MAPPING_CONNECTION_PROPS = "connectionProperties";
-	
 	private static Properties properties;
 
-	private BasicDataSource basicDataSource = new BasicDataSource();
+	private ConnectionPool connectionPool;
 
 	private DataSourceProvider() {
-		basicDataSource.setDriverClassName(properties.getProperty(PROP_MAPPING_DRIVER));
-		basicDataSource.setUrl(properties.getProperty(PROP_MAPPING_URL));
-		basicDataSource.setUsername(properties.getProperty(PROP_MAPPING_USER));
-		basicDataSource.setPassword(properties.getProperty(PROP_MAPPING_PASSWORD));
-		basicDataSource.setInitialSize(Integer.parseInt(properties.getProperty(PROP_MAPPING_POOL_SIZE)));
-		basicDataSource.setConnectionProperties(properties.getProperty(PROP_MAPPING_CONNECTION_PROPS));
+		ConnectionPoolImpl.setProperties(properties);
+		connectionPool = new ConnectionPoolImpl();
+		try {
+			connectionPool.initPoolData();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 	public static void setProperties(Properties prop) {
@@ -42,6 +38,6 @@ public final class DataSourceProvider {
 
 	public DataSource getDataSource() {
 	
-		return basicDataSource;
+		return connectionPool;
 	}
 }

@@ -1,5 +1,6 @@
 package by.vasilevsky.leasing.listener;
 
+import java.io.Closeable;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -58,6 +59,9 @@ public class DataSourceContextListener implements ServletContextListener {
 
 	@Override
 	public void contextDestroyed(ServletContextEvent arg0) {
-
+		try {
+			((Closeable) DataSourceProvider.getInstance().getDataSource()).close();
+		} catch (IOException e) {
+		}	
 	}
 }
