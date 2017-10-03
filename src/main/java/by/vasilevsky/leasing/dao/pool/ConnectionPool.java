@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
+import java.util.Properties;
 import java.util.logging.Logger;
 
 import javax.sql.DataSource;
@@ -32,5 +33,7 @@ public interface ConnectionPool extends DataSource, Closeable {
 	boolean isWrapperFor(Class<?> iface) throws SQLException;
 
 	Connection getConnection(String username, String password) throws SQLException;
+
+	void setProperties(Properties prop);
 
 }

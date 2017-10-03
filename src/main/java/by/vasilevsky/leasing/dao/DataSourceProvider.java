@@ -14,8 +14,8 @@ public final class DataSourceProvider {
 	private ConnectionPool connectionPool;
 
 	private DataSourceProvider() {
-		ConnectionPoolImpl.setProperties(properties);
 		connectionPool = new ConnectionPoolImpl();
+		connectionPool.setProperties(properties);
 		try {
 			connectionPool.initPoolData();
 		} catch (SQLException e) {

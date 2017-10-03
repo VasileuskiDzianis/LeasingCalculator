@@ -43,9 +43,18 @@ public final class ConnectionPoolImpl implements ConnectionPool {
 	private String password;
 	private int poolSize;
 
-	private static Properties dbProperties;
+	private Properties dbProperties;
 
-	public ConnectionPoolImpl() {
+	@Override
+	public void setProperties(Properties prop) {
+		dbProperties = prop;
+	}
+
+	@Override
+	public void initPoolData() throws SQLException {
+		if (dbProperties == null) {
+			throw new IllegalStateException("Database properties have not been set yet");
+		}
 		this.driverName = dbProperties.getProperty(PROP_MAPPING_DRIVER);
 		this.url = dbProperties.getProperty(PROP_MAPPING_URL);
 		this.user = dbProperties.getProperty(PROP_MAPPING_USER);
@@ -55,14 +64,7 @@ public final class ConnectionPoolImpl implements ConnectionPool {
 		} catch (NumberFormatException e) {
 			this.poolSize = DEFAULT_POOL_SIZE;
 		}
-	}
-
-	public static void setProperties(Properties prop) {
-		dbProperties = prop;
-	}
-
-	@Override
-	public void initPoolData() throws SQLException {
+		
 		Locale.setDefault(Locale.ENGLISH);
 		try {
 			Class.forName(driverName);
