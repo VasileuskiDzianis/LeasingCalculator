@@ -14,6 +14,8 @@ import by.vasilevsky.leasing.service.registration.RegistrationService;
 import by.vasilevsky.leasing.service.registration.RegistrationServiceImpl;
 import by.vasilevsky.leasing.service.user.UserService;
 import by.vasilevsky.leasing.service.user.UserServiceImpl;
+import by.vasilevsky.leasing.service.validator.UserValidatorService;
+import by.vasilevsky.leasing.service.validator.UserValidatorServiceImpl;
 
 public final class ServiceFactoryImpl implements ServiceFactory {
 	private static volatile ServiceFactoryImpl instance;
@@ -25,6 +27,7 @@ public final class ServiceFactoryImpl implements ServiceFactory {
 	private final MarginService marginService;
 	private final RegistrationService registrationService;
 	private final LoginationService loginationService;
+	private final UserValidatorService userValidatorService;
 	
 	private ServiceFactoryImpl () {
 		userService = new UserServiceImpl();
@@ -34,6 +37,7 @@ public final class ServiceFactoryImpl implements ServiceFactory {
 		marginService = new MarginServiceImpl();
 		registrationService = new RegistrationServiceImpl();
 		loginationService = new LoginationServiceImpl();
+		userValidatorService = new UserValidatorServiceImpl();
 		
 	}
 	
@@ -90,5 +94,11 @@ public final class ServiceFactoryImpl implements ServiceFactory {
 	public LoginationService getLoginationService() {
 		
 		return loginationService;
+	}
+
+	@Override
+	public UserValidatorService getUserValidatorService() {
+		
+		return userValidatorService;
 	}
 }

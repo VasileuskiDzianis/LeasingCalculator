@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import by.vasilevsky.leasing.controller.forms.ProfileFormModel;
 import by.vasilevsky.leasing.filter.i18n.MessageMapping;
-import by.vasilevsky.leasing.validator.Validator;
+import by.vasilevsky.leasing.service.validator.Validator;
 
 @WebFilter(urlPatterns = "/profile", filterName = "profileBindingFilter")
 public class ProfileFormBinder implements Filter {

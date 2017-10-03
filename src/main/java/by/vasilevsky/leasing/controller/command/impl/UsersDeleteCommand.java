@@ -9,7 +9,7 @@ import by.vasilevsky.leasing.controller.command.Command;
 import by.vasilevsky.leasing.controller.command.UrlMapping;
 import by.vasilevsky.leasing.service.ServiceFactory;
 import by.vasilevsky.leasing.service.user.UserService;
-import by.vasilevsky.leasing.validator.Validator;
+import by.vasilevsky.leasing.service.validator.Validator;
 
 public class UsersDeleteCommand implements Command {
 	private static final String ID_FOR_DELETION_ALIAS = "user_for_deletion_id";

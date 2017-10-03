@@ -2,7 +2,6 @@ package by.vasilevsky.leasing.service.registration;
 
 import by.vasilevsky.leasing.domain.user.User;
 import by.vasilevsky.leasing.service.ServiceFactory;
-import by.vasilevsky.leasing.service.user.UserService;
 
 public class RegistrationServiceImpl implements RegistrationService {
 	
@@ -11,8 +10,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 		if (login == null) {
 			throw new IllegalArgumentException();
 		}
-		UserService userService = ServiceFactory.getInstance().getUserService();
-		User user = userService.findUserByLogin(login);
+		User user = ServiceFactory.getInstance().getUserService().findUserByLogin(login);
 
 		return (user == null) ? false : true;
 	}
@@ -22,15 +20,13 @@ public class RegistrationServiceImpl implements RegistrationService {
 		if (user == null) {
 			throw new IllegalArgumentException();
 		}
-		UserService userService = ServiceFactory.getInstance().getUserService();
 		String encodedPassword;
 		try {
 			encodedPassword = PasswordService.getSaltedHash(user.getPassword());
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new RuntimeException("Password encoding error", e);
 		}
 		user.setPassword(encodedPassword);
-		userService.saveUser(user);
+		ServiceFactory.getInstance().getUserService().saveUser(user);
 	}
 }

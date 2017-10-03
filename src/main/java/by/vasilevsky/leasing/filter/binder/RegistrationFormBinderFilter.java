@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import by.vasilevsky.leasing.controller.forms.RegistrationFormModel;
 import by.vasilevsky.leasing.filter.i18n.MessageMapping;
-import by.vasilevsky.leasing.validator.Validator;
+import by.vasilevsky.leasing.service.validator.Validator;
 
 @WebFilter("/registration")
 public class RegistrationFormBinderFilter implements Filter {

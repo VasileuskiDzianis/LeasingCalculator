@@ -17,6 +17,8 @@ import by.vasilevsky.leasing.filter.i18n.MessageMapping;
 public class ExceptionHandler extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
+	private static final String ERROR_MESSAGE_ALIAS = "errorMessage";
+	
 	private static final String JAVAX_SERVLET_ERROR_STATUS_CODE = "javax.servlet.error.status_code";
 	private static final String JAVAX_SERVLET_ERROR_EXCEPTION = "javax.servlet.error.exception";
 	private static final int CODE_404 = 404;
@@ -29,13 +31,13 @@ public class ExceptionHandler extends HttpServlet {
 		Integer statusCode = (Integer) request.getAttribute(JAVAX_SERVLET_ERROR_STATUS_CODE);
 		
 		if (exception != null && exception.getClass() == Exception.class) {
-			request.setAttribute(MessageMapping.ERROR_MESSAGE_ALIAS, messages.getString(MessageMapping.ERROR_MESSAGE_500_INTERNAL));
+			request.setAttribute(ERROR_MESSAGE_ALIAS, messages.getString(MessageMapping.ERROR_MESSAGE_500_INTERNAL));
 		} else if (exception != null && exception.getClass() == IllegalArgumentException.class) {
-			request.setAttribute(MessageMapping.ERROR_MESSAGE_ALIAS, messages.getString(MessageMapping.ERROR_MESSAGE_BADDATA));
+			request.setAttribute(ERROR_MESSAGE_ALIAS, messages.getString(MessageMapping.ERROR_MESSAGE_BADDATA));
 		} else if (statusCode == CODE_404) {
-			request.setAttribute(MessageMapping.ERROR_MESSAGE_ALIAS, messages.getString(MessageMapping.ERROR_MESSAGE_404_DONT_EXIST));
+			request.setAttribute(ERROR_MESSAGE_ALIAS, messages.getString(MessageMapping.ERROR_MESSAGE_404_DONT_EXIST));
 		} else {
-			request.setAttribute(MessageMapping.ERROR_MESSAGE_ALIAS, messages.getString(MessageMapping.ERROR_MESSAGE_500_INTERNAL));
+			request.setAttribute(ERROR_MESSAGE_ALIAS, messages.getString(MessageMapping.ERROR_MESSAGE_500_INTERNAL));
 		}
 		RequestDispatcher view = request.getRequestDispatcher(PageMapping.ERROR);
 		view.forward(request, response);

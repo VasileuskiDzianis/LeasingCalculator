@@ -1,4 +1,4 @@
-package by.vasilevsky.leasing.validator;
+package by.vasilevsky.leasing.service.validator;
 
 import java.util.regex.Pattern;
 
@@ -18,9 +18,7 @@ public final class Validator {
 
 			return false;
 		}
-		String trimmedPassword = password.trim();
-
-		return Pattern.matches(PATTERN_PASSWORD, trimmedPassword);
+		return Pattern.matches(PATTERN_PASSWORD, password.trim());
 	}
 
 	public static final boolean validateLogin(String login) {
@@ -34,9 +32,7 @@ public final class Validator {
 
 			return false;
 		}
-		String trimmedInput = input.trim();
-
-		return Pattern.matches(PATTERN_NAME, trimmedInput);
+		return Pattern.matches(PATTERN_NAME, input.trim());
 	}
 
 	public static final boolean validateNumber(String input) {
@@ -44,8 +40,6 @@ public final class Validator {
 
 			return false;
 		}
-		String trimmedInput = input.trim();
-
-		return Pattern.matches(PATTERN_NUMBER, trimmedInput);
+		return Pattern.matches(PATTERN_NUMBER, input.trim());
 	}
 }

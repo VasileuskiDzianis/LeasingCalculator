@@ -20,9 +20,9 @@ import by.vasilevsky.leasing.service.ServiceFactoryImpl;
 import by.vasilevsky.leasing.service.registration.RegistrationService;
 
 public class RegistrationProceedCommand implements Command {
-	private static final String DEFAULT_USER_NAME = "";
-	private static final String DEFAULT_USER_SURNAME = "";
-	private static final int DEFAULT_USER_AGE = 0;
+	private static final String DEFAULT_USER_NAME = "unknown";
+	private static final String DEFAULT_USER_SURNAME = "unknown";
+	private static final int DEFAULT_USER_AGE = 18;
 	
 	private final ServiceFactory serviceFactory = ServiceFactoryImpl.getInstance();
 	private final RegistrationService registrationService = serviceFactory.getRegistrationService();
