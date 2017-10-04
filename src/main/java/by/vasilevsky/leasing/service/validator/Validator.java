@@ -14,11 +14,7 @@ public final class Validator {
 	}
 	
 	public static final boolean validatePassword(String password) {
-		if (password == null) {
-
-			return false;
-		}
-		return Pattern.matches(PATTERN_PASSWORD, password.trim());
+		return password != null && Pattern.matches(PATTERN_PASSWORD, password.trim());
 	}
 
 	public static final boolean validateLogin(String login) {
@@ -28,18 +24,10 @@ public final class Validator {
 	}
 
 	public static final boolean validateName(String input) {
-		if (input == null) {
-
-			return false;
-		}
-		return Pattern.matches(PATTERN_NAME, input.trim());
+		return input != null && Pattern.matches(PATTERN_NAME, input.trim());
 	}
 
 	public static final boolean validateNumber(String input) {
-		if (input == null) {
-
-			return false;
-		}
-		return Pattern.matches(PATTERN_NUMBER, input.trim());
+		return input != null && Pattern.matches(PATTERN_NUMBER, input.trim());
 	}
 }
