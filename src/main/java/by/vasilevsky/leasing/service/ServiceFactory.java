@@ -1,6 +1,6 @@
 package by.vasilevsky.leasing.service;
 
-import by.vasilevsky.leasing.service.logination.LoginationService;
+import by.vasilevsky.leasing.service.login.LoginService;
 import by.vasilevsky.leasing.service.payments.PaymentsScheduleService;
 import by.vasilevsky.leasing.service.rate.insurance.InsuranceService;
 import by.vasilevsky.leasing.service.rate.lease.BaseRateService;
@@ -23,7 +23,7 @@ public interface ServiceFactory {
 
 	RegistrationService getRegistrationService();
 	
-	LoginationService getLoginationService();
+	LoginService getLoginService();
 	
 	UserValidatorService getUserValidatorService();
 	

@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import by.vasilevsky.leasing.domain.user.User;
 import by.vasilevsky.leasing.domain.user.UserRole;
 import by.vasilevsky.leasing.service.ServiceFactory;
-import by.vasilevsky.leasing.service.logination.LoginationService;
+import by.vasilevsky.leasing.service.login.LoginService;
 import by.vasilevsky.leasing.service.user.UserService;
 import by.vasilevsky.leasing.web.controller.command.Command;
 import by.vasilevsky.leasing.web.controller.command.PageMapping;
@@ -22,7 +22,7 @@ import by.vasilevsky.leasing.web.form.LoginationFormModel;
 
 public class LoginProceedCommand implements Command {
 	private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
-	private final LoginationService loginationService = serviceFactory.getLoginationService();
+	private final LoginService loginService = serviceFactory.getLoginService();
 	private final UserService userService = serviceFactory.getUserService();
 
 	@Override
@@ -30,7 +30,7 @@ public class LoginProceedCommand implements Command {
 		ResourceBundle messages = (ResourceBundle) request.getAttribute(MessageMapping.ALIAS);
 		LoginationFormModel model = (LoginationFormModel) request.getAttribute(LoginFormMapping.ALIAS);
 		if (!model.hasErrors()) {
-			UserRole userRole = loginationService.authenticateUser(model.getLogin(), model.getPassword());
+			UserRole userRole = loginService.authenticateUser(model.getLogin(), model.getPassword());
 			if (!userRole.equals(UserRole.ANONYMOUS)) {
 				User user = userService.findUserByLogin(model.getLogin());
 				request.getSession().setAttribute(ProfileAccessFilter.USER_ROLE_ALIAS, userRole.toString());

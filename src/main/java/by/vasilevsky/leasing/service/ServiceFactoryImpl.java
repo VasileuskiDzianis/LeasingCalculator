@@ -1,7 +1,7 @@
 package by.vasilevsky.leasing.service;
 
-import by.vasilevsky.leasing.service.logination.LoginationService;
-import by.vasilevsky.leasing.service.logination.LoginationServiceImpl;
+import by.vasilevsky.leasing.service.login.LoginService;
+import by.vasilevsky.leasing.service.login.LoginServiceImpl;
 import by.vasilevsky.leasing.service.payments.PaymentsScheduleService;
 import by.vasilevsky.leasing.service.payments.PaymentsScheduleServiceImpl;
 import by.vasilevsky.leasing.service.rate.insurance.InsuranceService;
@@ -26,7 +26,7 @@ public final class ServiceFactoryImpl implements ServiceFactory {
 	private final BaseRateService baseRateService;
 	private final MarginService marginService;
 	private final RegistrationService registrationService;
-	private final LoginationService loginationService;
+	private final LoginService loginService;
 	private final UserValidatorService userValidatorService;
 	
 	private ServiceFactoryImpl () {
@@ -36,7 +36,7 @@ public final class ServiceFactoryImpl implements ServiceFactory {
 		baseRateService = new BaseRateServiceImpl();
 		marginService = new MarginServiceImpl();
 		registrationService = new RegistrationServiceImpl();
-		loginationService = new LoginationServiceImpl();
+		loginService = new LoginServiceImpl();
 		userValidatorService = new UserValidatorServiceImpl();
 		
 	}
@@ -91,9 +91,9 @@ public final class ServiceFactoryImpl implements ServiceFactory {
 	}
 
 	@Override
-	public LoginationService getLoginationService() {
+	public LoginService getLoginService() {
 		
-		return loginationService;
+		return loginService;
 	}
 
 	@Override

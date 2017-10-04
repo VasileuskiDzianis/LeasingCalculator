@@ -1,4 +1,4 @@
-package by.vasilevsky.leasing.service.logination;
+package by.vasilevsky.leasing.service.login;
 
 import by.vasilevsky.leasing.domain.user.User;
 import by.vasilevsky.leasing.domain.user.UserRole;
@@ -6,7 +6,7 @@ import by.vasilevsky.leasing.service.ServiceFactory;
 import by.vasilevsky.leasing.service.registration.PasswordService;
 import by.vasilevsky.leasing.service.user.UserService;
 
-public class LoginationServiceImpl implements LoginationService {
+public class LoginServiceImpl implements LoginService {
 	
 	@Override
 	public UserRole authenticateUser(String login, String password) {
