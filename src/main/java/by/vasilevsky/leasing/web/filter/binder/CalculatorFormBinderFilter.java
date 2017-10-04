@@ -14,19 +14,18 @@ import javax.servlet.http.HttpServletRequest;
 
 import by.vasilevsky.leasing.domain.currency.Currency;
 import by.vasilevsky.leasing.domain.lease_object.PropertyType;
+import by.vasilevsky.leasing.web.MethodType;
 import by.vasilevsky.leasing.web.filter.i18n.MessageMapping;
 import by.vasilevsky.leasing.web.form.CalculatorFormModel;
 
 @WebFilter("/calculate")
 public class CalculatorFormBinderFilter implements Filter {
-	private static final String METHOD_POST = "post";
-
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		ResourceBundle messages = (ResourceBundle) request.getAttribute(MessageMapping.ALIAS);
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 
-		if (httpRequest.getMethod().equalsIgnoreCase(METHOD_POST)) {
+		if (httpRequest.getMethod().equalsIgnoreCase(MethodType.POST.name())) {
 			CalculatorFormModel model = new CalculatorFormModel();
 			model.setCurrency(request.getParameter(CalculatorFormMapping.FIELD_CURRENCY));
 			model.setObjectType(request.getParameter(CalculatorFormMapping.FIELD_OBJECT_TYPE));

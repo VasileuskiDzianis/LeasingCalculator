@@ -13,13 +13,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import by.vasilevsky.leasing.domain.user.UserRole;
+import by.vasilevsky.leasing.web.MethodType;
 import by.vasilevsky.leasing.web.controller.command.UrlMapping;
 
 @WebFilter(urlPatterns = "/profile", filterName = "profileAccessFilter")
 public class ProfileAccessFilter implements Filter {
 	public static final String USER_ROLE_ALIAS = "userRole";
 	public static final String USER_ID_ALIAS = "userId";
-	private static final String METHOD_POST = "post";
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
@@ -34,7 +34,7 @@ public class ProfileAccessFilter implements Filter {
 			return;
 		}
 		
-		if (httpRequest.getMethod().equalsIgnoreCase(METHOD_POST)) {
+		if (httpRequest.getMethod().equalsIgnoreCase(MethodType.POST.name())) {
 			String userIdFromRequest = httpRequest.getParameter(USER_ID_ALIAS);
 			String userIdFromSession = (String) httpRequest.getSession().getAttribute(USER_ID_ALIAS);
 			if (userIdFromSession == null || !userIdFromSession.equals(userIdFromRequest)) {

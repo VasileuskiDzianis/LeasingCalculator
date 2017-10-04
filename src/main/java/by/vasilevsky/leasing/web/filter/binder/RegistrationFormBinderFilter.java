@@ -13,19 +13,18 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 
 import by.vasilevsky.leasing.service.validator.Validator;
+import by.vasilevsky.leasing.web.MethodType;
 import by.vasilevsky.leasing.web.filter.i18n.MessageMapping;
 import by.vasilevsky.leasing.web.form.RegistrationFormModel;
 
 @WebFilter("/registration")
 public class RegistrationFormBinderFilter implements Filter {
-	private static final String METHOD_POST = "post";
-
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		ResourceBundle messages = (ResourceBundle) request.getAttribute(MessageMapping.ALIAS);
 
-		if (httpRequest.getMethod().equalsIgnoreCase(METHOD_POST)) {
+		if (httpRequest.getMethod().equalsIgnoreCase(MethodType.POST.name())) {
 			RegistrationFormModel model = new RegistrationFormModel();
 			model.setLogin(request.getParameter(RegistrationFormMapping.FIELD_LOGIN));
 			model.setFirstPassword(request.getParameter(RegistrationFormMapping.FIELD_PASSWORD_1));

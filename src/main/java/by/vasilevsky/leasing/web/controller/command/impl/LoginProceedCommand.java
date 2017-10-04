@@ -18,7 +18,7 @@ import by.vasilevsky.leasing.web.controller.command.UrlMapping;
 import by.vasilevsky.leasing.web.filter.binder.LoginFormMapping;
 import by.vasilevsky.leasing.web.filter.i18n.MessageMapping;
 import by.vasilevsky.leasing.web.filter.security.ProfileAccessFilter;
-import by.vasilevsky.leasing.web.form.LoginationFormModel;
+import by.vasilevsky.leasing.web.form.LoginFormModel;
 
 public class LoginProceedCommand implements Command {
 	private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
@@ -28,7 +28,7 @@ public class LoginProceedCommand implements Command {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ResourceBundle messages = (ResourceBundle) request.getAttribute(MessageMapping.ALIAS);
-		LoginationFormModel model = (LoginationFormModel) request.getAttribute(LoginFormMapping.ALIAS);
+		LoginFormModel model = (LoginFormModel) request.getAttribute(LoginFormMapping.ALIAS);
 		if (!model.hasErrors()) {
 			UserRole userRole = loginService.authenticateUser(model.getLogin(), model.getPassword());
 			if (!userRole.equals(UserRole.ANONYMOUS)) {

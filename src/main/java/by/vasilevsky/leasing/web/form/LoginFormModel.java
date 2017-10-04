@@ -1,6 +1,6 @@
 package by.vasilevsky.leasing.web.form;
 
-public class LoginationFormModel {
+public class LoginFormModel {
 	private String mainMessage;
 
 	private String login;

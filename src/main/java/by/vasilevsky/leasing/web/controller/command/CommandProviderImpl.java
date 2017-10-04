@@ -33,7 +33,7 @@ public final class CommandProviderImpl implements CommandProvider {
 
 	@Override
 	public Command getCommand(final String method, String url) {
-		Command command = commandMapping.get(method).get(url);
+		Command command = commandMapping.get(method.toLowerCase()).get(url);
 
 		return (command != null) ? command : NOT_FOUND_404_COMMAND;
 	}

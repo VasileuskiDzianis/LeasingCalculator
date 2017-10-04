@@ -11,6 +11,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.text.html.FormSubmitEvent.MethodType;
 
 import by.vasilevsky.leasing.service.validator.Validator;
 import by.vasilevsky.leasing.web.filter.i18n.MessageMapping;
@@ -18,13 +19,12 @@ import by.vasilevsky.leasing.web.form.ProfileFormModel;
 
 @WebFilter(urlPatterns = "/profile", filterName = "profileBindingFilter")
 public class ProfileFormBinder implements Filter {
-	private static final String METHOD_POST = "post";
-
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		ResourceBundle messages = (ResourceBundle) request.getAttribute(MessageMapping.ALIAS);
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
-		if (httpRequest.getMethod().equalsIgnoreCase(METHOD_POST)) {
+
+		if (httpRequest.getMethod().equalsIgnoreCase(MethodType.POST.name())) {
 			ProfileFormModel model = new ProfileFormModel();
 			model.setUserId(request.getParameter(ProfileFormMapping.FIELD_USER_ID));
 			model.setDetailsId(request.getParameter(ProfileFormMapping.FIELD_DETAILS_ID));
@@ -32,18 +32,15 @@ public class ProfileFormBinder implements Filter {
 			model.setLastName(request.getParameter(ProfileFormMapping.FIELD_LAST_NAME));
 			model.setAge(request.getParameter(ProfileFormMapping.FIELD_AGE));
 			checkProfileFormModel(model, messages);
-		
+
 			request.setAttribute(ProfileFormMapping.ALIAS, model);
 		}
 		chain.doFilter(request, response);
 	}
-	
+
 	private void checkProfileFormModel(ProfileFormModel model, ResourceBundle messages) {
-		if (model.getUserId() == null || !Validator.validateNumber(model.getUserId())) {
-			model.setErrorsExist(true);
-			model.setMainMessage(messages.getString(MessageMapping.INCORRECT_DATA));
-		}
-		if (model.getDetailsId() == null || !Validator.validateNumber(model.getDetailsId())) {
+		if (model.getUserId() == null || !Validator.validateNumber(model.getUserId()) 
+				|| model.getDetailsId() == null || !Validator.validateNumber(model.getDetailsId())) {
 			model.setErrorsExist(true);
 			model.setMainMessage(messages.getString(MessageMapping.INCORRECT_DATA));
 		}

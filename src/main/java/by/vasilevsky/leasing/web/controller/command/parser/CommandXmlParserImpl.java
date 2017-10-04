@@ -9,6 +9,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import by.vasilevsky.leasing.web.MethodType;
 import by.vasilevsky.leasing.web.controller.command.Command;
 
 public class CommandXmlParserImpl implements CommandXmlParser {
@@ -16,9 +17,6 @@ public class CommandXmlParserImpl implements CommandXmlParser {
 	private static final String COMMAND_XML_URL_ATTRIBUTE = "url";
 	private static final String COMMAND_XML_METHOD_ATTRIBUTE = "method";
 	private static final String COMMAND_XML_CLASS_ATTRIBUTE = "class";
-	private static final String METHOD_GET = "get";
-	private static final String METHOD_POST = "post";
-	
 	private static final String COMMANDS_MAPPING_FILE = "commands.xml";
 
 	public Map<String, Map<String, Command>> getCommandsMapping() {
@@ -48,16 +46,16 @@ public class CommandXmlParserImpl implements CommandXmlParser {
 			Command command = buildCommand(commandItem.getAttribute(COMMAND_XML_CLASS_ATTRIBUTE));
 			String url = commandItem.getAttribute(COMMAND_XML_URL_ATTRIBUTE);
 			String method = commandItem.getAttribute(COMMAND_XML_METHOD_ATTRIBUTE);
-			if (method.equals(METHOD_GET)) {
+			if (method.equalsIgnoreCase(MethodType.GET.name())) {
 				methodGetMapping.put(url, command);
 			}
-			if (method.equals(METHOD_POST)) {
+			if (method.equalsIgnoreCase(MethodType.POST.name())) {
 				methodPostMapping.put(url, command);
 			}
 		}
 		Map<String, Map<String, Command>> commandMapping = new HashMap<>();
-		commandMapping.put(METHOD_GET, methodGetMapping);
-		commandMapping.put(METHOD_POST, methodPostMapping);
+		commandMapping.put(MethodType.GET.name().toLowerCase(), methodGetMapping);
+		commandMapping.put(MethodType.POST.name().toLowerCase(), methodPostMapping);
 		
 		return commandMapping;
 	}
