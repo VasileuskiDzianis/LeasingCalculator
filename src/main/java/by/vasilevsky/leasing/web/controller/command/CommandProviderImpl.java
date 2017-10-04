@@ -18,7 +18,7 @@ public final class CommandProviderImpl implements CommandProvider {
 		commandMapping = parser.getCommandsMapping();
 	}
 
-	public static CommandProvider getInstance() {
+	static CommandProvider getInstance() {
 		CommandProviderImpl localInstance = instance;
 		if (localInstance == null) {
 			synchronized (CommandProviderImpl.class) {
