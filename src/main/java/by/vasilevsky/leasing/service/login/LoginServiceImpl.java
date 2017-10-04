@@ -11,17 +11,17 @@ public class LoginServiceImpl implements LoginService {
 	@Override
 	public UserRole authenticateUser(String login, String password) {
 		if (login == null || password == null) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Login or password is NUll");
 		}
+		
 		UserService userService = ServiceFactory.getInstance().getUserService();
 		User user = userService.findUserByLogin(login);
 		if (user == null) {
-
 			return UserRole.ANONYMOUS;
 		}
+		
 		try {
 			if (PasswordService.check(password, user.getPassword())) {
-
 				return user.getUserRole();
 			}
 		} catch (Exception e) {
