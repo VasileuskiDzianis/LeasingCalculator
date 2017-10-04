@@ -46,15 +46,45 @@ public class CalculatorFormBinderFilter implements Filter {
 	private void checkCalculatorFormModel(CalculatorFormModel model, ResourceBundle messages) {
 		try {
 			Currency.valueOf(Currency.class, model.getCurrency());
-			PropertyType.valueOf(PropertyType.class, model.getObjectType());
-			Integer.parseInt(model.getAge());
-			Integer.parseInt(model.getDuration());
-			Float.parseFloat(model.getCost());
-			Float.parseFloat(model.getPrepay());
-			Float.parseFloat(model.getByuingout());
 		} catch (IllegalArgumentException | NullPointerException e) {
 			model.setErrors(true);
 			model.setCurrencyMessage(messages.getString(MessageMapping.INCORRECT_DATA));
+		}
+		try {
+			PropertyType.valueOf(PropertyType.class, model.getObjectType());
+		} catch (IllegalArgumentException | NullPointerException e) {
+			model.setErrors(true);
+			model.setObjectTypeMessage(messages.getString(MessageMapping.INCORRECT_DATA));
+		}
+		try {
+			Integer.parseInt(model.getAge());
+		} catch (NumberFormatException | NullPointerException e) {
+			model.setErrors(true);
+			model.setAgeMessage(messages.getString(MessageMapping.INCORRECT_DATA));
+		}
+		try {
+			Integer.parseInt(model.getDuration());
+		} catch (NumberFormatException | NullPointerException e) {
+			model.setErrors(true);
+			model.setDurationMessage(messages.getString(MessageMapping.INCORRECT_DATA));
+		}
+		try {
+			Float.parseFloat(model.getCost());
+		} catch (NumberFormatException | NullPointerException e) {
+			model.setErrors(true);
+			model.setCostMessage(messages.getString(MessageMapping.INCORRECT_DATA));
+		}
+		try {
+			Float.parseFloat(model.getPrepay());
+		} catch (NumberFormatException | NullPointerException e) {
+			model.setErrors(true);
+			model.setPrepayMessage(messages.getString(MessageMapping.INCORRECT_DATA));
+		}
+		try {
+			Float.parseFloat(model.getByuingout());
+		} catch (NumberFormatException | NullPointerException e) {
+			model.setErrors(true);
+			model.setByuingoutMessage(messages.getString(MessageMapping.INCORRECT_DATA));
 		}
 	}
 
