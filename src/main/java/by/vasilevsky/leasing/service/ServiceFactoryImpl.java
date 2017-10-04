@@ -41,7 +41,7 @@ public final class ServiceFactoryImpl implements ServiceFactory {
 		
 	}
 	
-	public static ServiceFactory getInstance() {
+	static ServiceFactory getInstance() {
 		ServiceFactoryImpl localInstance = instance;
 		if (localInstance == null) {
 			synchronized (ServiceFactoryImpl.class) {

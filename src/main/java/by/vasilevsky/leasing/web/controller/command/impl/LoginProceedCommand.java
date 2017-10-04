@@ -21,9 +21,13 @@ import by.vasilevsky.leasing.web.filter.security.ProfileAccessFilter;
 import by.vasilevsky.leasing.web.form.LoginFormModel;
 
 public class LoginProceedCommand implements Command {
-	private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
-	private final LoginService loginService = serviceFactory.getLoginService();
-	private final UserService userService = serviceFactory.getUserService();
+	private final LoginService loginService;
+	private final UserService userService;
+
+	public LoginProceedCommand() {
+		loginService = ServiceFactory.getInstance().getLoginService();
+		userService = ServiceFactory.getInstance().getUserService();
+	}
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -35,14 +39,16 @@ public class LoginProceedCommand implements Command {
 				User user = userService.findUserByLogin(model.getLogin());
 				request.getSession().setAttribute(ProfileAccessFilter.USER_ROLE_ALIAS, userRole.toString());
 				request.getSession().setAttribute(ProfileAccessFilter.USER_ID_ALIAS, Integer.toString(user.getId()));
-				
+
 				response.sendRedirect(UrlMapping.HOME);
+				
 				return;
 			}
 		}
+		
 		model.setMainMessage(messages.getString(MessageMapping.INCORRECT_LOGIN_OR_PSW));
 		request.setAttribute(LoginFormMapping.ALIAS, model);
-		
+
 		request.getRequestDispatcher(PageMapping.LOGINATION).forward(request, response);
 	}
 }

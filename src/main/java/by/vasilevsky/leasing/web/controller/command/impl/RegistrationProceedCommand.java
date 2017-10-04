@@ -11,7 +11,6 @@ import by.vasilevsky.leasing.domain.user.User;
 import by.vasilevsky.leasing.domain.user.UserDetails;
 import by.vasilevsky.leasing.domain.user.UserRole;
 import by.vasilevsky.leasing.service.ServiceFactory;
-import by.vasilevsky.leasing.service.ServiceFactoryImpl;
 import by.vasilevsky.leasing.service.registration.RegistrationService;
 import by.vasilevsky.leasing.web.controller.command.Command;
 import by.vasilevsky.leasing.web.controller.command.PageMapping;
@@ -23,20 +22,23 @@ public class RegistrationProceedCommand implements Command {
 	private static final String DEFAULT_USER_NAME = "unknown";
 	private static final String DEFAULT_USER_SURNAME = "unknown";
 	private static final int DEFAULT_USER_AGE = 18;
-	
-	private final ServiceFactory serviceFactory = ServiceFactoryImpl.getInstance();
-	private final RegistrationService registrationService = serviceFactory.getRegistrationService();
+
+	private final RegistrationService registrationService;
+
+	public RegistrationProceedCommand() {
+		registrationService = ServiceFactory.getInstance().getRegistrationService();
+	}
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ResourceBundle messages = (ResourceBundle) request.getAttribute(MessageMapping.ALIAS);
 		RegistrationFormModel model = (RegistrationFormModel) request.getAttribute(RegistrationFormMapping.ALIAS);
-		
+
 		if (model.getLogin() != null && registrationService.isLoginExisting(model.getLogin())) {
 			model.setLoginMessage(messages.getString(MessageMapping.ADDRESS_IN_USE_MESSAGE));
 			model.setErrors(true);
 		}
-		
+
 		if (!model.hasErrors()) {
 			User user = new User();
 			user.setLogin(model.getLogin());
@@ -47,12 +49,12 @@ public class RegistrationProceedCommand implements Command {
 			userDetails.setFirstName(DEFAULT_USER_NAME);
 			userDetails.setLastName(DEFAULT_USER_SURNAME);
 			user.setUserDetails(userDetails);
-			
+
 			registrationService.registerNewUser(user);
-			
+
 			model.setMainMessage(messages.getString(MessageMapping.REGISTERED_MESSAGE));
 		}
-		
+
 		request.getRequestDispatcher(PageMapping.REGISTRATION).forward(request, response);
 	}
 }

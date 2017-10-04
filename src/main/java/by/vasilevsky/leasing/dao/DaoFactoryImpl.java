@@ -24,7 +24,7 @@ public final class DaoFactoryImpl implements DaoFactory {
 		marginDao = new MarginDaoImpl();
 	}
 
-	public static DaoFactory getInstance() {
+	static DaoFactory getInstance() {
 		DaoFactoryImpl localInstance = instance;
 		if (localInstance == null) {
 			synchronized (DaoFactoryImpl.class) {

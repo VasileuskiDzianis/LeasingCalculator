@@ -16,8 +16,11 @@ import by.vasilevsky.leasing.web.filter.security.ProfileAccessFilter;
 import by.vasilevsky.leasing.web.form.ProfileFormModel;
 
 public class ProfileFormCommand implements Command {
-	private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
-	private final UserService userService = serviceFactory.getUserService();
+	private final UserService userService;
+
+	public ProfileFormCommand() {
+		userService = ServiceFactory.getInstance().getUserService();
+	}
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

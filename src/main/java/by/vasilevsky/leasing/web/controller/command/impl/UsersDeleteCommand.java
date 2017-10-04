@@ -13,9 +13,12 @@ import by.vasilevsky.leasing.web.controller.command.UrlMapping;
 
 public class UsersDeleteCommand implements Command {
 	private static final String ID_FOR_DELETION_ALIAS = "user_for_deletion_id";
-	
-	public final ServiceFactory serviceFactory = ServiceFactory.getInstance();
-	private final UserService userService = serviceFactory.getUserService();
+
+	private final UserService userService;
+
+	public UsersDeleteCommand() {
+		userService = ServiceFactory.getInstance().getUserService();
+	}
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
