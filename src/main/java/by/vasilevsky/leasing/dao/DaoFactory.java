@@ -13,7 +13,7 @@ public interface DaoFactory {
 	
 	BaseRateDao getBaseRateDao();
 	
-	MarginDao getLeaseTypeAgeMarginDao();
+	MarginDao getMarginDao();
 	
 	static DaoFactory getInstance() {
 		

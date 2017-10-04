@@ -29,7 +29,7 @@ public class MarginDaoImplTest {
 	@Before
 	public void setUp() {
 		DaoFactory daoFactory = DaoFactory.getInstance();
-		marginDao = daoFactory.getLeaseTypeAgeMarginDao();
+		marginDao = daoFactory.getMarginDao();
 
 		Properties database = new Properties();
 

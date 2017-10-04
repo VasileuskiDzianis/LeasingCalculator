@@ -3,24 +3,31 @@ package by.vasilevsky.leasing.service.user;
 import java.util.List;
 
 import by.vasilevsky.leasing.dao.DaoFactory;
+import by.vasilevsky.leasing.dao.user.UserDao;
 import by.vasilevsky.leasing.domain.user.User;
 import by.vasilevsky.leasing.domain.user.UserDetails;
 import by.vasilevsky.leasing.service.ServiceFactory;
 
 public class UserServiceImpl implements UserService {
+	private final UserDao userDao;
+	
+	public UserServiceImpl() {
+		userDao = DaoFactory.getInstance().getUserDao();
+	}
 	
 	@Override
 	public User findUserById(int id) {
 		
-		return DaoFactory.getInstance().getUserDao().findUserById(id);
+		return userDao.findUserById(id);
 	}
 
 	@Override
 	public User findUserByLogin(String login) {
 		if (login == null) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Login is NULL");
 		}
-		return DaoFactory.getInstance().getUserDao().findUserByLogin(login);
+		
+		return userDao.findUserByLogin(login);
 	}
 
 	@Override
@@ -28,42 +35,40 @@ public class UserServiceImpl implements UserService {
 		if (!ServiceFactory.getInstance().getUserValidatorService().isUserValid(user)) {
 			throw new IllegalArgumentException();
 		}
-		DaoFactory.getInstance().getUserDao().saveUser(user);
+		userDao.saveUser(user);
 	}
 
 	@Override
 	public void updateUser(User user) {
 		if (!ServiceFactory.getInstance().getUserValidatorService().isUserValid(user)) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("User has illegal data");
 		}
-		DaoFactory.getInstance().getUserDao().updateUser(user);
+		userDao.updateUser(user);
 	}
 	
 	@Override
 	public void updateUserDetails(UserDetails userDetails) {
 		if (!ServiceFactory.getInstance().getUserValidatorService().isUserDetailsValid(userDetails)) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("User details has illegal data");
 		}
-		DaoFactory.getInstance().getUserDao().updateUserDetails(userDetails);
+		userDao.updateUserDetails(userDetails);
 	}
 
 	@Override
 	public void deleteUser(User user) {
 		if (!ServiceFactory.getInstance().getUserValidatorService().isUserValid(user)) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("User has illegal data");
 		}
-		DaoFactory.getInstance().getUserDao().deleteUser(user);
+		userDao.deleteUser(user);
 	}
 	
 	@Override
 	public void deleteUserById(int id) {
-		
-		DaoFactory.getInstance().getUserDao().deleteUserById(id);
+		userDao.deleteUserById(id);
 	}
 
 	@Override
 	public List<User> findAll() {
-		
-		return DaoFactory.getInstance().getUserDao().findAll();
+		return userDao.findAll();
 	}
 }

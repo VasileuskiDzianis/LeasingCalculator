@@ -56,7 +56,7 @@ public final class DaoFactoryImpl implements DaoFactory {
 	}
 
 	@Override
-	public MarginDao getLeaseTypeAgeMarginDao() {
+	public MarginDao getMarginDao() {
 
 		return marginDao;
 	}
