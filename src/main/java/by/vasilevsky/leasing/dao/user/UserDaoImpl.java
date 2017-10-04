@@ -11,12 +11,13 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import by.vasilevsky.leasing.dao.BaseDao;
 import by.vasilevsky.leasing.dao.DataSourceProvider;
 import by.vasilevsky.leasing.domain.user.User;
 import by.vasilevsky.leasing.domain.user.UserDetails;
 import by.vasilevsky.leasing.domain.user.UserRole;
 
-public class UserDaoImpl implements UserDao {
+public class UserDaoImpl extends BaseDao implements UserDao {
 	private static final String REQ_FIND_USER_BY_LOGIN = "SELECT u.*, r.role, d.firstName, d.lastName, d.age, d.detailsId "
 			+ "FROM user AS u JOIN userDetails AS d ON u.detailsId=d.detailsId JOIN userRole AS r ON u.roleId=r.id WHERE u.login=?;";
 	private static final String REQ_FIND_USER_BY_ID = "SELECT u.*, r.role, d.firstName, d.lastName, d.age, d.detailsId "
@@ -60,7 +61,6 @@ public class UserDaoImpl implements UserDao {
 			stmt.setInt(3, userRoleId);
 			stmt.setInt(4, user.getId());
 			stmt.executeUpdate();
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new RuntimeException("saveUser() exception", e);
@@ -79,6 +79,7 @@ public class UserDaoImpl implements UserDao {
 		try {
 			con = ds.getConnection();
 			con.setAutoCommit(false);
+			
 			stmtDeleteUser = con.prepareStatement(REQ_DELETE_USER);
 			stmtDeleteUser.setInt(1, user.getId());
 			stmtDeleteUser.executeUpdate();
@@ -113,6 +114,7 @@ public class UserDaoImpl implements UserDao {
 		try {
 			con = ds.getConnection();
 			con.setAutoCommit(false);
+			
 			stmtDeleteUser = con.prepareStatement(REQ_DELETE_USER);
 			stmtDeleteUser.setInt(1, user.getId());
 			stmtDeleteUser.executeUpdate();
@@ -163,12 +165,14 @@ public class UserDaoImpl implements UserDao {
 
 				return user;
 			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new RuntimeException("findUserById exception", e);
 		} finally {
 			closeResources(rs, stmt, con);
 		}
+		
 		return null;
 	}
 
@@ -281,6 +285,7 @@ public class UserDaoImpl implements UserDao {
 			if (rsSaveUser.next()) {
 				user.setId(rsSaveUser.getInt(1));
 			}
+			
 			con.commit();
 		} catch (SQLException e) {
 			try {
@@ -308,7 +313,6 @@ public class UserDaoImpl implements UserDao {
 			rs = stmt.executeQuery();
 
 			if (rs.next()) {
-
 				return rs.getInt("id");
 			}
 
@@ -317,6 +321,7 @@ public class UserDaoImpl implements UserDao {
 		} finally {
 			closeResources(rs, stmt, con);
 		}
+		
 		return NOT_EXISTENT_ROLE_ID;
 	}
 
@@ -335,29 +340,11 @@ public class UserDaoImpl implements UserDao {
 			stmt.setInt(3, userDetails.getAge());
 			stmt.setInt(4, userDetails.getId());
 			stmt.executeUpdate();
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new RuntimeException("saveUserDetails exception", e);
 		} finally {
 			closeResources(rs, stmt, con);
-		}
-	}
-
-	private void closeResources(ResultSet rs, Statement stmt, Connection con) {
-		try {
-			if (rs != null) {
-				rs.close();
-			}
-			if (stmt != null) {
-				stmt.close();
-			}
-			if (con != null) {
-				con.close();
-			}
-
-		} catch (SQLException e) {
-			throw new RuntimeException("Resources closing exception: ", e);
 		}
 	}
 }

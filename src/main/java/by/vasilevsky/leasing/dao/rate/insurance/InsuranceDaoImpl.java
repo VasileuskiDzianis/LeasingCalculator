@@ -5,10 +5,11 @@ import java.sql.*;
 import javax.sql.DataSource;
 
 import by.vasilevsky.leasing.dao.DataSourceProvider;
+import by.vasilevsky.leasing.dao.BaseDao;
 import by.vasilevsky.leasing.domain.lease_object.PropertyType;
 import by.vasilevsky.leasing.domain.rate.insurance.Insurance;
 
-public class InsuranceDaoImpl implements InsuranceDao {
+public class InsuranceDaoImpl extends BaseDao implements InsuranceDao {
 	private final static String REQUEST_FIND_LEASE_RATE = "SELECT i.id, i.insurance FROM insurance AS i JOIN leaseObjectType AS lot ON i.objectTypeId=lot.id WHERE lot.objectType=?;";
 	private static final String INSURANCE_DB_MAPPING_ID = "id";
 	private static final String INSURANCE_DB_MAPPING_VALUE = "insurance";
@@ -34,20 +35,9 @@ public class InsuranceDaoImpl implements InsuranceDao {
 		} catch (SQLException e) {
 			throw new RuntimeException("Finding insurance rate exception: ", e);
 		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (stmt != null) {
-					stmt.close();
-				}
-				if (con != null) {
-					con.close();
-				}
-			} catch (SQLException e) {
-				throw new RuntimeException("Resources closing exception: ", e);
-			}
+			closeResources(rs, stmt, con);
 		}
+		
 		return insurance;
 	}
 }

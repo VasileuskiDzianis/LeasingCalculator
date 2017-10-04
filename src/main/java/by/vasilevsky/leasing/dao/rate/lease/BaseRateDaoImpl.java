@@ -7,11 +7,12 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
+import by.vasilevsky.leasing.dao.BaseDao;
 import by.vasilevsky.leasing.dao.DataSourceProvider;
 import by.vasilevsky.leasing.domain.currency.Currency;
 import by.vasilevsky.leasing.domain.rate.lease.BaseRate;
 
-public class BaseRateDaoImpl implements BaseRateDao {
+public class BaseRateDaoImpl extends BaseDao implements BaseRateDao {
 	private final static String REQUEST_FIND_LEASE_RATE = "SELECT br.currencyId, br.currencyRate FROM baseRate AS br JOIN currency AS c ON br.currencyId=c.id WHERE c.currencyName=?;";
 
 	private static final String BASE_RATE_DB_MAPPING_ID = "currencyId";
@@ -38,20 +39,9 @@ public class BaseRateDaoImpl implements BaseRateDao {
 		} catch (SQLException e) {
 			throw new RuntimeException("Finding currency rate exception: ", e);
 		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (stmt != null) {
-					stmt.close();
-				}
-				if (con != null) {
-					con.close();
-				}
-			} catch (SQLException e) {
-				throw new RuntimeException("Resources closing exception: ", e);
-			}
+			closeResources(rs, stmt, con);
 		}
+		
 		return rate;
 	}
 }

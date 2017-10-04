@@ -4,11 +4,12 @@ import java.sql.*;
 
 import javax.sql.DataSource;
 
+import by.vasilevsky.leasing.dao.BaseDao;
 import by.vasilevsky.leasing.dao.DataSourceProvider;
 import by.vasilevsky.leasing.domain.lease_object.PropertyType;
 import by.vasilevsky.leasing.domain.rate.lease.Margin;
 
-public class MarginDaoImpl implements MarginDao {
+public class MarginDaoImpl extends BaseDao implements MarginDao {
 	private final static String REQUEST_FIND_LEASE_RATE = "SELECT m.id, m.margin FROM margin AS m JOIN leaseObjectType AS lot ON m.objectTypeId=lot.id WHERE m.objectAge=? AND lot.objectType=?;";
 
 	private static final String MARGIN_DB_MAPPING_ID = "id";
@@ -37,21 +38,9 @@ public class MarginDaoImpl implements MarginDao {
 		} catch (SQLException e) {
 			throw new RuntimeException("Finding margin exception: ", e);
 		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (stmt != null) {
-					stmt.close();
-				}
-				if (con != null) {
-					con.close();
-				}
-
-			} catch (SQLException e) {
-				throw new RuntimeException("Resources closing exception: ", e);
-			}
+			closeResources(rs, stmt, con);
 		}
+
 		return margin;
 	}
 }
