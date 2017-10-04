@@ -8,17 +8,17 @@ public class RegistrationServiceImpl implements RegistrationService {
 	@Override
 	public boolean isLoginExisting(String login) {
 		if (login == null) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Login is NULL");
 		}
 		User user = ServiceFactory.getInstance().getUserService().findUserByLogin(login);
 
-		return (user == null) ? false : true;
+		return user != null;
 	}
 
 	@Override
 	public void registerNewUser(User user) {
 		if (user == null) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("User is NULL");
 		}
 		String encodedPassword;
 		try {
