@@ -14,7 +14,7 @@ import by.vasilevsky.leasing.dao.DataSourceProvider;
 
 @WebListener
 public class DataSourceContextListener implements ServletContextListener {
-	private static final String DEFAULT_DB_PROP = "database.properties";
+	private static final String DEFAULT_DB_PROP_FILE = "database.properties";
 	private static final String DEFAULT_DRIVER_CLASS_NAME = "com.mysql.cj.jdbc.Driver";
 	private static final String DEFAULT_DB_URL = "jdbc:mysql://localhost:3306/vls";
 	private static final String DEFAULT_DB_USER = "dan";
@@ -33,7 +33,7 @@ public class DataSourceContextListener implements ServletContextListener {
 		InputStream input = null;
 		Properties database = new Properties();
 		try {
-			input = getClass().getResourceAsStream(DEFAULT_DB_PROP);
+			input = this.getClass().getClassLoader().getResourceAsStream(DEFAULT_DB_PROP_FILE);
 			database.load(input);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
