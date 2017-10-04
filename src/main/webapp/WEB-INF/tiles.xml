@@ -6,7 +6,7 @@
 	<definition name="calculator" template="/WEB-INF/layouts/calculator.jsp">
 		<put-attribute name="title" value="Leasing calculator" />
 		<put-attribute name="header" value="/WEB-INF/tiles/header.jsp" />
-		<put-attribute name="logination" value="/WEB-INF/tiles/logination_form.jsp" />
+		<put-attribute name="login" value="/WEB-INF/tiles/login_form.jsp" />
 		<put-attribute name="menu" value="/WEB-INF/tiles/menu.jsp" />
 		<put-attribute name="body" value="/WEB-INF/tiles/calculator_form.jsp" />
 		<put-attribute name="footer" value="/WEB-INF/tiles/footer.jsp" />
@@ -37,10 +37,10 @@
 		<put-attribute name="body" value="/WEB-INF/tiles/profile.jsp" />
 	</definition>
 	
-	<definition name="logination" template="/WEB-INF/layouts/logination.jsp">
-		<put-attribute name="title" value="Logination" />
+	<definition name="login" template="/WEB-INF/layouts/login.jsp">
+		<put-attribute name="title" value="Login" />
 		<put-attribute name="header" value="/WEB-INF/tiles/header.jsp" />
-		<put-attribute name="logination" value="/WEB-INF/tiles/logination_form.jsp" />
+		<put-attribute name="login" value="/WEB-INF/tiles/login_form.jsp" />
 		<put-attribute name="menu" value="/WEB-INF/tiles/menu.jsp" />
 		<put-attribute name="footer" value="/WEB-INF/tiles/footer.jsp" />
 	</definition>

@@ -14,9 +14,6 @@
 	<tiles:insertAttribute name="header" />
 	<tiles:insertAttribute name="login" />
 	<tiles:insertAttribute name="menu" />
-	<div id="body-container">
-		<tiles:insertAttribute name="body" />
-	</div>
 	<tiles:insertAttribute name="footer" />
 </body>
 </html>

@@ -2,18 +2,18 @@
 <commands xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns="http://www.vasilevskij.by/commands" 
 	xsi:schemaLocation="http://www.vasilevskij.by/commands commands.xsd">
-	<command method="get" url="/home" class="by.vasilevsky.leasing.controller.command.impl.HomePageCommand" />
-	<command method="get" url="" class="by.vasilevsky.leasing.controller.command.impl.HomePageCommand" />
-	<command method="get" url="/calculate" class="by.vasilevsky.leasing.controller.command.impl.CalculatorFormCommand" />
-	<command method="get" url="/logination" class="by.vasilevsky.leasing.controller.command.impl.LoginationFormCommand" />
-	<command method="get" url="/logout" class="by.vasilevsky.leasing.controller.command.impl.LogoutCommand" />
-	<command method="get" url="/profile" class="by.vasilevsky.leasing.controller.command.impl.ProfileFormCommand" />
-	<command method="get" url="/registration" class="by.vasilevsky.leasing.controller.command.impl.RegistrationFormCommand" />
-	<command method="get" url="/users" class="by.vasilevsky.leasing.controller.command.impl.UsersGetListCommand" />
+	<command method="get" url="/home" class="by.vasilevsky.leasing.web.controller.command.impl.HomePageCommand" />
+	<command method="get" url="" class="by.vasilevsky.leasing.web.controller.command.impl.HomePageCommand" />
+	<command method="get" url="/calculate" class="by.vasilevsky.leasing.web.controller.command.impl.CalculatorFormCommand" />
+	<command method="get" url="/login" class="by.vasilevsky.leasing.web.controller.command.impl.LoginFormCommand" />
+	<command method="get" url="/logout" class="by.vasilevsky.leasing.web.controller.command.impl.LogoutCommand" />
+	<command method="get" url="/profile" class="by.vasilevsky.leasing.web.controller.command.impl.ProfileFormCommand" />
+	<command method="get" url="/registration" class="by.vasilevsky.leasing.web.controller.command.impl.RegistrationFormCommand" />
+	<command method="get" url="/users" class="by.vasilevsky.leasing.web.controller.command.impl.UsersGetListCommand" />
 	
-	<command method="post" url="/calculate" class="by.vasilevsky.leasing.controller.command.impl.CalculatePaymentsCommand" />
-	<command method="post" url="/logination" class="by.vasilevsky.leasing.controller.command.impl.LoginationProceedCommand" />
-	<command method="post" url="/profile" class="by.vasilevsky.leasing.controller.command.impl.ProfileUpdateCommand" />
-	<command method="post" url="/registration" class="by.vasilevsky.leasing.controller.command.impl.RegistrationProceedCommand" />
-	<command method="post" url="/users" class="by.vasilevsky.leasing.controller.command.impl.UsersDeleteCommand" />
+	<command method="post" url="/calculate" class="by.vasilevsky.leasing.web.controller.command.impl.CalculatePaymentsCommand" />
+	<command method="post" url="/login" class="by.vasilevsky.leasing.web.controller.command.impl.LoginProceedCommand" />
+	<command method="post" url="/profile" class="by.vasilevsky.leasing.web.controller.command.impl.ProfileUpdateCommand" />
+	<command method="post" url="/registration" class="by.vasilevsky.leasing.web.controller.command.impl.RegistrationProceedCommand" />
+	<command method="post" url="/users" class="by.vasilevsky.leasing.web.controller.command.impl.UsersDeleteCommand" />
 </commands>
