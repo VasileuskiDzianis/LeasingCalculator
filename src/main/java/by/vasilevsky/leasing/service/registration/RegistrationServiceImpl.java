@@ -4,7 +4,7 @@ import by.vasilevsky.leasing.domain.user.User;
 import by.vasilevsky.leasing.service.ServiceFactory;
 
 public class RegistrationServiceImpl implements RegistrationService {
-	
+
 	@Override
 	public boolean isLoginExisting(String login) {
 		if (login == null) {
@@ -22,7 +22,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 		}
 		String encodedPassword;
 		try {
-			encodedPassword = PasswordService.getSaltedHash(user.getPassword());
+			encodedPassword = ServiceFactory.getInstance().getPasswordService().getSaltedHash(user.getPassword());
 		} catch (Exception e) {
 			throw new RuntimeException("Password encoding error", e);
 		}
