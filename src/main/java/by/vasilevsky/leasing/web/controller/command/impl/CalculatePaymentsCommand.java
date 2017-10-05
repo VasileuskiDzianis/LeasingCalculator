@@ -26,11 +26,19 @@ import by.vasilevsky.leasing.web.form.CalculatorFormModel;
 public class CalculatePaymentsCommand implements Command {
 	private static final String PAYMENTS_SCHEDULE_ALIAS = "paymentsSchedule";
 
-	private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
-	private final PaymentsScheduleService paymentsService = serviceFactory.getPaymentsScheduleService();
-	private final BaseRateService rateService = serviceFactory.getBaseRateService();
-	private final MarginService marginService = serviceFactory.getMarginService();
-	private final InsuranceService insuranceService = serviceFactory.getInsuranceService();
+	private final ServiceFactory serviceFactory;
+	private final PaymentsScheduleService paymentsService;
+	private final BaseRateService rateService;
+	private final MarginService marginService;
+	private final InsuranceService insuranceService;
+	
+	public CalculatePaymentsCommand() {
+		serviceFactory = ServiceFactory.getInstance();
+		paymentsService = serviceFactory.getPaymentsScheduleService();
+		rateService = serviceFactory.getBaseRateService();
+		marginService = serviceFactory.getMarginService();
+		insuranceService = serviceFactory.getInsuranceService();
+	}
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -61,33 +69,50 @@ public class CalculatePaymentsCommand implements Command {
 
 		return property;
 	}
-
-	private Float getPrice(CalculatorFormModel model) {
-		boolean noVatOnCost = Boolean.parseBoolean(model.getNoVatOnCost());
-
-		return noVatOnCost 
-				? Float.parseFloat(model.getCost())
-				: Float.parseFloat(model.getCost()) / (1 + PaymentsScheduleService.VAT_RATE);
-	}
-
+	
 	private PaymentsSchedule buildPaymentsSchedule(CalculatorFormModel model, Property property) {
 		PaymentsSchedule payments = new PaymentsSchedule();
 		payments.setCurrency(Currency.valueOf(Currency.class, model.getCurrency()));
 		payments.setPrepaymentPercentage(Float.parseFloat(model.getPrepay()));
 		payments.setBuyingOutPercentage(Float.parseFloat(model.getByuingout()));
 		payments.setLeaseDuration(Integer.parseInt(model.getDuration()));
-
-		boolean includeInsurance = Boolean.parseBoolean(model.getInsurance());
-		if (includeInsurance) {
-			Insurance insurance = insuranceService.findInsuranceByObjectType(property.getPropertyType());
-			payments.setInsuranceRate(insurance.getRate());
-		}
-		BaseRate rate = rateService.findRateByCurrency(payments.getCurrency());
-		Margin margin = marginService.findMarginByTypeAndAge(property.getPropertyType(), property.getAge());
-
-		payments.setLeaseRate(rate.getRate() + margin.getMargin());
+		payments.setInsuranceRate(getInsurance(model, property));
+		payments.setLeaseRate(getFullLeaseRate(payments.getCurrency(), property));
 		payments.setProperty(property);
 
 		return payments;
+	}
+
+	private float getPrice(CalculatorFormModel model) {
+		boolean noVatOnCost = Boolean.parseBoolean(model.getNoVatOnCost());
+		float cost = Float.parseFloat(model.getCost());
+		
+		return noVatOnCost 
+						? cost 
+						: deductVat(cost);
+	}
+
+	private Float getFullLeaseRate(Currency currency, Property property) {
+		BaseRate rate = rateService.findRateByCurrency(currency);
+		Margin margin = marginService.findMarginByTypeAndAge(property.getPropertyType(), property.getAge());
+		
+		return rate.getRate() + margin.getMargin();
+	}
+	
+	private float getInsurance(CalculatorFormModel model, Property property) {
+		boolean includeInsurance = Boolean.parseBoolean(model.getInsurance());
+		Insurance insurance;
+		if (includeInsurance) {
+			insurance = insuranceService.findInsuranceByObjectType(property.getPropertyType());
+		} else {
+			insurance = new Insurance();
+		}
+		
+		return insurance.getRate();
+	}
+	
+	private float deductVat(Float value) {
+		
+		return value / (1 + PaymentsScheduleService.VAT_RATE);
 	}
 }
