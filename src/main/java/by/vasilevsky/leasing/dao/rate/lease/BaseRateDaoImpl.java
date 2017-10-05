@@ -5,10 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.sql.DataSource;
-
 import by.vasilevsky.leasing.dao.BaseDao;
-import by.vasilevsky.leasing.dao.DataSourceProvider;
 import by.vasilevsky.leasing.domain.currency.Currency;
 import by.vasilevsky.leasing.domain.rate.lease.BaseRate;
 
@@ -20,7 +17,6 @@ public class BaseRateDaoImpl extends BaseDao implements BaseRateDao {
 
 	@Override
 	public BaseRate findLeaseRateByCurrency(Currency currency) {
-		DataSource ds = DataSourceProvider.getInstance().getDataSource();
 		Connection con = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -28,7 +24,7 @@ public class BaseRateDaoImpl extends BaseDao implements BaseRateDao {
 		BaseRate rate = new BaseRate();
 		rate.setCurrency(currency);
 		try {
-			con = ds.getConnection();
+			con = dataSource.getConnection();
 			stmt = con.prepareStatement(REQUEST_FIND_LEASE_RATE);
 			stmt.setString(1, currency.toString());
 			rs = stmt.executeQuery();

@@ -9,10 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import by.vasilevsky.leasing.dao.BaseDao;
-import by.vasilevsky.leasing.dao.DataSourceProvider;
 import by.vasilevsky.leasing.domain.user.User;
 import by.vasilevsky.leasing.domain.user.UserDetails;
 import by.vasilevsky.leasing.domain.user.UserRole;
@@ -45,7 +42,6 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 
 	@Override
 	public void updateUser(User user) {
-		DataSource ds = DataSourceProvider.getInstance().getDataSource();
 		Connection con = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -54,7 +50,7 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 		int userRoleId = findUserRoleId(user.getUserRole());
 
 		try {
-			con = ds.getConnection();
+			con = dataSource.getConnection();
 			stmt = con.prepareStatement(REQ_UPDATE_USER);
 			stmt.setString(1, user.getLogin());
 			stmt.setString(2, user.getPassword());
@@ -71,7 +67,6 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 
 	@Override
 	public void deleteUserById(int id) {
-		DataSource ds = DataSourceProvider.getInstance().getDataSource();
 		Connection con = null;
 		PreparedStatement stmtDeleteUser = null;
 		PreparedStatement stmtDeleteUserDetails = null;
@@ -79,7 +74,7 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 		User user = findUserById(id);
 
 		try {
-			con = ds.getConnection();
+			con = dataSource.getConnection();
 			con.setAutoCommit(false);
 			
 			stmtDeleteUser = con.prepareStatement(REQ_DELETE_USER);
@@ -106,13 +101,12 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 
 	@Override
 	public User findUserById(int id) {
-		DataSource ds = DataSourceProvider.getInstance().getDataSource();
 		Connection con = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
 		try {
-			con = ds.getConnection();
+			con = dataSource.getConnection();
 			stmt = con.prepareStatement(REQ_FIND_USER_BY_ID);
 			stmt.setInt(1, id);
 			rs = stmt.executeQuery();
@@ -145,13 +139,12 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 
 	@Override
 	public User findUserByLogin(String login) {
-		DataSource ds = DataSourceProvider.getInstance().getDataSource();
 		Connection con = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
 		try {
-			con = ds.getConnection();
+			con = dataSource.getConnection();
 			stmt = con.prepareStatement(REQ_FIND_USER_BY_LOGIN);
 			stmt.setString(1, login);
 			rs = stmt.executeQuery();
@@ -182,13 +175,12 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 
 	@Override
 	public List<User> findAll() {
-		DataSource ds = DataSourceProvider.getInstance().getDataSource();
 		Connection con = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		List<User> users;
 		try {
-			con = ds.getConnection();
+			con = dataSource.getConnection();
 			stmt = con.prepareStatement(REQ_FIND_ALL_USERS);
 			rs = stmt.executeQuery();
 			users = new ArrayList<User>();
@@ -219,7 +211,6 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 
 	@Override
 	public void saveUser(User user) {
-		DataSource ds = DataSourceProvider.getInstance().getDataSource();
 		Connection con = null;
 		PreparedStatement stmtSaveUser = null;
 		ResultSet rsSaveUser = null;
@@ -229,7 +220,7 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 		int userRoleId = findUserRoleId(user.getUserRole());
 
 		try {
-			con = ds.getConnection();
+			con = dataSource.getConnection();
 			con.setAutoCommit(false);
 
 			stmtSaveDetails = con.prepareStatement(REQ_SAVE_USER_DETAILS, Statement.RETURN_GENERATED_KEYS);
@@ -268,13 +259,12 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 	}
 
 	private int findUserRoleId(UserRole userRole) {
-		DataSource ds = DataSourceProvider.getInstance().getDataSource();
 		Connection con = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
 		try {
-			con = ds.getConnection();
+			con = dataSource.getConnection();
 			stmt = con.prepareStatement(REQ_GET_ROLE_ID);
 			stmt.setString(1, userRole.toString());
 			rs = stmt.executeQuery();
@@ -294,13 +284,12 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 
 	@Override
 	public void updateUserDetails(UserDetails userDetails) {
-		DataSource ds = DataSourceProvider.getInstance().getDataSource();
 		Connection con = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
 		try {
-			con = ds.getConnection();
+			con = dataSource.getConnection();
 			stmt = con.prepareStatement(REQ_UPDATE_DETAILS);
 			stmt.setString(1, userDetails.getFirstName());
 			stmt.setString(2, userDetails.getLastName());

@@ -64,8 +64,6 @@ public class UserDaoImplTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		DaoFactory daoFactory = DaoFactory.getInstance();
-		userDao = daoFactory.getUserDao();
 		Properties database = new Properties();
 		database.put("driver", DEFAULT_DRIVER_CLASS_NAME);
 		database.put("url", DEFAULT_DB_URL);
@@ -74,7 +72,8 @@ public class UserDaoImplTest {
 		database.put("poolSize", DEFAULT_CONN_POOL_SIZE);
 		database.put("connectionProperties", DEFAULT_CON_PROP);
 		DataSourceProvider.setProperties(database);
-		
+		DaoFactory daoFactory = DaoFactory.getInstance();
+		userDao = daoFactory.getUserDao();
 		
 		expectedUser1 = new User();
 		expectedUser1.setId(EXPECTED_USER_ID1);

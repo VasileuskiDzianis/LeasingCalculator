@@ -27,8 +27,6 @@ public class BaseRateDaoImplTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		DaoFactory daoFactory = DaoFactory.getInstance();
-		rateDao = daoFactory.getBaseRateDao();
 		Properties database = new Properties();
 		database.put("driver", DEFAULT_DRIVER_CLASS_NAME);
 		database.put("url", DEFAULT_DB_URL);
@@ -37,6 +35,8 @@ public class BaseRateDaoImplTest {
 		database.put("poolSize", DEFAULT_CONN_POOL_SIZE);
 		database.put("connectionProperties", DEFAULT_CON_PROP);
 		DataSourceProvider.setProperties(database);
+		DaoFactory daoFactory = DaoFactory.getInstance();
+		rateDao = daoFactory.getBaseRateDao();
 	}
 
 	@Test

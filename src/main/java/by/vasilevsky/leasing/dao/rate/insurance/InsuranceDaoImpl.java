@@ -2,9 +2,6 @@ package by.vasilevsky.leasing.dao.rate.insurance;
 
 import java.sql.*;
 
-import javax.sql.DataSource;
-
-import by.vasilevsky.leasing.dao.DataSourceProvider;
 import by.vasilevsky.leasing.dao.BaseDao;
 import by.vasilevsky.leasing.domain.lease_object.PropertyType;
 import by.vasilevsky.leasing.domain.rate.insurance.Insurance;
@@ -16,7 +13,6 @@ public class InsuranceDaoImpl extends BaseDao implements InsuranceDao {
 
 	@Override
 	public Insurance findInsuranceByObjectType(PropertyType objectType) {
-		DataSource ds = DataSourceProvider.getInstance().getDataSource();
 		Connection con = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -24,7 +20,7 @@ public class InsuranceDaoImpl extends BaseDao implements InsuranceDao {
 		Insurance insurance = new Insurance();
 		insurance.setObjectType(objectType);
 		try {
-			con = ds.getConnection();
+			con = dataSource.getConnection();
 			stmt = con.prepareStatement(REQUEST_FIND_LEASE_RATE);
 			stmt.setString(1, objectType.toString());
 			rs = stmt.executeQuery();

@@ -2,10 +2,7 @@ package by.vasilevsky.leasing.dao.rate.lease;
 
 import java.sql.*;
 
-import javax.sql.DataSource;
-
 import by.vasilevsky.leasing.dao.BaseDao;
-import by.vasilevsky.leasing.dao.DataSourceProvider;
 import by.vasilevsky.leasing.domain.lease_object.PropertyType;
 import by.vasilevsky.leasing.domain.rate.lease.Margin;
 
@@ -17,7 +14,6 @@ public class MarginDaoImpl extends BaseDao implements MarginDao {
 
 	@Override
 	public Margin findMarginByTypeAndAge(PropertyType objectType, int age) {
-		DataSource ds = DataSourceProvider.getInstance().getDataSource();
 		Connection con = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -26,7 +22,7 @@ public class MarginDaoImpl extends BaseDao implements MarginDao {
 		margin.setPropertyAge(age);
 		margin.setPropertyType(objectType);
 		try {
-			con = ds.getConnection();
+			con = dataSource.getConnection();
 			stmt = con.prepareStatement(REQUEST_FIND_LEASE_RATE);
 			stmt.setInt(1, age);
 			stmt.setString(2, objectType.toString());

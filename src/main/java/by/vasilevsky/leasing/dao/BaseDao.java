@@ -5,7 +5,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.sql.DataSource;
+
 public abstract class BaseDao {
+	
+	protected final DataSource dataSource;
+	
+	public BaseDao() {
+		dataSource = DataSourceProvider.getInstance().getDataSource();
+	}
+	
 	protected void closeResources(ResultSet rs, Statement stmt, Connection con) {
 		try {
 			if (rs != null) {

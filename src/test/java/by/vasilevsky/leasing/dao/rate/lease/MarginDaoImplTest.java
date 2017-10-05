@@ -28,19 +28,17 @@ public class MarginDaoImplTest {
 
 	@Before
 	public void setUp() {
-		DaoFactory daoFactory = DaoFactory.getInstance();
-		marginDao = daoFactory.getMarginDao();
-
 		Properties database = new Properties();
-
 		database.put("driver", DEFAULT_DRIVER_CLASS_NAME);
 		database.put("url", DEFAULT_DB_URL);
 		database.put("user", DEFAULT_DB_USER);
 		database.put("password", DEFAULT_DB_PASSWORD);
 		database.put("poolSize", DEFAULT_CONN_POOL_SIZE);
 		database.put("connectionProperties", DEFAULT_CON_PROP);
-
 		DataSourceProvider.setProperties(database);
+		
+		DaoFactory daoFactory = DaoFactory.getInstance();
+		marginDao = daoFactory.getMarginDao();
 	}
 
 	@Test
