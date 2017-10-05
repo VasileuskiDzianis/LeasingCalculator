@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class BaseDao {
+public abstract class BaseDao {
 	protected void closeResources(ResultSet rs, Statement stmt, Connection con) {
 		try {
 			if (rs != null) {
