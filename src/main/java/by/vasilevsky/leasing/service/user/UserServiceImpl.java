@@ -55,14 +55,6 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void deleteUser(User user) {
-		if (!ServiceFactory.getInstance().getUserValidatorService().isUserValid(user)) {
-			throw new IllegalArgumentException("User has illegal data");
-		}
-		userDao.deleteUser(user);
-	}
-	
-	@Override
 	public void deleteUserById(int id) {
 		userDao.deleteUserById(id);
 	}

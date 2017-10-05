@@ -19,7 +19,5 @@ public interface UserService {
 	
 	void updateUserDetails(UserDetails userDetails);
 	
-	void deleteUser(User user);
-
 	void deleteUserById(int id);
 }

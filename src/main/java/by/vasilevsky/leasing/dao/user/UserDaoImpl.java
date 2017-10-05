@@ -70,39 +70,6 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 	}
 
 	@Override
-	public void deleteUser(User user) {
-		DataSource ds = DataSourceProvider.getInstance().getDataSource();
-		Connection con = null;
-		PreparedStatement stmtDeleteUser = null;
-		PreparedStatement stmtDeleteDetails = null;
-
-		try {
-			con = ds.getConnection();
-			con.setAutoCommit(false);
-			
-			stmtDeleteUser = con.prepareStatement(REQ_DELETE_USER);
-			stmtDeleteUser.setInt(1, user.getId());
-			stmtDeleteUser.executeUpdate();
-
-			stmtDeleteDetails = con.prepareStatement(REQ_DELETE_DETAILS);
-			stmtDeleteDetails.setInt(1, user.getUserDetails().getId());
-			stmtDeleteDetails.executeUpdate();
-
-			con.commit();
-		} catch (SQLException e) {
-			try {
-				con.rollback();
-			} catch (SQLException ex) {
-				throw new RuntimeException("transaction rollback exception", ex);
-			}
-			throw new RuntimeException("deleteUser exception", e);
-		} finally {
-			closeResources(null, stmtDeleteUser, con);
-			closeResources(null, stmtDeleteDetails, null);
-		}
-	}
-
-	@Override
 	public void deleteUserById(int id) {
 		DataSource ds = DataSourceProvider.getInstance().getDataSource();
 		Connection con = null;

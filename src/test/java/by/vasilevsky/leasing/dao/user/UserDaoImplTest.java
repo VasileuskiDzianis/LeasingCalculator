@@ -157,7 +157,7 @@ public class UserDaoImplTest {
 		
 		assertTrue(givenUser.equals(gotUser));
 		
-		userDao.deleteUser(gotUser);
+		userDao.deleteUserById(gotUser.getId());
 		
 		assertNull(userDao.findUserById(gotUser.getId()));
 	}
