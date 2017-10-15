@@ -165,7 +165,6 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 				return user;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
 			throw new RuntimeException("findUserByLogin exception", e);
 		} finally {
 			closeResources(rs, stmt, con);
@@ -297,7 +296,6 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 			stmt.setInt(4, userDetails.getId());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
 			throw new RuntimeException("saveUserDetails exception", e);
 		} finally {
 			closeResources(rs, stmt, con);

@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import by.vasilevsky.leasing.web.controller.command.PageMapping;
 import by.vasilevsky.leasing.web.filter.i18n.MessageMapping;
 
@@ -16,12 +19,13 @@ import by.vasilevsky.leasing.web.filter.i18n.MessageMapping;
 public class ExceptionHandler extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
+	private static final Logger LOGGER = LogManager.getLogger(ExceptionHandler.class);
+	
 	private static final String ERROR_MESSAGE_ALIAS = "errorMessage";
 	
 	private static final String JAVAX_SERVLET_ERROR_STATUS_CODE = "javax.servlet.error.status_code";
 	private static final String JAVAX_SERVLET_ERROR_EXCEPTION = "javax.servlet.error.exception";
 	private static final int CODE_404 = 404;
-
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -38,6 +42,7 @@ public class ExceptionHandler extends HttpServlet {
 		} else {
 			request.setAttribute(ERROR_MESSAGE_ALIAS, messages.getString(MessageMapping.ERROR_MESSAGE_500_INTERNAL));
 		}
+		LOGGER.error("Exception occured", exception);
 		
 		request.getRequestDispatcher(PageMapping.ERROR).forward(request, response);
 	}
