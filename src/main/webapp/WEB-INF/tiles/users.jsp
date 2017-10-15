@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <div id="users-container">
 	<c:forEach var="user" items="${users}" varStatus="status">
-		<form action="<c:url value="/users"/>" method="post">
+		<form action="<c:url value="/users"/>" method="post" onsubmit="return confirm('${messages['i18n.form.message.confirmUserDeletion']}');">
 			<div class="line-item">
 				<div class="item-content-column">${messages['i18n.label.users.login']}:
 					${user.login} ${messages['i18n.label.users.firstname']}:
