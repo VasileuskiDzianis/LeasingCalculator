@@ -1,11 +1,19 @@
 package by.vasilevsky.leasing.domain.user;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	private int id;
 	private String login;
 	private String password;
 	private UserDetails userDetails;
 	private UserRole userRole;
+
+	public User() {
+
+	}
 
 	public int getId() {
 		return id;
@@ -56,37 +64,60 @@ public class User {
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		result = prime * result + ((userDetails == null) ? 0 : userDetails.hashCode());
 		result = prime * result + ((userRole == null) ? 0 : userRole.hashCode());
+		
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
+
 		User other = (User) obj;
-		if (id != other.id)
+		if (id != other.id) {
 			return false;
+		}
+
 		if (login == null) {
-			if (other.login != null)
+			if (other.login != null) {
 				return false;
-		} else if (!login.equals(other.login))
+			}
+
+		} else if (!login.equals(other.login)) {
 			return false;
+		}
+
 		if (password == null) {
-			if (other.password != null)
+			if (other.password != null) {
 				return false;
-		} else if (!password.equals(other.password))
+			}
+
+		} else if (!password.equals(other.password)) {
 			return false;
+		}
+
 		if (userDetails == null) {
-			if (other.userDetails != null)
+			if (other.userDetails != null) {
 				return false;
-		} else if (!userDetails.equals(other.userDetails))
+			}
+
+		} else if (!userDetails.equals(other.userDetails)) {
 			return false;
-		if (userRole != other.userRole)
+		}
+
+		if (userRole != other.userRole) {
 			return false;
+		}
+
 		return true;
 	}
 

@@ -1,8 +1,11 @@
 package by.vasilevsky.leasing.domain.payments;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class MonthlyPayment {
+public class MonthlyPayment implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	private int id;
 	private Date paymentDate;
 	private PaymentType paymentType;
@@ -13,6 +16,10 @@ public class MonthlyPayment {
 	private float propertyCostRepaymentVat;
 	private float insurance;
 	private float insuranceVat;
+
+	public MonthlyPayment() {
+
+	}
 
 	public int getId() {
 		return id;
@@ -92,5 +99,94 @@ public class MonthlyPayment {
 
 	public void setInsuranceVat(float insuranceVat) {
 		this.insuranceVat = insuranceVat;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Float.floatToIntBits(debt);
+		result = prime * result + id;
+		result = prime * result + Float.floatToIntBits(insurance);
+		result = prime * result + Float.floatToIntBits(insuranceVat);
+		result = prime * result + Float.floatToIntBits(leaseMargin);
+		result = prime * result + Float.floatToIntBits(leaseMarginVat);
+		result = prime * result + ((paymentDate == null) ? 0 : paymentDate.hashCode());
+		result = prime * result + ((paymentType == null) ? 0 : paymentType.hashCode());
+		result = prime * result + Float.floatToIntBits(propertyCostRepayment);
+		result = prime * result + Float.floatToIntBits(propertyCostRepaymentVat);
+
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (obj == null) {
+			return false;
+		}
+
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+
+		MonthlyPayment other = (MonthlyPayment) obj;
+		if (Float.floatToIntBits(debt) != Float.floatToIntBits(other.debt)) {
+			return false;
+		}
+
+		if (id != other.id) {
+			return false;
+		}
+
+		if (Float.floatToIntBits(insurance) != Float.floatToIntBits(other.insurance)) {
+			return false;
+		}
+
+		if (Float.floatToIntBits(insuranceVat) != Float.floatToIntBits(other.insuranceVat)) {
+			return false;
+		}
+
+		if (Float.floatToIntBits(leaseMargin) != Float.floatToIntBits(other.leaseMargin)) {
+			return false;
+		}
+
+		if (Float.floatToIntBits(leaseMarginVat) != Float.floatToIntBits(other.leaseMarginVat)) {
+			return false;
+		}
+
+		if (paymentDate == null) {
+			if (other.paymentDate != null) {
+				return false;
+			}
+
+		} else if (!paymentDate.equals(other.paymentDate)) {
+			return false;
+		}
+
+		if (paymentType != other.paymentType) {
+			return false;
+		}
+
+		if (Float.floatToIntBits(propertyCostRepayment) != Float.floatToIntBits(other.propertyCostRepayment)) {
+			return false;
+		}
+
+		if (Float.floatToIntBits(propertyCostRepaymentVat) != Float.floatToIntBits(other.propertyCostRepaymentVat)) {
+			return false;
+		}
+
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "MonthlyPayment [id=" + id + ", paymentDate=" + paymentDate + ", paymentType=" + paymentType + ", debt="
+				+ debt + ", leaseMargin=" + leaseMargin + ", leaseMarginVat=" + leaseMarginVat
+				+ ", propertyCostRepayment=" + propertyCostRepayment + ", propertyCostRepaymentVat="
+				+ propertyCostRepaymentVat + ", insurance=" + insurance + ", insuranceVat=" + insuranceVat + "]";
 	}
 }
