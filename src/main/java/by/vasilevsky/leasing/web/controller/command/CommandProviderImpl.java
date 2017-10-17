@@ -11,6 +11,8 @@ public final class CommandProviderImpl implements CommandProvider {
 
 	private static final Command NOT_FOUND_404_COMMAND = new NotFound404Command();
 
+	//Map<key1, Map<key2, value>>, where key1 - method type, such as GET or POST; 
+	//key2 - url; vaue - command
 	private final Map<String, Map<String, Command>> commandMapping;
 
 	private CommandProviderImpl() {
