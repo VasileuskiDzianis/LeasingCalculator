@@ -16,8 +16,7 @@ import by.vasilevsky.leasing.domain.rate.lease.Margin;
 import by.vasilevsky.leasing.service.ServiceFactory;
 import by.vasilevsky.leasing.service.payments.PaymentsScheduleService;
 import by.vasilevsky.leasing.service.rate.insurance.InsuranceService;
-import by.vasilevsky.leasing.service.rate.lease.BaseRateService;
-import by.vasilevsky.leasing.service.rate.lease.MarginService;
+import by.vasilevsky.leasing.service.rate.lease.LeaseRateService;
 import by.vasilevsky.leasing.web.controller.command.Command;
 import by.vasilevsky.leasing.web.controller.command.PageMapping;
 import by.vasilevsky.leasing.web.filter.binder.CalculatorFormMapping;
@@ -28,15 +27,13 @@ public class CalculatePaymentsCommand implements Command {
 
 	private final ServiceFactory serviceFactory;
 	private final PaymentsScheduleService paymentsService;
-	private final BaseRateService rateService;
-	private final MarginService marginService;
+	private final LeaseRateService rateService;
 	private final InsuranceService insuranceService;
 	
 	public CalculatePaymentsCommand() {
 		serviceFactory = ServiceFactory.getInstance();
 		paymentsService = serviceFactory.getPaymentsScheduleService();
-		rateService = serviceFactory.getBaseRateService();
-		marginService = serviceFactory.getMarginService();
+		rateService = serviceFactory.getLeaseRateService();
 		insuranceService = serviceFactory.getInsuranceService();
 	}
 
@@ -94,7 +91,7 @@ public class CalculatePaymentsCommand implements Command {
 
 	private Float getFullLeaseRate(Currency currency, Property property) {
 		BaseRate rate = rateService.findRateByCurrency(currency);
-		Margin margin = marginService.findMarginByTypeAndAge(property.getPropertyType(), property.getAge());
+		Margin margin = rateService.findMarginByTypeAndAge(property.getPropertyType(), property.getAge());
 		
 		return rate.getRate() + margin.getMargin();
 	}

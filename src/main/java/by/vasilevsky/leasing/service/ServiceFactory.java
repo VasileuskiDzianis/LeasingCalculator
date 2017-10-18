@@ -3,8 +3,7 @@ package by.vasilevsky.leasing.service;
 import by.vasilevsky.leasing.service.login.LoginService;
 import by.vasilevsky.leasing.service.payments.PaymentsScheduleService;
 import by.vasilevsky.leasing.service.rate.insurance.InsuranceService;
-import by.vasilevsky.leasing.service.rate.lease.BaseRateService;
-import by.vasilevsky.leasing.service.rate.lease.MarginService;
+import by.vasilevsky.leasing.service.rate.lease.LeaseRateService;
 import by.vasilevsky.leasing.service.user.UserService;
 import by.vasilevsky.leasing.service.validator.UserValidatorService;
 
@@ -16,9 +15,7 @@ public interface ServiceFactory {
 	
 	InsuranceService getInsuranceService();
 	
-	BaseRateService getBaseRateService();
-	
-	MarginService getMarginService();
+	LeaseRateService getLeaseRateService();
 
 	LoginService getLoginService();
 	

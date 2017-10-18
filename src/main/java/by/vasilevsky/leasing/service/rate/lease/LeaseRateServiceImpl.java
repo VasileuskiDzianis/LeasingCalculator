@@ -1,22 +1,36 @@
 package by.vasilevsky.leasing.service.rate.lease;
 
+import by.vasilevsky.leasing.dao.DaoFactory;
+import by.vasilevsky.leasing.dao.rate.LeaseRateDao;
 import by.vasilevsky.leasing.domain.currency.Currency;
 import by.vasilevsky.leasing.domain.lease_object.PropertyType;
 import by.vasilevsky.leasing.domain.rate.lease.BaseRate;
 import by.vasilevsky.leasing.domain.rate.lease.Margin;
 
 public class LeaseRateServiceImpl implements LeaseRateService {
+	private static final int MIN_AGE = 0;
+	
+	private final LeaseRateDao leaseRateDao;
+
+	public LeaseRateServiceImpl() {
+		leaseRateDao = DaoFactory.getInstance().getLeaseRateDao();
+	}
 
 	@Override
 	public BaseRate findRateByCurrency(Currency currency) {
-		// TODO Auto-generated method stub
-		return null;
+		if (currency == null) {
+			throw new IllegalArgumentException("Currency is NULL");
+		}
+		
+		return leaseRateDao.findLeaseRateByCurrency(currency);
 	}
 
 	@Override
 	public Margin findMarginByTypeAndAge(PropertyType objectType, int age) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		if (objectType == null || age < MIN_AGE) {
+			throw new IllegalArgumentException();
+		}
 
+		return leaseRateDao.findMarginByTypeAndAge(objectType, age);
+	}
 }
