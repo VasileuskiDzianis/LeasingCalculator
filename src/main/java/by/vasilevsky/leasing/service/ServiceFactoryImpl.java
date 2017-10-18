@@ -12,8 +12,6 @@ import by.vasilevsky.leasing.service.rate.lease.MarginService;
 import by.vasilevsky.leasing.service.rate.lease.MarginServiceImpl;
 import by.vasilevsky.leasing.service.registration.PasswordService;
 import by.vasilevsky.leasing.service.registration.PasswordServiceImpl;
-import by.vasilevsky.leasing.service.registration.RegistrationService;
-import by.vasilevsky.leasing.service.registration.RegistrationServiceImpl;
 import by.vasilevsky.leasing.service.user.UserService;
 import by.vasilevsky.leasing.service.user.UserServiceImpl;
 import by.vasilevsky.leasing.service.validator.UserValidatorService;
@@ -27,7 +25,6 @@ public final class ServiceFactoryImpl implements ServiceFactory {
 	private final InsuranceService insuranceService;
 	private final BaseRateService baseRateService;
 	private final MarginService marginService;
-	private final RegistrationService registrationService;
 	private final LoginService loginService;
 	private final UserValidatorService userValidatorService;
 	private final PasswordService passwordService;
@@ -38,11 +35,9 @@ public final class ServiceFactoryImpl implements ServiceFactory {
 		insuranceService = new InsuranceServiceImpl();
 		baseRateService = new BaseRateServiceImpl();
 		marginService = new MarginServiceImpl();
-		registrationService = new RegistrationServiceImpl();
 		loginService = new LoginServiceImpl();
 		userValidatorService = new UserValidatorServiceImpl();
 		passwordService = new PasswordServiceImpl();
-		
 	}
 	
 	static ServiceFactory getInstance() {
@@ -88,12 +83,6 @@ public final class ServiceFactoryImpl implements ServiceFactory {
 		return marginService;
 	}
 	
-	@Override
-	public RegistrationService getRegistrationService() {
-		
-		return registrationService;
-	}
-
 	@Override
 	public LoginService getLoginService() {
 		

@@ -11,7 +11,7 @@ import by.vasilevsky.leasing.domain.user.User;
 import by.vasilevsky.leasing.domain.user.UserDetails;
 import by.vasilevsky.leasing.domain.user.UserRole;
 import by.vasilevsky.leasing.service.ServiceFactory;
-import by.vasilevsky.leasing.service.registration.RegistrationService;
+import by.vasilevsky.leasing.service.login.LoginService;
 import by.vasilevsky.leasing.web.controller.command.Command;
 import by.vasilevsky.leasing.web.controller.command.PageMapping;
 import by.vasilevsky.leasing.web.filter.binder.RegistrationFormMapping;
@@ -23,10 +23,10 @@ public class RegistrationProceedCommand implements Command {
 	private static final String DEFAULT_USER_SURNAME = "unknown";
 	private static final int DEFAULT_USER_AGE = 18;
 
-	private final RegistrationService registrationService;
+	private final LoginService loginService;
 
 	public RegistrationProceedCommand() {
-		registrationService = ServiceFactory.getInstance().getRegistrationService();
+		loginService = ServiceFactory.getInstance().getLoginService();
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class RegistrationProceedCommand implements Command {
 		ResourceBundle messages = (ResourceBundle) request.getAttribute(MessageMapping.ALIAS);
 		RegistrationFormModel model = (RegistrationFormModel) request.getAttribute(RegistrationFormMapping.ALIAS);
 
-		if (model.getLogin() != null && registrationService.isLoginExisting(model.getLogin())) {
+		if (model.getLogin() != null && loginService.isLoginExisting(model.getLogin())) {
 			model.setLoginMessage(messages.getString(MessageMapping.ADDRESS_IN_USE_MESSAGE));
 			model.setErrors(true);
 		}
@@ -50,7 +50,7 @@ public class RegistrationProceedCommand implements Command {
 			userDetails.setLastName(DEFAULT_USER_SURNAME);
 			user.setUserDetails(userDetails);
 
-			registrationService.registerNewUser(user);
+			loginService.registerNewUser(user);
 
 			model.setMainMessage(messages.getString(MessageMapping.REGISTERED_MESSAGE));
 		}
