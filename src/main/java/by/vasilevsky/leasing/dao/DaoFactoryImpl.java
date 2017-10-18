@@ -8,7 +8,7 @@ import by.vasilevsky.leasing.dao.user.UserDao;
 import by.vasilevsky.leasing.dao.user.UserDaoImpl;
 
 public final class DaoFactoryImpl implements DaoFactory {
-	private static volatile DaoFactoryImpl instance;
+	private static final DaoFactory INSTANCE = new DaoFactoryImpl();
 
 	private final UserDao userDao;
 	private final InsuranceDao insuranceDao;
@@ -21,16 +21,8 @@ public final class DaoFactoryImpl implements DaoFactory {
 	}
 
 	static DaoFactory getInstance() {
-		DaoFactoryImpl localInstance = instance;
-		if (localInstance == null) {
-			synchronized (DaoFactoryImpl.class) {
-				localInstance = instance;
-				if (localInstance == null) {
-					instance = localInstance = new DaoFactoryImpl();
-				}
-			}
-		}
-		return localInstance;
+	
+		return INSTANCE;
 	}
 
 	@Override
