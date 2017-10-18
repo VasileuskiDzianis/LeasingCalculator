@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import by.vasilevsky.leasing.service.ServiceFactory;
 import by.vasilevsky.leasing.service.user.UserService;
-import by.vasilevsky.leasing.service.validator.Validator;
+import by.vasilevsky.leasing.util.Validator;
 import by.vasilevsky.leasing.web.controller.command.Command;
 import by.vasilevsky.leasing.web.controller.command.UrlMapping;
 

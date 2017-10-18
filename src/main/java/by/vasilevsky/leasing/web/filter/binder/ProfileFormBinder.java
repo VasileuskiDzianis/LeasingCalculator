@@ -13,7 +13,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.swing.text.html.FormSubmitEvent.MethodType;
 
-import by.vasilevsky.leasing.service.validator.Validator;
+import by.vasilevsky.leasing.util.Validator;
 import by.vasilevsky.leasing.web.filter.i18n.MessageMapping;
 import by.vasilevsky.leasing.web.form.ProfileFormModel;
 

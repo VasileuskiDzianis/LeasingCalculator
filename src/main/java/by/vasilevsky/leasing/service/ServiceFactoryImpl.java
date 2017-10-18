@@ -10,8 +10,6 @@ import by.vasilevsky.leasing.service.rate.impl.InsuranceServiceImpl;
 import by.vasilevsky.leasing.service.rate.impl.LeaseRateServiceImpl;
 import by.vasilevsky.leasing.service.user.UserService;
 import by.vasilevsky.leasing.service.user.UserServiceImpl;
-import by.vasilevsky.leasing.service.validator.UserValidatorService;
-import by.vasilevsky.leasing.service.validator.UserValidatorServiceImpl;
 
 public final class ServiceFactoryImpl implements ServiceFactory {
 	private static volatile ServiceFactoryImpl instance;
@@ -21,7 +19,6 @@ public final class ServiceFactoryImpl implements ServiceFactory {
 	private final InsuranceService insuranceService;
 	private final LeaseRateService leaseRateService;
 	private final LoginService loginService;
-	private final UserValidatorService userValidatorService;
 
 	private ServiceFactoryImpl() {
 		userService = new UserServiceImpl();
@@ -29,7 +26,6 @@ public final class ServiceFactoryImpl implements ServiceFactory {
 		insuranceService = new InsuranceServiceImpl();
 		leaseRateService = new LeaseRateServiceImpl();
 		loginService = new LoginServiceImpl();
-		userValidatorService = new UserValidatorServiceImpl();
 	}
 
 	static ServiceFactory getInstance() {
@@ -67,12 +63,6 @@ public final class ServiceFactoryImpl implements ServiceFactory {
 	public LoginService getLoginService() {
 
 		return loginService;
-	}
-
-	@Override
-	public UserValidatorService getUserValidatorService() {
-
-		return userValidatorService;
 	}
 
 	@Override

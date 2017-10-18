@@ -6,9 +6,11 @@ import by.vasilevsky.leasing.dao.DaoFactory;
 import by.vasilevsky.leasing.dao.user.UserDao;
 import by.vasilevsky.leasing.domain.user.User;
 import by.vasilevsky.leasing.domain.user.UserDetails;
-import by.vasilevsky.leasing.service.ServiceFactory;
+import by.vasilevsky.leasing.util.Validator;
 
 public class UserServiceImpl implements UserService {
+	private static final int MIN_AGE = 0;
+	
 	private final UserDao userDao;
 	
 	public UserServiceImpl() {
@@ -32,7 +34,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void saveUser(User user) {
-		if (!ServiceFactory.getInstance().getUserValidatorService().isUserValid(user)) {
+		if (!isUserValid(user)) {
 			throw new IllegalArgumentException();
 		}
 		userDao.saveUser(user);
@@ -40,7 +42,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void updateUser(User user) {
-		if (!ServiceFactory.getInstance().getUserValidatorService().isUserValid(user)) {
+		if (!isUserValid(user)) {
 			throw new IllegalArgumentException("User has illegal data");
 		}
 		userDao.updateUser(user);
@@ -48,7 +50,7 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public void updateUserDetails(UserDetails userDetails) {
-		if (!ServiceFactory.getInstance().getUserValidatorService().isUserDetailsValid(userDetails)) {
+		if (!isUserDetailsValid(userDetails)) {
 			throw new IllegalArgumentException("User details has illegal data");
 		}
 		userDao.updateUserDetails(userDetails);
@@ -62,5 +64,22 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<User> findAll() {
 		return userDao.findAll();
+	}
+	
+	public boolean isUserValid(User user) {
+		
+		return user != null
+				&& user.getLogin() != null && Validator.validateLogin(user.getLogin())
+				&& user.getPassword() != null
+				&& user.getUserRole() != null
+				&& isUserDetailsValid(user.getUserDetails());
+	}
+
+	public boolean isUserDetailsValid(UserDetails userDetails) {
+		
+		return userDetails != null
+				&& userDetails.getAge() >= MIN_AGE
+				&& userDetails.getFirstName() != null && Validator.validateName(userDetails.getFirstName())
+				&& userDetails.getLastName() != null && Validator.validateName(userDetails.getLastName());
 	}
 }

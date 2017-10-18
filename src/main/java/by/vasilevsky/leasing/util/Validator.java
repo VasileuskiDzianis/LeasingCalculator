@@ -1,4 +1,4 @@
-package by.vasilevsky.leasing.service.validator;
+package by.vasilevsky.leasing.util;
 
 import java.util.regex.Pattern;
 
