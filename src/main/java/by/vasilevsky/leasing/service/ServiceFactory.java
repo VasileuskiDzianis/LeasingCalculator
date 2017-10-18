@@ -5,7 +5,6 @@ import by.vasilevsky.leasing.service.payments.PaymentsScheduleService;
 import by.vasilevsky.leasing.service.rate.insurance.InsuranceService;
 import by.vasilevsky.leasing.service.rate.lease.BaseRateService;
 import by.vasilevsky.leasing.service.rate.lease.MarginService;
-import by.vasilevsky.leasing.service.registration.PasswordService;
 import by.vasilevsky.leasing.service.user.UserService;
 import by.vasilevsky.leasing.service.validator.UserValidatorService;
 
@@ -24,8 +23,6 @@ public interface ServiceFactory {
 	LoginService getLoginService();
 	
 	UserValidatorService getUserValidatorService();
-	
-	PasswordService getPasswordService();
 	
 	static ServiceFactory getInstance() {
 		
