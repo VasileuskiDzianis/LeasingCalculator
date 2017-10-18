@@ -1,9 +1,9 @@
 package by.vasilevsky.leasing.dao;
 
-import by.vasilevsky.leasing.dao.rate.insurance.InsuranceDao;
-import by.vasilevsky.leasing.dao.rate.insurance.InsuranceDaoImpl;
-import by.vasilevsky.leasing.dao.rate.lease.LeaseRateDao;
-import by.vasilevsky.leasing.dao.rate.lease.LeaseRateDaoImpl;
+import by.vasilevsky.leasing.dao.rate.InsuranceDao;
+import by.vasilevsky.leasing.dao.rate.LeaseRateDao;
+import by.vasilevsky.leasing.dao.rate.impl.InsuranceDaoImpl;
+import by.vasilevsky.leasing.dao.rate.impl.LeaseRateDaoImpl;
 import by.vasilevsky.leasing.dao.user.UserDao;
 import by.vasilevsky.leasing.dao.user.UserDaoImpl;
 

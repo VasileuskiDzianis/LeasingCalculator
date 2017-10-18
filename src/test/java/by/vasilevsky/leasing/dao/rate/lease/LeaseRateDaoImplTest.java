@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import by.vasilevsky.leasing.dao.DaoFactory;
 import by.vasilevsky.leasing.dao.DataSourceProvider;
+import by.vasilevsky.leasing.dao.rate.LeaseRateDao;
 import by.vasilevsky.leasing.domain.currency.Currency;
 import by.vasilevsky.leasing.domain.lease_object.PropertyType;
 import by.vasilevsky.leasing.domain.rate.lease.BaseRate;

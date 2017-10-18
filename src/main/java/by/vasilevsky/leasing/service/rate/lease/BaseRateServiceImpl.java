@@ -1,7 +1,7 @@
 package by.vasilevsky.leasing.service.rate.lease;
 
 import by.vasilevsky.leasing.dao.DaoFactory;
-import by.vasilevsky.leasing.dao.rate.lease.LeaseRateDao;
+import by.vasilevsky.leasing.dao.rate.LeaseRateDao;
 import by.vasilevsky.leasing.domain.currency.Currency;
 import by.vasilevsky.leasing.domain.rate.lease.BaseRate;
 

@@ -1,8 +1,9 @@
-package by.vasilevsky.leasing.dao.rate.insurance;
+package by.vasilevsky.leasing.dao.rate.impl;
 
 import java.sql.*;
 
 import by.vasilevsky.leasing.dao.BaseDao;
+import by.vasilevsky.leasing.dao.rate.InsuranceDao;
 import by.vasilevsky.leasing.domain.lease_object.PropertyType;
 import by.vasilevsky.leasing.domain.rate.insurance.Insurance;
 
