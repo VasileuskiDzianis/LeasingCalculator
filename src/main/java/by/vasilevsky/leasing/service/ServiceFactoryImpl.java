@@ -12,7 +12,7 @@ import by.vasilevsky.leasing.service.user.UserService;
 import by.vasilevsky.leasing.service.user.UserServiceImpl;
 
 public final class ServiceFactoryImpl implements ServiceFactory {
-	private static volatile ServiceFactoryImpl instance;
+	private static final ServiceFactoryImpl INSTANCE = new ServiceFactoryImpl();
 
 	private final UserService userService;
 	private final PaymentsScheduleService paymentsScheduleService;
@@ -29,16 +29,8 @@ public final class ServiceFactoryImpl implements ServiceFactory {
 	}
 
 	static ServiceFactory getInstance() {
-		ServiceFactoryImpl localInstance = instance;
-		if (localInstance == null) {
-			synchronized (ServiceFactoryImpl.class) {
-				localInstance = instance;
-				if (localInstance == null) {
-					instance = localInstance = new ServiceFactoryImpl();
-				}
-			}
-		}
-		return localInstance;
+		
+		return INSTANCE;
 	}
 
 	@Override
