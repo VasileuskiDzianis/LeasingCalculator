@@ -2,8 +2,8 @@ package by.vasilevsky.leasing.service;
 
 import by.vasilevsky.leasing.service.login.LoginService;
 import by.vasilevsky.leasing.service.payments.PaymentsScheduleService;
-import by.vasilevsky.leasing.service.rate.insurance.InsuranceService;
-import by.vasilevsky.leasing.service.rate.lease.LeaseRateService;
+import by.vasilevsky.leasing.service.rate.InsuranceService;
+import by.vasilevsky.leasing.service.rate.LeaseRateService;
 import by.vasilevsky.leasing.service.user.UserService;
 import by.vasilevsky.leasing.service.validator.UserValidatorService;
 

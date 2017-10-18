@@ -1,4 +1,4 @@
-package by.vasilevsky.leasing.service.rate.lease;
+package by.vasilevsky.leasing.service.rate;
 
 import by.vasilevsky.leasing.domain.currency.Currency;
 import by.vasilevsky.leasing.domain.lease_object.PropertyType;

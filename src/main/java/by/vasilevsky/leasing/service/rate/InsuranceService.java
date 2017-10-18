@@ -1,4 +1,4 @@
-package by.vasilevsky.leasing.service.rate.insurance;
+package by.vasilevsky.leasing.service.rate;
 
 import by.vasilevsky.leasing.domain.lease_object.PropertyType;
 import by.vasilevsky.leasing.domain.rate.insurance.Insurance;
