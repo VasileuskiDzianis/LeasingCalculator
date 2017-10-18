@@ -22,7 +22,7 @@ public class PasswordServiceImpl implements PasswordService {
 	private static final int SPLITED_PARTS_NUMBER = 2;
 	private static final int SALT_INDEX = 0;
 	private static final int PASSWORD_INDEX = 1;
-	
+
 	@Override
 	public String getSaltedHash(String password) throws Exception {
 		if (password == null) {
@@ -51,8 +51,9 @@ public class PasswordServiceImpl implements PasswordService {
 	// using PBKDF2 from Sun, an alternative is https://github.com/wg/scrypt
 	// cf. http://www.unlimitednovelty.com/2012/03/dont-use-bcrypt.html
 	private String hash(String password, byte[] salt) throws Exception {
-		if (password == null || password.length() == 0)
+		if (password == null || password.length() == 0) {
 			throw new IllegalArgumentException("Empty passwords are not supported.");
+		}
 		SecretKeyFactory f = SecretKeyFactory.getInstance(PSW_ALGORITM);
 		SecretKey key = f.generateSecret(new PBEKeySpec(password.toCharArray(), salt, ITERATIONS, DESIRED_KEY_LEN));
 

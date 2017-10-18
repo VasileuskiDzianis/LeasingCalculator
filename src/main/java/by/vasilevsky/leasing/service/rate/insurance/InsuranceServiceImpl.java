@@ -16,7 +16,7 @@ public class InsuranceServiceImpl implements InsuranceService {
 	@Override
 	public Insurance findInsuranceByObjectType(PropertyType objectType) {
 		if (objectType == null) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Object type can not be NULL");
 		}
 
 		return insuranceDao.findInsuranceByObjectType(objectType);

@@ -18,7 +18,6 @@ import java.sql.SQLXML;
 import java.sql.Savepoint;
 import java.sql.Statement;
 import java.sql.Struct;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -65,7 +64,6 @@ public final class ConnectionPoolImpl implements ConnectionPool {
 			this.poolSize = DEFAULT_POOL_SIZE;
 		}
 		
-		Locale.setDefault(Locale.ENGLISH);
 		try {
 			Class.forName(driverName);
 			givenAwayConQueue = new ArrayBlockingQueue<Connection>(poolSize);
