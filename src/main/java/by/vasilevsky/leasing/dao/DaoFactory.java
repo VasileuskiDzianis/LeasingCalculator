@@ -1,8 +1,7 @@
 package by.vasilevsky.leasing.dao;
 
 import by.vasilevsky.leasing.dao.rate.insurance.InsuranceDao;
-import by.vasilevsky.leasing.dao.rate.lease.BaseRateDao;
-import by.vasilevsky.leasing.dao.rate.lease.MarginDao;
+import by.vasilevsky.leasing.dao.rate.lease.LeaseRateDao;
 import by.vasilevsky.leasing.dao.user.UserDao;
 
 public interface DaoFactory {
@@ -11,10 +10,8 @@ public interface DaoFactory {
 	
 	InsuranceDao getInsuranceDao();
 	
-	BaseRateDao getBaseRateDao();
-	
-	MarginDao getMarginDao();
-	
+	LeaseRateDao getLeaseRateDao();
+
 	static DaoFactory getInstance() {
 		
 		return DaoFactoryImpl.getInstance();

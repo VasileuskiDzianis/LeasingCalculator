@@ -2,26 +2,22 @@ package by.vasilevsky.leasing.dao;
 
 import by.vasilevsky.leasing.dao.rate.insurance.InsuranceDao;
 import by.vasilevsky.leasing.dao.rate.insurance.InsuranceDaoImpl;
-import by.vasilevsky.leasing.dao.rate.lease.BaseRateDao;
-import by.vasilevsky.leasing.dao.rate.lease.BaseRateDaoImpl;
-import by.vasilevsky.leasing.dao.rate.lease.MarginDao;
-import by.vasilevsky.leasing.dao.rate.lease.MarginDaoImpl;
+import by.vasilevsky.leasing.dao.rate.lease.LeaseRateDao;
+import by.vasilevsky.leasing.dao.rate.lease.LeaseRateDaoImpl;
 import by.vasilevsky.leasing.dao.user.UserDao;
 import by.vasilevsky.leasing.dao.user.UserDaoImpl;
 
 public final class DaoFactoryImpl implements DaoFactory {
 	private static volatile DaoFactoryImpl instance;
-	
+
 	private final UserDao userDao;
 	private final InsuranceDao insuranceDao;
-	private final BaseRateDao baseRateDao;
-	private final MarginDao marginDao;
+	private final LeaseRateDao leaseRateDao;
 
 	private DaoFactoryImpl() {
 		userDao = new UserDaoImpl();
 		insuranceDao = new InsuranceDaoImpl();
-		baseRateDao = new BaseRateDaoImpl();
-		marginDao = new MarginDaoImpl();
+		leaseRateDao = new LeaseRateDaoImpl();
 	}
 
 	static DaoFactory getInstance() {
@@ -50,14 +46,8 @@ public final class DaoFactoryImpl implements DaoFactory {
 	}
 
 	@Override
-	public BaseRateDao getBaseRateDao() {
+	public LeaseRateDao getLeaseRateDao() {
 
-		return baseRateDao;
-	}
-
-	@Override
-	public MarginDao getMarginDao() {
-
-		return marginDao;
+		return leaseRateDao;
 	}
 }

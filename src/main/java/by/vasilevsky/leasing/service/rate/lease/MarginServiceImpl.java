@@ -1,17 +1,17 @@
 package by.vasilevsky.leasing.service.rate.lease;
 
 import by.vasilevsky.leasing.dao.DaoFactory;
-import by.vasilevsky.leasing.dao.rate.lease.MarginDao;
+import by.vasilevsky.leasing.dao.rate.lease.LeaseRateDao;
 import by.vasilevsky.leasing.domain.lease_object.PropertyType;
 import by.vasilevsky.leasing.domain.rate.lease.Margin;
 
 public class MarginServiceImpl implements MarginService {
 	private static final int MIN_AGE = 0;
 
-	private final MarginDao marginDao;
+	private final LeaseRateDao leaseRateDao;
 
 	public MarginServiceImpl() {
-		marginDao = DaoFactory.getInstance().getMarginDao();
+		leaseRateDao = DaoFactory.getInstance().getLeaseRateDao();
 	}
 
 	@Override
@@ -20,6 +20,6 @@ public class MarginServiceImpl implements MarginService {
 			throw new IllegalArgumentException();
 		}
 
-		return marginDao.findMarginByTypeAndAge(objectType, age);
+		return leaseRateDao.findMarginByTypeAndAge(objectType, age);
 	}
 }

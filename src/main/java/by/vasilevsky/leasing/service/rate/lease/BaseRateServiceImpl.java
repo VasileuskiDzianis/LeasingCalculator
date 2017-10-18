@@ -1,16 +1,16 @@
 package by.vasilevsky.leasing.service.rate.lease;
 
 import by.vasilevsky.leasing.dao.DaoFactory;
-import by.vasilevsky.leasing.dao.rate.lease.BaseRateDao;
+import by.vasilevsky.leasing.dao.rate.lease.LeaseRateDao;
 import by.vasilevsky.leasing.domain.currency.Currency;
 import by.vasilevsky.leasing.domain.rate.lease.BaseRate;
 
 public class BaseRateServiceImpl implements BaseRateService {
 	
-	private final BaseRateDao baseRateDao;
+	private final LeaseRateDao leaseRateDao;
 	
 	public BaseRateServiceImpl() {
-		baseRateDao = DaoFactory.getInstance().getBaseRateDao();
+		leaseRateDao = DaoFactory.getInstance().getLeaseRateDao();
 	}
 
 	@Override
@@ -19,6 +19,6 @@ public class BaseRateServiceImpl implements BaseRateService {
 			throw new IllegalArgumentException("Currency is NULL");
 		}
 		
-		return baseRateDao.findLeaseRateByCurrency(currency);
+		return leaseRateDao.findLeaseRateByCurrency(currency);
 	}
 }
