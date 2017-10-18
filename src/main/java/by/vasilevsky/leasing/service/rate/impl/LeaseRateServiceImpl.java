@@ -4,8 +4,8 @@ import by.vasilevsky.leasing.dao.DaoFactory;
 import by.vasilevsky.leasing.dao.rate.LeaseRateDao;
 import by.vasilevsky.leasing.domain.currency.Currency;
 import by.vasilevsky.leasing.domain.lease_object.PropertyType;
-import by.vasilevsky.leasing.domain.rate.lease.BaseRate;
-import by.vasilevsky.leasing.domain.rate.lease.Margin;
+import by.vasilevsky.leasing.domain.rate.BaseRate;
+import by.vasilevsky.leasing.domain.rate.Margin;
 import by.vasilevsky.leasing.service.rate.LeaseRateService;
 
 public class LeaseRateServiceImpl implements LeaseRateService {

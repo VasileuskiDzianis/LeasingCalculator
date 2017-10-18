@@ -1,4 +1,4 @@
-package by.vasilevsky.leasing.dao.rate.lease;
+package by.vasilevsky.leasing.dao.rate.impl;
 
 import static org.junit.Assert.*;
 
@@ -11,8 +11,8 @@ import by.vasilevsky.leasing.dao.DataSourceProvider;
 import by.vasilevsky.leasing.dao.rate.LeaseRateDao;
 import by.vasilevsky.leasing.domain.currency.Currency;
 import by.vasilevsky.leasing.domain.lease_object.PropertyType;
-import by.vasilevsky.leasing.domain.rate.lease.BaseRate;
-import by.vasilevsky.leasing.domain.rate.lease.Margin;
+import by.vasilevsky.leasing.domain.rate.BaseRate;
+import by.vasilevsky.leasing.domain.rate.Margin;
 
 public class LeaseRateDaoImplTest {
 	private static final String DEFAULT_DRIVER_CLASS_NAME = "com.mysql.cj.jdbc.Driver";

@@ -1,4 +1,4 @@
-package by.vasilevsky.leasing.domain.rate.insurance;
+package by.vasilevsky.leasing.domain.rate;
 
 import java.io.Serializable;
 

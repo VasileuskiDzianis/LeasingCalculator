@@ -5,7 +5,7 @@ import java.sql.*;
 import by.vasilevsky.leasing.dao.BaseDao;
 import by.vasilevsky.leasing.dao.rate.InsuranceDao;
 import by.vasilevsky.leasing.domain.lease_object.PropertyType;
-import by.vasilevsky.leasing.domain.rate.insurance.Insurance;
+import by.vasilevsky.leasing.domain.rate.Insurance;
 
 public class InsuranceDaoImpl extends BaseDao implements InsuranceDao {
 	private final static String REQUEST_FIND_LEASE_RATE = "SELECT i.id, i.insurance FROM insurance AS i JOIN leaseObjectType AS lot ON i.objectTypeId=lot.id WHERE lot.objectType=?;";

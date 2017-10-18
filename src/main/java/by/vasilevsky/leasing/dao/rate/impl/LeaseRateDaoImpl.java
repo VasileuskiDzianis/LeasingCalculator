@@ -9,8 +9,8 @@ import by.vasilevsky.leasing.dao.BaseDao;
 import by.vasilevsky.leasing.dao.rate.LeaseRateDao;
 import by.vasilevsky.leasing.domain.currency.Currency;
 import by.vasilevsky.leasing.domain.lease_object.PropertyType;
-import by.vasilevsky.leasing.domain.rate.lease.BaseRate;
-import by.vasilevsky.leasing.domain.rate.lease.Margin;
+import by.vasilevsky.leasing.domain.rate.BaseRate;
+import by.vasilevsky.leasing.domain.rate.Margin;
 
 public class LeaseRateDaoImpl extends BaseDao implements LeaseRateDao {
 	private final static String REQUEST_FIND_LEASE_RATE = "SELECT m.id, m.margin FROM margin AS m JOIN leaseObjectType AS lot ON m.objectTypeId=lot.id WHERE m.objectAge=? AND lot.objectType=?;";

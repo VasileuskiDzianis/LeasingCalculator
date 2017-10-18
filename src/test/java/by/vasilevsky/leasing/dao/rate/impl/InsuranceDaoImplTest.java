@@ -1,4 +1,4 @@
-package by.vasilevsky.leasing.dao.rate.insurance;
+package by.vasilevsky.leasing.dao.rate.impl;
 
 import static org.junit.Assert.assertEquals;
 
@@ -11,7 +11,7 @@ import by.vasilevsky.leasing.dao.DaoFactory;
 import by.vasilevsky.leasing.dao.DataSourceProvider;
 import by.vasilevsky.leasing.dao.rate.InsuranceDao;
 import by.vasilevsky.leasing.domain.lease_object.PropertyType;
-import by.vasilevsky.leasing.domain.rate.insurance.Insurance;
+import by.vasilevsky.leasing.domain.rate.Insurance;
 
 public class InsuranceDaoImplTest {
 	private static final String DEFAULT_DRIVER_CLASS_NAME = "com.mysql.cj.jdbc.Driver";
