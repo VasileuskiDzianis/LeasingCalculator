@@ -7,12 +7,12 @@ import by.vasilevsky.leasing.web.controller.command.parser.CommandXmlParser;
 import by.vasilevsky.leasing.web.controller.command.parser.CommandXmlParserImpl;
 
 public final class CommandProviderImpl implements CommandProvider {
-	private static volatile CommandProviderImpl instance;
+	private static final CommandProviderImpl INSTANCE = new CommandProviderImpl();
 
 	private static final Command NOT_FOUND_404_COMMAND = new NotFound404Command();
 
 	//Map<key1, Map<key2, value>>, where key1 - method type, such as GET or POST; 
-	//key2 - url; vaue - command
+	//key2 - url; value - command
 	private final Map<String, Map<String, Command>> commandMapping;
 
 	private CommandProviderImpl() {
@@ -21,16 +21,8 @@ public final class CommandProviderImpl implements CommandProvider {
 	}
 
 	static CommandProvider getInstance() {
-		CommandProviderImpl localInstance = instance;
-		if (localInstance == null) {
-			synchronized (CommandProviderImpl.class) {
-				localInstance = instance;
-				if (localInstance == null) {
-					instance = localInstance = new CommandProviderImpl();
-				}
-			}
-		}
-		return localInstance;
+	
+		return INSTANCE;
 	}
 
 	@Override
