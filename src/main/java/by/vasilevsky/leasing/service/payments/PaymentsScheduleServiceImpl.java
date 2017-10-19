@@ -10,6 +10,7 @@ import by.vasilevsky.leasing.domain.lease_object.Property;
 import by.vasilevsky.leasing.domain.payments.MonthlyPayment;
 import by.vasilevsky.leasing.domain.payments.PaymentType;
 import by.vasilevsky.leasing.domain.payments.PaymentsSchedule;
+import by.vasilevsky.leasing.service.exception.IllegalArgumentServiceException;
 
 public class PaymentsScheduleServiceImpl implements PaymentsScheduleService {
 	private static final int PAYMENT_INTERVAL = 1;
@@ -28,7 +29,7 @@ public class PaymentsScheduleServiceImpl implements PaymentsScheduleService {
 	@Override
 	public void countPayments(PaymentsSchedule schedule) {
 		if (!isPaymentsScheduleValid(schedule)) {
-			throw new IllegalArgumentException("Payments schedule has illegal data");
+			throw new IllegalArgumentServiceException("Payments schedule has illegal data");
 		}
 
 		List<MonthlyPayment> payments = new ArrayList<>();

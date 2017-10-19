@@ -11,6 +11,7 @@ import org.w3c.dom.NodeList;
 
 import by.vasilevsky.leasing.web.MethodType;
 import by.vasilevsky.leasing.web.controller.command.Command;
+import by.vasilevsky.leasing.web.controller.command.CommandException;
 
 public class CommandXmlParserImpl implements CommandXmlParser {
 	private static final String COMMAND_XML_TAG = "command";
@@ -27,7 +28,7 @@ public class CommandXmlParserImpl implements CommandXmlParser {
 			dBuilder = dbFactory.newDocumentBuilder();
 			doc = dBuilder.parse(this.getClass().getClassLoader().getResourceAsStream(COMMANDS_MAPPING_FILE));
 		} catch (Exception e) {
-			throw new RuntimeException("Command parsing error", e);
+			throw new CommandException("Command parsing error", e);
 		}
 		
 		doc.getDocumentElement().normalize();
@@ -66,7 +67,7 @@ public class CommandXmlParserImpl implements CommandXmlParser {
 		try {
 			command = (Command) Class.forName(className).newInstance();
 		} catch (Exception e) {
-			throw new RuntimeException("Command instantiation error", e);
+			throw new CommandException("Command instantiation error", e);
 		}
 		
 		return command;

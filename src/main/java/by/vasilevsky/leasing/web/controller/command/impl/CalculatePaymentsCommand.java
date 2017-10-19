@@ -46,7 +46,7 @@ public class CalculatePaymentsCommand implements Command {
 
 			return;
 		}
-		
+
 		Property property = buildProperty(model);
 		PaymentsSchedule payments = buildPaymentsSchedule(model, property);
 		paymentsService.countPayments(payments);

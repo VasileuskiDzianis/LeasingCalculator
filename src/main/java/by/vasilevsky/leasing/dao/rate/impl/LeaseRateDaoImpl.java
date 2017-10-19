@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import by.vasilevsky.leasing.dao.BaseDao;
+import by.vasilevsky.leasing.dao.DaoException;
 import by.vasilevsky.leasing.dao.rate.LeaseRateDao;
 import by.vasilevsky.leasing.domain.currency.Currency;
 import by.vasilevsky.leasing.domain.lease_object.PropertyType;
@@ -22,7 +23,7 @@ public class LeaseRateDaoImpl extends BaseDao implements LeaseRateDao {
 	private static final String BASE_RATE_DB_MAPPING_VALUE = "currencyRate";
 
 	@Override
-	public Margin findMarginByTypeAndAge(PropertyType propertyType, int age) {
+	public Margin findMarginByTypeAndAge(PropertyType propertyType, int age) throws DaoException {
 		Connection con = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -41,7 +42,7 @@ public class LeaseRateDaoImpl extends BaseDao implements LeaseRateDao {
 				margin.setId(rs.getInt(MARGIN_DB_MAPPING_ID));
 			}
 		} catch (SQLException e) {
-			throw new RuntimeException("Finding margin exception: ", e);
+			throw new DaoException("Finding margin exception: ", e);
 		} finally {
 			closeResources(rs, stmt, con);
 		}
@@ -50,7 +51,7 @@ public class LeaseRateDaoImpl extends BaseDao implements LeaseRateDao {
 	}
 
 	@Override
-	public BaseRate findLeaseRateByCurrency(Currency currency) {
+	public BaseRate findLeaseRateByCurrency(Currency currency) throws DaoException {
 		Connection con = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -67,7 +68,7 @@ public class LeaseRateDaoImpl extends BaseDao implements LeaseRateDao {
 				rate.setId(rs.getInt(BASE_RATE_DB_MAPPING_ID));
 			}
 		} catch (SQLException e) {
-			throw new RuntimeException("Finding currency rate exception: ", e);
+			throw new DaoException("Finding currency rate exception: ", e);
 		} finally {
 			closeResources(rs, stmt, con);
 		}

@@ -7,13 +7,15 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
-
 import by.vasilevsky.leasing.domain.user.User;
 import by.vasilevsky.leasing.domain.user.UserRole;
 import by.vasilevsky.leasing.service.ServiceFactory;
+import by.vasilevsky.leasing.service.exception.IllegalArgumentServiceException;
+import by.vasilevsky.leasing.service.exception.ServiceException;
 import by.vasilevsky.leasing.service.user.UserService;
 
 public class LoginServiceImpl implements LoginService {
+	
 	// The higher the number of iterations the more expensive computing the hash is
 	// for us and also for an attacker.
 	private static final int ITERATIONS = 20 * 1000;
@@ -31,13 +33,19 @@ public class LoginServiceImpl implements LoginService {
 	private static final int PASSWORD_INDEX = 1;
 
 	@Override
-	public UserRole authenticateUser(String login, String password) {
+	public UserRole authenticateUser(String login, String password) throws ServiceException {
 		if (login == null || password == null) {
-			throw new IllegalArgumentException("Login or password is NUll");
+			throw new IllegalArgumentServiceException("Login or password is NUll");
 		}
 
 		UserService userService = ServiceFactory.getInstance().getUserService();
-		User user = userService.findUserByLogin(login);
+		User user = null;
+		try {
+			user = userService.findUserByLogin(login);
+		} catch (ServiceException e) {
+			throw new ServiceException("User authentication error", e);
+		}
+		
 		if (user == null) {
 			return UserRole.ANONYMOUS;
 		}
@@ -46,43 +54,49 @@ public class LoginServiceImpl implements LoginService {
 			if (checkPasswords(password, user.getPassword())) {
 				return user.getUserRole();
 			}
-
 		} catch (Exception e) {
-			throw new RuntimeException("password checking error", e);
+			throw new ServiceException("Passwords checking error error", e);
 		}
 
 		return UserRole.ANONYMOUS;
 	}
 
 	@Override
-	public boolean isLoginExisting(String login) {
+	public boolean isLoginExisting(String login) throws ServiceException {
 		if (login == null) {
-			throw new IllegalArgumentException("Login is NULL");
+			throw new IllegalArgumentServiceException("Login is NULL");
 		}
-		User user = ServiceFactory.getInstance().getUserService().findUserByLogin(login);
+		User user = null;
+		try {
+			user = ServiceFactory.getInstance().getUserService().findUserByLogin(login);
+		} catch (ServiceException e) {
+			throw new ServiceException("Login existence checking error", e);
+		}
 
 		return user != null;
 	}
 
 	@Override
-	public void registerNewUser(User user) {
+	public void registerNewUser(User user) throws ServiceException {
 		if (user == null) {
-			throw new IllegalArgumentException("User is NULL");
+			throw new IllegalArgumentServiceException("User is NULL");
 		}
 		String encodedPassword;
 		try {
 			encodedPassword = getSaltedHash(user.getPassword());
 		} catch (Exception e) {
-			throw new RuntimeException("Password encoding error", e);
+			throw new ServiceException("Encoding password error", e);
 		}
 		user.setPassword(encodedPassword);
-		ServiceFactory.getInstance().getUserService().saveUser(user);
+		
+		try {
+			ServiceFactory.getInstance().getUserService().saveUser(user);
+		} catch (ServiceException e) {
+			throw new ServiceException("User saving error", e);
+		}
 	}
 
 	private String getSaltedHash(String password) throws Exception {
-		if (password == null) {
-			throw new IllegalArgumentException("Password is NULL");
-		}
 		byte[] salt = SecureRandom.getInstance(SALT_ALGORITM).generateSeed(SALT_LEN);
 
 		// store the salt with the password
@@ -90,12 +104,9 @@ public class LoginServiceImpl implements LoginService {
 	}
 
 	private boolean checkPasswords(String password, String stored) throws Exception {
-		if (password == null || stored == null) {
-			throw new IllegalArgumentException("Password is NULL");
-		}
 		String[] saltAndPass = stored.split(SPLITTER_PATTERN);
 		if (saltAndPass.length != SPLITED_PARTS_NUMBER) {
-			throw new IllegalStateException("The stored password have the form 'salt$hash'");
+			throw new ServiceException("The stored password doesn't have the form 'salt$hash'");
 		}
 		String hashOfInput = hash(password, Base64.decodeBase64(saltAndPass[SALT_INDEX]));
 
@@ -103,9 +114,6 @@ public class LoginServiceImpl implements LoginService {
 	}
 
 	private String hash(String password, byte[] salt) throws Exception {
-		if (password == null || password.length() == 0) {
-			throw new IllegalArgumentException("Empty passwords are not supported.");
-		}
 		SecretKeyFactory f = SecretKeyFactory.getInstance(PSW_ALGORITM);
 		SecretKey key = f.generateSecret(new PBEKeySpec(password.toCharArray(), salt, ITERATIONS, DESIRED_KEY_LEN));
 

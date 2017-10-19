@@ -11,6 +11,7 @@ import java.util.Properties;
 import org.junit.Before;
 import org.junit.Test;
 
+import by.vasilevsky.leasing.dao.DaoException;
 import by.vasilevsky.leasing.dao.DaoFactory;
 import by.vasilevsky.leasing.dao.DataSourceProvider;
 import by.vasilevsky.leasing.domain.user.User;
@@ -101,7 +102,7 @@ public class UserDaoImplTest {
 	}
 
 	@Test
-	public void findUserByLoginTest() {
+	public void findUserByLoginTest() throws DaoException {
 		User gotUser = userDao.findUserByLogin(EXPECTED_USER_LOGIN2);
 		
 		assertTrue(expectedUser2.equals(gotUser));
@@ -109,7 +110,7 @@ public class UserDaoImplTest {
 	}
 	
 	@Test
-	public void findUserByIdTest() {
+	public void findUserByIdTest() throws DaoException {
 		User gotUser = userDao.findUserById(EXPECTED_USER_ID1);
 		
 		assertTrue(expectedUser1.equals(gotUser));
@@ -125,7 +126,7 @@ public class UserDaoImplTest {
 	}
 	
 	@Test
-	public void saveDeleteUserTest() {
+	public void saveDeleteUserTest() throws DaoException {
 		User givenUser = new User();
 		UserDetails givenUserDetails = new UserDetails();
 		givenUserDetails.setAge(GIVEN_USER_AGE);

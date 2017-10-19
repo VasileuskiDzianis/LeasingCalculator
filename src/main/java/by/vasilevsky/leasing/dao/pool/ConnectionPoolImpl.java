@@ -23,9 +23,15 @@ import java.util.Properties;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
-import java.util.logging.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import by.vasilevsky.leasing.web.controller.error.ExceptionHandler;
 
 public final class ConnectionPoolImpl implements ConnectionPool {
+	private static final Logger LOGGER = LogManager.getLogger(ConnectionPoolImpl.class);
+	
 	private static final int DEFAULT_POOL_SIZE = 5;
 	private static final String PROP_MAPPING_DRIVER = "driver";
 	private static final String PROP_MAPPING_URL = "url";
@@ -61,6 +67,7 @@ public final class ConnectionPoolImpl implements ConnectionPool {
 		try {
 			this.poolSize = Integer.parseInt(dbProperties.getProperty(PROP_MAPPING_POOL_SIZE));
 		} catch (NumberFormatException e) {
+			LOGGER.error("Connection pool size has bad number format. Was set defaul: " + DEFAULT_POOL_SIZE, e);
 			this.poolSize = DEFAULT_POOL_SIZE;
 		}
 		
@@ -85,7 +92,7 @@ public final class ConnectionPoolImpl implements ConnectionPool {
 			connection = connectionQueue.take();
 			givenAwayConQueue.add(connection);
 		} catch (InterruptedException e) {
-			throw new SQLException("Error occured during connection to the data source", e);
+			throw new SQLException("Error occured during connecting to the data source", e);
 		}
 		connection.setAutoCommit(true);
 		return connection;
@@ -97,6 +104,7 @@ public final class ConnectionPoolImpl implements ConnectionPool {
 			closeConnectionsQueue(givenAwayConQueue);
 			closeConnectionsQueue(connectionQueue);
 		} catch (SQLException e) {
+			LOGGER.error("Closing connections error", e);
 		}
 	}
 

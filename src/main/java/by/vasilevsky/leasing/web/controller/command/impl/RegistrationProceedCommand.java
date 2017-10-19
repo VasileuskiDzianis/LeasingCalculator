@@ -11,8 +11,10 @@ import by.vasilevsky.leasing.domain.user.User;
 import by.vasilevsky.leasing.domain.user.UserDetails;
 import by.vasilevsky.leasing.domain.user.UserRole;
 import by.vasilevsky.leasing.service.ServiceFactory;
+import by.vasilevsky.leasing.service.exception.ServiceException;
 import by.vasilevsky.leasing.service.login.LoginService;
 import by.vasilevsky.leasing.web.controller.command.Command;
+import by.vasilevsky.leasing.web.controller.command.CommandException;
 import by.vasilevsky.leasing.web.controller.command.PageMapping;
 import by.vasilevsky.leasing.web.filter.binder.RegistrationFormMapping;
 import by.vasilevsky.leasing.web.filter.i18n.MessageMapping;
@@ -34,9 +36,13 @@ public class RegistrationProceedCommand implements Command {
 		ResourceBundle messages = (ResourceBundle) request.getAttribute(MessageMapping.ALIAS);
 		RegistrationFormModel model = (RegistrationFormModel) request.getAttribute(RegistrationFormMapping.ALIAS);
 
-		if (model.getLogin() != null && loginService.isLoginExisting(model.getLogin())) {
-			model.setLoginMessage(messages.getString(MessageMapping.ADDRESS_IN_USE_MESSAGE));
-			model.setErrors(true);
+		try {
+			if (model.getLogin() != null && loginService.isLoginExisting(model.getLogin())) {
+				model.setLoginMessage(messages.getString(MessageMapping.ADDRESS_IN_USE_MESSAGE));
+				model.setErrors(true);
+			}
+		} catch (ServiceException e) {
+			throw new CommandException("User registration error", e);
 		}
 
 		if (!model.hasErrors()) {
@@ -50,11 +56,13 @@ public class RegistrationProceedCommand implements Command {
 			userDetails.setLastName(DEFAULT_USER_SURNAME);
 			user.setUserDetails(userDetails);
 
-			loginService.registerNewUser(user);
-
+			try {
+				loginService.registerNewUser(user);
+			} catch (ServiceException e) {
+				throw new CommandException("User registration error", e);
+			}
 			model.setMainMessage(messages.getString(MessageMapping.REGISTERED_MESSAGE));
 		}
-
 		request.getRequestDispatcher(PageMapping.REGISTRATION).forward(request, response);
 	}
 }

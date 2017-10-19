@@ -4,6 +4,7 @@ import by.vasilevsky.leasing.dao.DaoFactory;
 import by.vasilevsky.leasing.dao.rate.InsuranceDao;
 import by.vasilevsky.leasing.domain.lease_object.PropertyType;
 import by.vasilevsky.leasing.domain.rate.Insurance;
+import by.vasilevsky.leasing.service.exception.IllegalArgumentServiceException;
 import by.vasilevsky.leasing.service.rate.InsuranceService;
 
 public class InsuranceServiceImpl implements InsuranceService {
@@ -17,7 +18,7 @@ public class InsuranceServiceImpl implements InsuranceService {
 	@Override
 	public Insurance findInsuranceByObjectType(PropertyType objectType) {
 		if (objectType == null) {
-			throw new IllegalArgumentException("Object type can not be NULL");
+			throw new IllegalArgumentServiceException("Object type can not be NULL");
 		}
 
 		return insuranceDao.findInsuranceByObjectType(objectType);

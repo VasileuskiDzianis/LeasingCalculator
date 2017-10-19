@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import by.vasilevsky.leasing.service.exception.IllegalArgumentServiceException;
+import by.vasilevsky.leasing.web.controller.command.CommandException;
 import by.vasilevsky.leasing.web.controller.command.PageMapping;
 import by.vasilevsky.leasing.web.filter.i18n.MessageMapping;
 
@@ -33,8 +35,10 @@ public class ExceptionHandler extends HttpServlet {
 		Throwable exception = (Throwable) request.getAttribute(JAVAX_SERVLET_ERROR_EXCEPTION);
 		Integer statusCode = (Integer) request.getAttribute(JAVAX_SERVLET_ERROR_STATUS_CODE);
 		
-		if (exception != null && exception instanceof IllegalArgumentException) {
+		if (exception != null && exception instanceof IllegalArgumentServiceException) {
 			request.setAttribute(ERROR_MESSAGE_ALIAS, messages.getString(MessageMapping.ERROR_MESSAGE_BADDATA));
+		} else if (exception != null && exception instanceof CommandException) {
+			request.setAttribute(ERROR_MESSAGE_ALIAS, messages.getString(MessageMapping.ERROR_MESSAGE_500_INTERNAL));
 		} else if (exception != null && exception instanceof Exception) {
 			request.setAttribute(ERROR_MESSAGE_ALIAS, messages.getString(MessageMapping.ERROR_MESSAGE_500_INTERNAL));
 		} else if (statusCode == CODE_404) {

@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 import by.vasilevsky.leasing.dao.BaseDao;
+import by.vasilevsky.leasing.dao.DaoException;
 import by.vasilevsky.leasing.domain.user.User;
 import by.vasilevsky.leasing.domain.user.UserDetails;
 import by.vasilevsky.leasing.domain.user.UserRole;
@@ -41,7 +42,7 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 	private static final int NOT_EXISTENT_ROLE_ID = 0;
 
 	@Override
-	public void updateUser(User user) {
+	public void updateUser(User user) throws DaoException {
 		Connection con = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -58,15 +59,14 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 			stmt.setInt(4, user.getId());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new RuntimeException("saveUser() exception", e);
+			throw new DaoException("User updating exception", e);
 		} finally {
 			closeResources(rs, stmt, con);
 		}
 	}
 
 	@Override
-	public void deleteUserById(int id) {
+	public void deleteUserById(int id) throws DaoException {
 		Connection con = null;
 		PreparedStatement stmtDeleteUser = null;
 		PreparedStatement stmtDeleteUserDetails = null;
@@ -90,9 +90,9 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 			try {
 				con.rollback();
 			} catch (SQLException ex) {
-				throw new RuntimeException("transaction rollback exception", ex);
+				throw new DaoException("transaction rollback exception", ex);
 			}
-			throw new RuntimeException("deleteUser exception", e);
+			throw new DaoException("User deleting exception", e);
 		} finally {
 			closeResources(null, stmtDeleteUser, con);
 			closeResources(null, stmtDeleteUserDetails, null);
@@ -100,7 +100,7 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 	}
 
 	@Override
-	public User findUserById(int id) {
+	public User findUserById(int id) throws DaoException {
 		Connection con = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -128,8 +128,7 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 			}
 			
 		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new RuntimeException("findUserById exception", e);
+			throw new DaoException("findUserById exception", e);
 		} finally {
 			closeResources(rs, stmt, con);
 		}
@@ -138,7 +137,7 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 	}
 
 	@Override
-	public User findUserByLogin(String login) {
+	public User findUserByLogin(String login) throws DaoException {
 		Connection con = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -165,7 +164,7 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 				return user;
 			}
 		} catch (SQLException e) {
-			throw new RuntimeException("findUserByLogin exception", e);
+			throw new DaoException("findUserByLogin exception", e);
 		} finally {
 			closeResources(rs, stmt, con);
 		}
@@ -200,6 +199,8 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 			}
 			return users;
 		} catch (SQLException e) {
+			LOGGER.error("Finding all users error", e);
+			
 			users = Collections.emptyList();
 
 			return users;
@@ -209,7 +210,7 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 	}
 
 	@Override
-	public void saveUser(User user) {
+	public void saveUser(User user) throws DaoException {
 		Connection con = null;
 		PreparedStatement stmtSaveUser = null;
 		ResultSet rsSaveUser = null;
@@ -248,16 +249,16 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 			try {
 				con.rollback();
 			} catch (SQLException ex) {
-				throw new RuntimeException("transaction rollback exception", ex);
+				throw new DaoException("transaction rollback exception", ex);
 			}
-			throw new RuntimeException("saveUser() exception", e);
+			throw new DaoException("saveUser() exception", e);
 		} finally {
 			closeResources(rsSaveUser, stmtSaveUser, null);
 			closeResources(rsSaveDetails, stmtSaveDetails, con);
 		}
 	}
 
-	private int findUserRoleId(UserRole userRole) {
+	private int findUserRoleId(UserRole userRole) throws DaoException {
 		Connection con = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -273,7 +274,7 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 			}
 
 		} catch (SQLException e) {
-			throw new RuntimeException("findUserRoleId exception", e);
+			throw new DaoException("findUserRoleId exception", e);
 		} finally {
 			closeResources(rs, stmt, con);
 		}
@@ -282,7 +283,7 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 	}
 
 	@Override
-	public void updateUserDetails(UserDetails userDetails) {
+	public void updateUserDetails(UserDetails userDetails) throws DaoException {
 		Connection con = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -296,7 +297,7 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 			stmt.setInt(4, userDetails.getId());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			throw new RuntimeException("saveUserDetails exception", e);
+			throw new DaoException("saveUserDetails exception", e);
 		} finally {
 			closeResources(rs, stmt, con);
 		}

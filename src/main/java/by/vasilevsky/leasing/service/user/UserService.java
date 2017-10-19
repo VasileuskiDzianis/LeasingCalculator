@@ -4,20 +4,21 @@ import java.util.List;
 
 import by.vasilevsky.leasing.domain.user.User;
 import by.vasilevsky.leasing.domain.user.UserDetails;
+import by.vasilevsky.leasing.service.exception.ServiceException;
 
 public interface UserService {
 	
-	User findUserById(int id);
+	User findUserById(int id) throws ServiceException;
 	
-	User findUserByLogin(String login);
+	User findUserByLogin(String login) throws ServiceException;
 	
 	List<User> findAll();
 	
-	void saveUser(User user);
+	void saveUser(User user) throws ServiceException;
 	
-	void updateUser(User user);
+	void updateUser(User user) throws ServiceException;
 	
-	void updateUserDetails(UserDetails userDetails);
+	void updateUserDetails(UserDetails userDetails) throws ServiceException;
 	
-	void deleteUserById(int id);
+	void deleteUserById(int id) throws ServiceException;
 }

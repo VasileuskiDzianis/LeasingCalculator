@@ -3,6 +3,7 @@ package by.vasilevsky.leasing.dao.rate.impl;
 import java.sql.*;
 
 import by.vasilevsky.leasing.dao.BaseDao;
+import by.vasilevsky.leasing.dao.DaoException;
 import by.vasilevsky.leasing.dao.rate.InsuranceDao;
 import by.vasilevsky.leasing.domain.lease_object.PropertyType;
 import by.vasilevsky.leasing.domain.rate.Insurance;
@@ -13,7 +14,7 @@ public class InsuranceDaoImpl extends BaseDao implements InsuranceDao {
 	private static final String INSURANCE_DB_MAPPING_VALUE = "insurance";
 
 	@Override
-	public Insurance findInsuranceByObjectType(PropertyType objectType) {
+	public Insurance findInsuranceByObjectType(PropertyType objectType) throws DaoException {
 		Connection con = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -30,7 +31,7 @@ public class InsuranceDaoImpl extends BaseDao implements InsuranceDao {
 				insurance.setId(rs.getInt(INSURANCE_DB_MAPPING_ID));
 			}
 		} catch (SQLException e) {
-			throw new RuntimeException("Finding insurance rate exception: ", e);
+			throw new DaoException("Finding insurance rate exception: ", e);
 		} finally {
 			closeResources(rs, stmt, con);
 		}
