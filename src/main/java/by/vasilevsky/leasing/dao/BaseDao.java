@@ -11,7 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public abstract class BaseDao {
-	protected static final Logger LOGGER = LogManager.getLogger(BaseDao.class);
+	private static final Logger LOGGER = LogManager.getLogger(BaseDao.class);
 
 	protected final DataSource dataSource;
 
